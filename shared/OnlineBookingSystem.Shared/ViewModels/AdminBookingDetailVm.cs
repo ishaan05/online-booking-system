@@ -1,0 +1,31 @@
+namespace OnlineBookingSystem.Shared.ViewModels;
+
+/// <summary>Full booking + user + category/purpose labels for admin review screens.</summary>
+public record AdminBookingDetailVm(
+	int BookingID,
+	string BookingRegNo,
+	int VenueID,
+	string VenueName,
+	int CategoryID,
+	string CategoryName,
+	string IdentityLabel,
+	string DocumentLabel,
+	int PurposeID,
+	string PurposeName,
+	int PurposeMaxDays,
+	string IdentityNumber,
+	string DocumentPath,
+	string BankName,
+	string AccountNumber,
+	string IFSCCode,
+	decimal TotalAmount,
+	string BookingStatusRaw,
+	int? Level1UserID,
+	int? Level2UserID,
+	string UserFullName,
+	string UserMobile,
+	string? UserEmail,
+	string? UserAddress,
+	string BookingFromDate,
+	string BookingToDate,
+	IReadOnlyList<BookingStatusLogEntryVm> StatusHistory);

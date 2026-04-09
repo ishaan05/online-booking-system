@@ -1,0 +1,9 @@
+{
+  "name": "online-hall-booking",
+  "private": true,
+  "description": "Single Angular app (public + office admin). Run API separately with dotnet.",
+  "scripts": {
+    "start": "npm --prefix online-booking-system run start",
+    "build": "npm --prefix online-booking-system run build"
+  }
+}
