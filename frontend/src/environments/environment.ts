@@ -1,6 +1,6 @@
 /**
- * Development: empty apiBaseUrl → browser calls `/api/...` and `/uploads/...` on the ng serve origin.
- * proxy.conf.json forwards `/api` and `/uploads` → OnlineBookingSystem.Api wwwroot (default port 5211).
+ * Local dev: empty apiBaseUrl → requests go to `/api/...` and `/uploads/...` on the dev server origin.
+ * proxy.conf.json forwards those paths to the .NET API at http://localhost:5211 (see launchSettings.json).
  */
 export const environment = {
   production: false,

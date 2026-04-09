@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineBookingSystem.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitSqlite : Migration
+    public partial class InitialSqlServer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,15 +15,15 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "Advertisement",
                 columns: table => new
                 {
-                    AdID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AdTitle = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    AdImagePath = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    AdURL = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    AdID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AdTitle = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    AdImagePath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    AdURL = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,16 +34,16 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "BankAccountDetail",
                 columns: table => new
                 {
-                    BankId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ContactName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    BankName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    BankAddress = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    AccountNumber = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    IFSCCode = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    Place = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
-                    ChequeInFavour = table.Column<string>(type: "TEXT", maxLength: 120, nullable: true)
+                    BankId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContactName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    BankName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    BankAddress = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    AccountNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    IFSCCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    MobileNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    ChequeInFavour = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,13 +54,13 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "BookingCategory",
                 columns: table => new
                 {
-                    CategoryID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CategoryName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    IdentityLabel = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    IdentityFormat = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    DocumentLabel = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    IdentityLabel = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    IdentityFormat = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DocumentLabel = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,11 +71,11 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "BookingPurpose",
                 columns: table => new
                 {
-                    PurposeID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PurposeName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    MaxDays = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    PurposeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PurposeName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    MaxDays = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,14 +86,14 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "ImageBanner",
                 columns: table => new
                 {
-                    ImgId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ImgPath = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    ImgURL = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    ImgId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImgPath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ImgURL = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,9 +104,9 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "OfficeUserRole",
                 columns: table => new
                 {
-                    RoleID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    RoleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,15 +117,15 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "OTPLog",
                 columns: table => new
                 {
-                    OTPID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
-                    OTPCode = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
-                    Purpose = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    IsUsed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    GeneratedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UsedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    OTPID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MobileNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    OTPCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Purpose = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    GeneratedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -136,16 +136,16 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "RegisteredUser",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FullName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
-                    UserAddress = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    IsVerified = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastLoginAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    UserID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    MobileNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    UserAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastLoginAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -156,13 +156,13 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "SMSLog",
                 columns: table => new
                 {
-                    SMSID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
-                    MessageText = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    Purpose = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    SentAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    IsDelivered = table.Column<bool>(type: "INTEGER", nullable: false)
+                    SMSID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MobileNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    MessageText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Purpose = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDelivered = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,13 +173,13 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "SuperAdminProvisioningToken",
                 columns: table => new
                 {
-                    TokenId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TokenHash = table.Column<byte[]>(type: "BLOB", maxLength: 32, nullable: false),
-                    CreatedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ExpiresAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UsedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    BoundIpFingerprint = table.Column<byte[]>(type: "BLOB", maxLength: 32, nullable: true)
+                    TokenId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TokenHash = table.Column<byte[]>(type: "varbinary(32)", maxLength: 32, nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BoundIpFingerprint = table.Column<byte[]>(type: "varbinary(32)", maxLength: 32, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -190,11 +190,11 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "TermsAndConditions",
                 columns: table => new
                 {
-                    TermID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TermText = table.Column<string>(type: "TEXT", nullable: false),
-                    SortOrder = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    TermID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TermText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,13 +205,13 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "TextAdvertisement",
                 columns: table => new
                 {
-                    AdID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    AdID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AdText = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,10 +222,10 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueType",
                 columns: table => new
                 {
-                    VenueTypeID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TypeName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    VenueTypeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,12 +236,12 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "WebsiteVisit",
                 columns: table => new
                 {
-                    VisitID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VisitorToken = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    IPAddress = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    UserAgent = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
-                    VisitedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    VisitID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VisitorToken = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    IPAddress = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    VisitedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -252,16 +252,16 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "OfficeUser",
                 columns: table => new
                 {
-                    OfficeUserID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FullName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    Username = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    RoleID = table.Column<int>(type: "INTEGER", nullable: false),
-                    MobileNumber = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
-                    EmailID = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    OfficeUserID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    RoleID = table.Column<int>(type: "int", nullable: false),
+                    MobileNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    EmailID = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -277,18 +277,18 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueMaster",
                 columns: table => new
                 {
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VenueTypeID = table.Column<int>(type: "INTEGER", nullable: false),
-                    VenueName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    VenueCode = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
-                    Address = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    City = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Division = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    GoogleMapLink = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    Facilities = table.Column<string>(type: "TEXT", nullable: true),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    VenueID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VenueTypeID = table.Column<int>(type: "int", nullable: false),
+                    VenueName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    VenueCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Division = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    GoogleMapLink = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Facilities = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,31 +305,31 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "BookingRequest",
                 columns: table => new
                 {
-                    BookingID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BookingRegNo = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    UserID = table.Column<int>(type: "INTEGER", nullable: false),
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false),
-                    CategoryID = table.Column<int>(type: "INTEGER", nullable: false),
-                    PurposeID = table.Column<int>(type: "INTEGER", nullable: false),
+                    BookingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingRegNo = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    VenueID = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    PurposeID = table.Column<int>(type: "int", nullable: false),
                     BookingFromDate = table.Column<DateTime>(type: "date", nullable: false),
                     BookingToDate = table.Column<DateTime>(type: "date", nullable: false),
-                    TotalDays = table.Column<int>(type: "INTEGER", nullable: false, computedColumnSql: "CAST((julianday(\"BookingToDate\") - julianday(\"BookingFromDate\")) AS INTEGER) + 1", stored: true),
-                    IdentityNumber = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    DocumentPath = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    TotalDays = table.Column<int>(type: "int", nullable: false, computedColumnSql: "CAST((julianday(\"BookingToDate\") - julianday(\"BookingFromDate\")) AS INTEGER) + 1", stored: true),
+                    IdentityNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DocumentPath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     RentAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     SecurityDeposit = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false, computedColumnSql: "\"RentAmount\" + \"SecurityDeposit\"", stored: true),
-                    BankName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    AccountNumber = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    IFSCCode = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    TermsAccepted = table.Column<bool>(type: "INTEGER", nullable: false),
-                    BookingStatus = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    PaymentStatus = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    Level1UserID = table.Column<int>(type: "INTEGER", nullable: true),
-                    Level2UserID = table.Column<int>(type: "INTEGER", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    BankName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    AccountNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IFSCCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    TermsAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    BookingStatus = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Level1UserID = table.Column<int>(type: "int", nullable: true),
+                    Level2UserID = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -364,16 +364,16 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueEarningExpense",
                 columns: table => new
                 {
-                    EntryID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false),
-                    EntryType = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
+                    EntryID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VenueID = table.Column<int>(type: "int", nullable: false),
+                    EntryType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     EntryDate = table.Column<DateTime>(type: "date", nullable: false),
-                    EnteredByID = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsFrozen = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    EnteredByID = table.Column<int>(type: "int", nullable: false),
+                    IsFrozen = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -396,13 +396,13 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueImage",
                 columns: table => new
                 {
-                    ImageID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false),
-                    ImagePath = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    Caption = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
-                    SortOrder = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VenueID = table.Column<int>(type: "int", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Caption = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    SortOrder = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -419,17 +419,17 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueRentRule",
                 columns: table => new
                 {
-                    RuleID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false),
-                    CategoryID = table.Column<int>(type: "INTEGER", nullable: false),
-                    PurposeID = table.Column<int>(type: "INTEGER", nullable: false),
+                    RuleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VenueID = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    PurposeID = table.Column<int>(type: "int", nullable: false),
                     RentPerDay = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     SecurityDeposit = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    MaxDays = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsAllottable = table.Column<bool>(type: "INTEGER", nullable: false),
-                    NotAllottableReason = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    MaxDays = table.Column<int>(type: "int", nullable: false),
+                    IsAllottable = table.Column<bool>(type: "bit", nullable: false),
+                    NotAllottableReason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -458,12 +458,12 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueUserMapping",
                 columns: table => new
                 {
-                    MappingID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false),
-                    OfficeUserID = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoleLevel = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    MappingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VenueID = table.Column<int>(type: "int", nullable: false),
+                    OfficeUserID = table.Column<int>(type: "int", nullable: false),
+                    RoleLevel = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -491,15 +491,15 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "BookingStatusLog",
                 columns: table => new
                 {
-                    LogID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BookingID = table.Column<int>(type: "INTEGER", nullable: false),
-                    ChangedByType = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    ChangedByID = table.Column<int>(type: "INTEGER", nullable: true),
-                    OldStatus = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
-                    NewStatus = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    Remarks = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    LogID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingID = table.Column<int>(type: "int", nullable: false),
+                    ChangedByType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ChangedByID = table.Column<int>(type: "int", nullable: true),
+                    OldStatus = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    NewStatus = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -516,18 +516,18 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "FinalSettlement",
                 columns: table => new
                 {
-                    SettlementID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BookingID = table.Column<int>(type: "INTEGER", nullable: false),
+                    SettlementID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingID = table.Column<int>(type: "int", nullable: false),
                     ElectricityCharges = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     CleaningCharges = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     OtherDeductions = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    DeductionRemarks = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    SettlementStatus = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    PreparedByID = table.Column<int>(type: "INTEGER", nullable: false),
-                    ApprovedByID = table.Column<int>(type: "INTEGER", nullable: true),
-                    PreparedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ApprovedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    DeductionRemarks = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    SettlementStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PreparedByID = table.Column<int>(type: "int", nullable: false),
+                    ApprovedByID = table.Column<int>(type: "int", nullable: true),
+                    PreparedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApprovedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -544,15 +544,15 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "PaymentTransaction",
                 columns: table => new
                 {
-                    TransactionID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BookingID = table.Column<int>(type: "INTEGER", nullable: false),
-                    TransactionRefNo = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    TransactionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingID = table.Column<int>(type: "int", nullable: false),
+                    TransactionRefNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AmountPaid = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    PaymentMode = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    PaymentStatus = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    TransactionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    GatewayResponse = table.Column<string>(type: "TEXT", nullable: true)
+                    PaymentMode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GatewayResponse = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -569,12 +569,12 @@ namespace OnlineBookingSystem.Api.Migrations
                 name: "VenueBlockedDate",
                 columns: table => new
                 {
-                    BlockedID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    VenueID = table.Column<int>(type: "INTEGER", nullable: false),
+                    BlockedID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VenueID = table.Column<int>(type: "int", nullable: false),
                     BlockedDate = table.Column<DateTime>(type: "date", nullable: false),
-                    BookingID = table.Column<int>(type: "INTEGER", nullable: true),
-                    Reason = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true)
+                    BookingID = table.Column<int>(type: "int", nullable: true),
+                    Reason = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {

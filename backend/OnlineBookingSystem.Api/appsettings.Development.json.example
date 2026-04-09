@@ -1,0 +1,11 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "Microsoft.AspNetCore": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_PC\\SQLEXPRESS;Database=CommunityHallBookingDB;Trusted_Connection=True;TrustServerCertificate=True;"
+  }
+}

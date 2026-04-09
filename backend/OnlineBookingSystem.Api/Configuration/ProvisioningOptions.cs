@@ -33,8 +33,8 @@ public sealed class ProvisioningOptions
 	/// </summary>
 	public string? MintKey { get; set; }
 
-	/// <summary>Max mint-token POST requests per client IP per <see cref="MintWindowMinutes"/>.</summary>
-	public int MaxMintAttempts { get; set; } = 3;
+	/// <summary>Max successfully minted tokens per client IP per <see cref="MintWindowMinutes"/>.</summary>
+	public int MaxMintAttempts { get; set; } = 10;
 
 	/// <summary>Sliding window for mint rate limiting (minutes).</summary>
 	public int MintWindowMinutes { get; set; } = 15;

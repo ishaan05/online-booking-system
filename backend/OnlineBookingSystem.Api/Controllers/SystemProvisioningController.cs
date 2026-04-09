@@ -24,8 +24,11 @@ public sealed class SystemProvisioningController : ControllerBase
 	private const string BodySignatureHeader = "X-Provisioning-Body-Signature";
 
 	private const string MsgDenied = "Provisioning could not be completed.";
+	private const string MsgMintSuperExists = "A Super Admin already exists. Open the admin portal and sign in — provisioning is finished.";
 	private const string MsgUnavailable = "Provisioning is not available.";
 	private const string MsgInvalidRequest = "Invalid request.";
+	private const string MsgMintWrongPassphrase = "Wrong provisioning passphrase. Use the value in API appsettings Provisioning:MintKey (local default Test@123).";
+	private const string MsgMintRateLimited = "Too many provisioning tokens were minted recently. Restart the API or wait for the rate window to clear.";
 
 	private readonly ProvisioningOptions _opt;
 	private readonly ProvisioningRateLimiter _rateLimiter;
@@ -75,18 +78,11 @@ public sealed class SystemProvisioningController : ControllerBase
 		}
 
 		string clientIp = ProvisioningHttp.GetClientIp(HttpContext);
-		if (!_mintRateLimiter.IsAllowed(clientIp))
-		{
-			_log.LogWarning("Provisioning mint rate limited.");
-			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgDenied });
-		}
-
-		_mintRateLimiter.RecordAttempt(clientIp);
 
 		if (await _repo.AnyActiveSuperAdminExistsAsync(ct))
 		{
 			_log.LogWarning("Provisioning mint rejected: super admin already exists.");
-			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgDenied });
+			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgMintSuperExists });
 		}
 
 		string? configuredMintKey = _opt.MintKey?.Trim();
@@ -100,14 +96,20 @@ public sealed class SystemProvisioningController : ControllerBase
 		    providedHeader.Count == 0)
 		{
 			_log.LogWarning("Provisioning mint rejected: missing mint key header.");
-			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgDenied });
+			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgMintWrongPassphrase });
 		}
 
 		string provided = providedHeader.ToString().Trim();
 		if (!MintKeysEqual(provided, configuredMintKey))
 		{
 			_log.LogWarning("Provisioning mint rejected: invalid mint key.");
-			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgDenied });
+			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgMintWrongPassphrase });
+		}
+
+		if (!_mintRateLimiter.IsAllowed(clientIp))
+		{
+			_log.LogWarning("Provisioning mint rate limited (too many tokens minted in this window).");
+			return StatusCode(StatusCodes.Status403Forbidden, new { error = MsgMintRateLimited });
 		}
 
 		string plaintext = ProvisioningCrypto.GenerateProvisioningToken();
@@ -128,6 +130,7 @@ public sealed class SystemProvisioningController : ControllerBase
 			return StatusCode(StatusCodes.Status500InternalServerError, new { error = MsgDenied });
 		}
 
+		_mintRateLimiter.RecordSuccessfulMint(clientIp);
 		_log.LogInformation("Provisioning token minted successfully (hash stored only).");
 		return Ok(new { token = plaintext, expiresAtUtc = expires });
 	}

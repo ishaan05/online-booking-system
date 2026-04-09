@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OnlineBookingSystem.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b66730b8d581aeedc5c8fe0d9a491c27d25957b3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f5c98c24b51a3e8030757c2bd2ba0303379f9e1")]
 [assembly: System.Reflection.AssemblyProductAttribute("OnlineBookingSystem.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OnlineBookingSystem.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

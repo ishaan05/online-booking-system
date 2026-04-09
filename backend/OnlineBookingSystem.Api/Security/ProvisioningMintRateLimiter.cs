@@ -4,21 +4,25 @@ using OnlineBookingSystem.Api.Configuration;
 
 namespace OnlineBookingSystem.Api.Security;
 
-/// <summary>Sliding-window limit for POST /mint-token per client IP.</summary>
+/// <summary>
+/// Sliding-window limit for successful POST /mint-token operations per client IP.
+/// Failed passphrase attempts are not counted (so typos cannot lock you out).
+/// </summary>
 public sealed class ProvisioningMintRateLimiter
 {
 	private readonly ProvisioningOptions _opt;
-	private readonly ConcurrentDictionary<string, ConcurrentQueue<DateTime>> _attempts = new(StringComparer.OrdinalIgnoreCase);
+	private readonly ConcurrentDictionary<string, ConcurrentQueue<DateTime>> _successfulMints = new(StringComparer.OrdinalIgnoreCase);
 
 	public ProvisioningMintRateLimiter(IOptions<ProvisioningOptions> options)
 	{
 		_opt = options.Value;
 	}
 
+	/// <summary>Whether this IP may mint another token (under successful-mint quota for the window).</summary>
 	public bool IsAllowed(string clientIpKey)
 	{
 		string key = NormalizeKey(clientIpKey);
-		if (!_attempts.TryGetValue(key, out ConcurrentQueue<DateTime>? q) || q == null)
+		if (!_successfulMints.TryGetValue(key, out ConcurrentQueue<DateTime>? q) || q == null)
 		{
 			return true;
 		}
@@ -27,10 +31,11 @@ public sealed class ProvisioningMintRateLimiter
 		return q.Count < Math.Max(1, _opt.MaxMintAttempts);
 	}
 
-	public void RecordAttempt(string clientIpKey)
+	/// <summary>Call only after a token was persisted successfully.</summary>
+	public void RecordSuccessfulMint(string clientIpKey)
 	{
 		string key = NormalizeKey(clientIpKey);
-		ConcurrentQueue<DateTime> q = _attempts.GetOrAdd(key, static _ => new ConcurrentQueue<DateTime>());
+		ConcurrentQueue<DateTime> q = _successfulMints.GetOrAdd(key, static _ => new ConcurrentQueue<DateTime>());
 		Prune(q);
 		q.Enqueue(DateTime.UtcNow);
 	}

@@ -1,7 +1,8 @@
 /**
- * Production: use '' when the SPA is served from the same host as the API; otherwise set full API origin.
+ * Local / same-machine API (Kestrel: see backend Properties/launchSettings.json, default http://localhost:5211).
+ * With `ng serve`, proxy.conf.json also forwards `/api` to that URL — use '' if you prefer relative URLs.
  */
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://online-booking-api.onrender.com'
+  apiBaseUrl: '',
 };

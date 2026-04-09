@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
@@ -26,10 +26,9 @@ export class SystemProvisionComponent implements OnInit, AfterViewInit {
   /** Staggered entrance animation */
   viewReady = false;
 
-  /** GET /api/SystemProvisioning/state */
+  /** GET /api/SystemProvisioning/state — whether first Super Admin may still be created */
   stateLoading = true;
   allowBootstrap = false;
-  allowMint = false;
 
   mintBusy = false;
   mintError = '';
@@ -54,18 +53,39 @@ export class SystemProvisionComponent implements OnInit, AfterViewInit {
 
   constructor(private http: HttpClient) {}
 
+  private formatMintHttpError(err: HttpErrorResponse): string {
+    const body = err.error;
+    if (body && typeof body === 'object' && 'error' in body && typeof (body as { error: unknown }).error === 'string') {
+      return (body as { error: string }).error;
+    }
+    if (body && typeof body === 'object' && 'title' in body && typeof (body as { title: unknown }).title === 'string') {
+      return (body as { title: string }).title;
+    }
+    if (typeof body === 'string' && body.trim()) {
+      try {
+        const p = JSON.parse(body) as { error?: string; title?: string };
+        return p.error ?? p.title ?? body;
+      } catch {
+        return body;
+      }
+    }
+    if (err.status === 0) {
+      return 'Cannot reach the API. Start OnlineBookingSystem.Api (http://localhost:5211), run ng serve with proxy.conf.json, or set environment.apiBaseUrl to the API URL.';
+    }
+    return `Request failed (HTTP ${err.status}). ${err.statusText || err.message || 'Check the API is running and the passphrase matches Provisioning:MintKey (default Test@123).'}`;
+  }
+
   ngOnInit(): void {
     const url = `${this.apiBase || ''}/api/SystemProvisioning/state`;
-    this.http.get<{ allowBootstrap: boolean; allowMint: boolean }>(url).subscribe({
+    this.http.get<{ allowBootstrap: boolean; allowMint?: boolean }>(url).subscribe({
       next: (s) => {
         this.allowBootstrap = !!s.allowBootstrap;
-        this.allowMint = !!s.allowMint;
         this.stateLoading = false;
       },
       error: () => {
         this.stateLoading = false;
+        // If state cannot be loaded (API warming up, proxy glitch), still show the full flow; server enforces rules on mint/bootstrap.
         this.allowBootstrap = true;
-        this.allowMint = false;
       },
     });
   }
@@ -81,7 +101,7 @@ export class SystemProvisionComponent implements OnInit, AfterViewInit {
   }
 
   generateToken(): void {
-    if (this.generateTokenUsed || this.mintBusy || !this.allowMint) {
+    if (this.generateTokenUsed || this.mintBusy || !this.allowBootstrap) {
       return;
     }
     const passphrase = window.prompt('Enter the provisioning mint passphrase:');
@@ -102,6 +122,7 @@ export class SystemProvisionComponent implements OnInit, AfterViewInit {
         {},
         {
           headers: new HttpHeaders({
+            'Content-Type': 'application/json',
             'X-Provisioning-Mint-Key': passphrase,
           }),
         },
@@ -117,11 +138,9 @@ export class SystemProvisionComponent implements OnInit, AfterViewInit {
           });
           this.generateTokenUsed = true;
         },
-        error: (err: { error?: { error?: string } }) => {
+        error: (err: HttpErrorResponse) => {
           this.mintBusy = false;
-          this.mintError =
-            err?.error?.error ??
-            'Could not generate a token. Check the passphrase and try again.';
+          this.mintError = this.formatMintHttpError(err);
         },
       });
   }

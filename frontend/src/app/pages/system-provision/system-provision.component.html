@@ -51,8 +51,8 @@
           <p class="sp__card-sub">Encrypted credentials · Super Admin · First account only</p>
         </div>
 
-        <div class="sp__mint" *ngIf="allowMint">
-          <p class="sp__mint-lead">Generate a one-time token here (requires server passphrase).</p>
+        <div class="sp__mint">
+          <p class="sp__mint-lead">Generate a one-time token here (enter the server passphrase when prompted).</p>
           <button
             type="button"
             class="sp__btn sp__btn--secondary"
@@ -299,14 +299,10 @@
       </div>
 
       <p class="sp__foot" *ngIf="!success && !stateLoading">
-        <span *ngIf="allowMint"
-          >UI mint uses a passphrase configured only on the server (<code>Provisioning__MintKey</code>). Tokens are
-          stored hashed, single-use, and time-limited. You can also use
+        <span *ngIf="allowBootstrap"
+          >Click <strong>Generate token</strong> and enter the passphrase from API config (<code>Provisioning:MintKey</code> /
+          <code>Provisioning__MintKey</code>). Tokens are hashed, single-use, and time-limited. Alternative:
           <code>OnlineBookingSystem.ProvisioningCli</code>. </span
-        >
-        <span *ngIf="!allowMint && allowBootstrap"
-          >Mint a token with <code>OnlineBookingSystem.ProvisioningCli</code>, or set <code>Provisioning__MintKey</code> on
-          the API to enable UI generation. Stored hashed, single-use, time-limited. </span
         >
         <span *ngIf="!allowBootstrap">This deployment already has a Super Admin. </span>
         © 2026 Ishaan Korkanti.

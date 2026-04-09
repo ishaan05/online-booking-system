@@ -2,7 +2,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineBookingSystem.Api.Configuration;
@@ -112,6 +115,14 @@ builder.Services.AddHttpClient("SmsGateway", client =>
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IBookingSystemRepository, BookingSystemRepository>();
 builder.Services.Configure<ProvisioningOptions>(builder.Configuration.GetSection(ProvisioningOptions.SectionName));
+// Local dev: if appsettings.Development.json clears MintKey, provisioning UI mint still works.
+builder.Services.PostConfigure<ProvisioningOptions>(opts =>
+{
+  if (builder.Environment.IsDevelopment() && string.IsNullOrWhiteSpace(opts.MintKey))
+  {
+    opts.MintKey = "Test@123";
+  }
+});
 builder.Services.AddSingleton<ProvisioningRateLimiter>();
 builder.Services.AddSingleton<ProvisioningMintRateLimiter>();
 builder.Services.AddScoped<IVisitorService, VisitorService>();
@@ -119,37 +130,128 @@ builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddScoped<OfficeAuthService>();
 
-// ✅ CORS
+// ✅ CORS — explicit origins when Cors:AllowedOrigins is non-empty (production); empty = AllowAnyOrigin (same-origin monolith OK)
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+var corsOriginsTrimmed = corsOrigins
+    .Select(o => o?.Trim())
+    .Where(o => !string.IsNullOrEmpty(o))
+    .Distinct(StringComparer.OrdinalIgnoreCase)
+    .ToArray();
+
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy("AllowAll",
-      policy => policy.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader());
+  options.AddPolicy("AppCors", policy =>
+  {
+    if (corsOriginsTrimmed.Length > 0)
+    {
+      policy.WithOrigins(corsOriginsTrimmed)
+          .AllowAnyMethod()
+          .AllowAnyHeader();
+    }
+    else
+    {
+      policy.AllowAnyOrigin()
+          .AllowAnyMethod()
+          .AllowAnyHeader();
+    }
+  });
 });
 
 var app = builder.Build();
 
-// ✅ Middleware
-app.UseForwardedHeaders();
-app.UseCors("AllowAll");
+if (app.Environment.IsProduction())
+{
+  var prodJwt = app.Configuration["Jwt:Key"] ?? "";
+  if (prodJwt.Contains("CHANGE_ME", StringComparison.OrdinalIgnoreCase) || prodJwt.Trim().Length < 32)
+  {
+    throw new InvalidOperationException(
+      "Production requires a strong Jwt:Key (32+ characters, not the placeholder). Set the Jwt__Key environment variable or appsettings.Production.json.");
+  }
+}
 
-// ⚠️ Keep this BEFORE auth if needed
-app.UseHttpsRedirection();
+// Migrations: apply on empty DBs. Script-built databases already have tables (e.g. Advertisement) — Migrate() would throw 2714; skip and only ensure provisioning table.
+using (var scope = app.Services.CreateScope())
+{
+  var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+  var startupLog = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Database");
+  try
+  {
+    var pending = db.Database.GetPendingMigrations().ToList();
+    if (pending.Count > 0)
+    {
+      startupLog.LogInformation("Applying {Count} pending EF Core migration(s)…", pending.Count);
+      try
+      {
+        db.Database.Migrate();
+        startupLog.LogInformation("EF Core migrations applied.");
+      }
+      catch (Exception ex) when (IsSqlDuplicateObjectError(ex))
+      {
+        startupLog.LogWarning(ex,
+          "EF migrations were not applied: objects already exist (typical for databases created from SQL scripts). Using existing schema. For an empty new database run: dotnet ef database update --project backend/OnlineBookingSystem.Api");
+      }
+    }
+    else
+    {
+      startupLog.LogInformation("No pending EF Core migrations.");
+    }
 
+    ProvisioningSchemaGuard.EnsureSuperAdminProvisioningToken(db);
+    startupLog.LogInformation("SuperAdminProvisioningToken table verified.");
+  }
+  catch (Exception ex)
+  {
+    startupLog.LogCritical(ex,
+      "Database startup failed. Check ConnectionStrings:DefaultConnection and SQL Server availability.");
+    throw;
+  }
+}
+
+static bool IsSqlDuplicateObjectError(Exception ex)
+{
+  for (Exception? e = ex; e != null; e = e.InnerException)
+  {
+    if (e is SqlException sqlEx && sqlEx.Number == 2714)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// ✅ Middleware (forwarded headers + HTTPS redirect only outside local dev — avoids breaking http://localhost)
+if (!app.Environment.IsDevelopment())
+{
+  app.UseForwardedHeaders();
+}
+
+app.UseCors("AppCors");
+
+if (!app.Environment.IsDevelopment())
+{
+  app.UseHttpsRedirection();
+}
+
+app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// ✅ Swagger (ADDED — IMPORTANT)
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+var enableSwagger = app.Environment.IsDevelopment()
+    || app.Configuration.GetValue("Hosting:EnableSwagger", false);
+if (enableSwagger)
 {
-  c.SwaggerEndpoint("/swagger/v1/swagger.json", "Online Booking API V1");
-  c.RoutePrefix = "swagger"; // keeps /swagger URL
-});
+  app.UseSwagger();
+  app.UseSwaggerUI(c =>
+  {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Online Booking API V1");
+    c.RoutePrefix = "swagger";
+  });
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();

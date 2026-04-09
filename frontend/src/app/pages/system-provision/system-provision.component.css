@@ -411,6 +411,12 @@
   display: flex;
   flex-direction: column;
   gap: clamp(0.45rem, 1.35dvh, 0.75rem);
+  /* Keep primary action visible after long form (scroll area is .sp__scroll). */
+  padding-bottom: clamp(1.25rem, 4dvh, 2.5rem);
+}
+
+.sp__form > .sp__btn[type='submit'] {
+  scroll-margin-bottom: 1.25rem;
 }
 
 .sp__banner {

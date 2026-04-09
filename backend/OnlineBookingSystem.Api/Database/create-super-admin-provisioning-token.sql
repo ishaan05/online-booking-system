@@ -1,22 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+-- Run on CommunityHallBookingDB if the table is missing (e.g. database was created from legacy scripts only).
+-- The app also creates this automatically on startup via ProvisioningSchemaGuard when using SQL Server.
 
-namespace OnlineBookingSystem.Shared.Data;
-
-/// <summary>Ensures <see cref="Models.SuperAdminProvisioningTokenEntity"/> table exists for secure first Super Admin flow.</summary>
-public static class ProvisioningSchemaGuard
-{
-	public static void EnsureSuperAdminProvisioningToken(AppDbContext db)
-	{
-		// Table is included in EF migrations for SQL Server; SQLite had no migration for this table.
-		if (db.Database.ProviderName?.Contains("Sqlite", StringComparison.OrdinalIgnoreCase) == true)
-		{
-			return;
-		}
-
-		db.Database.ExecuteSqlRaw(Sql);
-	}
-
-	private const string Sql = """
 IF OBJECT_ID(N'dbo.SuperAdminProvisioningToken', N'U') IS NULL
 BEGIN
     CREATE TABLE dbo.SuperAdminProvisioningToken (
@@ -32,5 +16,4 @@ BEGIN
         ON dbo.SuperAdminProvisioningToken (ExpiresAtUtc)
         WHERE UsedAtUtc IS NULL;
 END
-""";
-}
+GO

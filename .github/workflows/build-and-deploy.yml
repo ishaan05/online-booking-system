@@ -1,0 +1,80 @@
+# Build full stack on every push; optionally deploy to Azure App Service.
+#
+# Setup for automatic LIVE updates:
+# 1. Push this repo to GitHub.
+# 2. In the repo: Settings → Secrets and variables → Actions → New repository secret:
+#    - AZURE_WEBAPP_NAME        = your App Service name (e.g. my-hall-booking)
+#    - AZURE_WEBAPP_PUBLISH_PROFILE = contents of the downloaded Publish Profile XML
+#      (Azure Portal → your Web App → Download publish profile)
+# 3. Connection string, Jwt__Key, Provisioning__MintKey stay in Azure Portal
+#    Configuration → Application settings (never commit those).
+#
+# Without Azure secrets: each run still uploads a "api-publish" artifact you can download and deploy manually.
+
+name: Build and deploy
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  NODE_VERSION: "20"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: npm ci (frontend)
+        working-directory: frontend
+        run: npm ci
+
+      - name: Angular production build
+        working-directory: frontend
+        run: npm run build -- --configuration production
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Copy SPA into API wwwroot
+        run: |
+          mkdir -p backend/OnlineBookingSystem.Api/wwwroot
+          find backend/OnlineBookingSystem.Api/wwwroot -mindepth 1 -delete 2>/dev/null || true
+          cp -r frontend/dist/online-booking-system/. backend/OnlineBookingSystem.Api/wwwroot/
+
+      - name: dotnet publish
+        run: dotnet publish backend/OnlineBookingSystem.Api/OnlineBookingSystem.Api.csproj -c Release -o "${{ github.workspace }}/publish"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: api-publish
+          path: publish/
+          retention-days: 14
+
+  deploy-azure:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE != '' && secrets.AZURE_WEBAPP_NAME != '' }}
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: api-publish
+          path: publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: publish
