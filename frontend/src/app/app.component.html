@@ -1,0 +1,16 @@
+<app-lu-progress-bar *ngIf="!provisionShell"></app-lu-progress-bar>
+<div
+  class="app-shell"
+  [class.app-shell--office]="officeShell"
+  [class.app-shell--provision]="provisionShell"
+>
+  <app-header *ngIf="!officeShell && !provisionShell"></app-header>
+  <main class="app-main" [class.app-main--provision]="provisionShell">
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer *ngIf="!officeShell && !provisionShell"></app-footer>
+  <app-forgot-password
+    [open]="!!(forgotPasswordModal.open$ | async)"
+    (openChange)="forgotPasswordModal.setOpen($event)"
+  ></app-forgot-password>
+</div>

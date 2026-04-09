@@ -1,0 +1,401 @@
+<div class="admin-page admin-page--wide admin-page--premium-form book-user">
+  <div class="admin-card book-user__card admin-form-page-card">
+    <div class="admin-card__header admin-form-page-card__head book-user__card-head">
+      <div class="admin-form-page-card__head-inner">
+        <h1 class="admin-form-page-card__title">{{ reviewTitle }}</h1>
+        <p class="admin-form-page-card__subtitle" *ngIf="!reviewMode">
+          Hall, dates &amp; registration — super admin only. Blocks venue dates for the customer booking calendar.
+        </p>
+        <p class="admin-form-page-card__subtitle" *ngIf="reviewMode && detail">
+          {{ detail.bookingRegNo }} · {{ detail.bookingStatusRaw }}
+        </p>
+      </div>
+    </div>
+
+    <div class="admin-card__body admin-form-page-card__body book-user__body" *ngIf="loadingDetail">
+      <p class="book-user__loading">Loading booking…</p>
+    </div>
+
+    <div class="admin-card__body admin-form-page-card__body book-user__body" *ngIf="!loadingDetail && detailLoadError">
+      <p class="book-user__error">{{ detailLoadError }}</p>
+    </div>
+
+    <div class="admin-card__body admin-form-page-card__body book-user__body" *ngIf="!loadingDetail && !detailLoadError">
+      <div class="book-user__panels">
+        <section class="admin-form-page-panel" aria-labelledby="book-details-heading">
+          <h2 class="admin-form-page-panel__title" id="book-details-heading">Booking details</h2>
+          <div class="admin-form-page-panel__stack">
+            <div class="admin-form__row admin-form__row--tight">
+              <label class="admin-form__label" for="bk-hall">Community hall / institute</label>
+              <select
+                id="bk-hall"
+                class="admin-form__select admin-form-page__control"
+                [(ngModel)]="hall"
+                name="bkHall"
+                [disabled]="formReadOnly"
+              >
+                <option value="">Select hall…</option>
+                <option *ngFor="let h of hallOptions" [value]="h">{{ h }}</option>
+              </select>
+            </div>
+            <ng-container *ngIf="!formReadOnly">
+              <div class="admin-form__row admin-form__row--tight">
+                <label class="admin-form__label" for="bk-cat">Category</label>
+                <select
+                  id="bk-cat"
+                  class="admin-form__select admin-form-page__control"
+                  [(ngModel)]="category"
+                  name="bkCat"
+                >
+                  <option value="">Select category…</option>
+                  <option *ngFor="let c of categoryOptions" [value]="c">{{ c }}</option>
+                </select>
+              </div>
+              <div class="admin-form__row admin-form__row--tight">
+                <label class="admin-form__label" for="bk-pur">Purpose</label>
+                <select
+                  id="bk-pur"
+                  class="admin-form__select admin-form-page__control"
+                  name="bkPur"
+                  [(ngModel)]="purpose"
+                  (ngModelChange)="onPurposeChange()"
+                >
+                  <option value="">Select purpose…</option>
+                  <option *ngFor="let p of purposeOptions" [value]="p">{{ p }}</option>
+                </select>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="formReadOnly && detail">
+              <div class="admin-form__row admin-form__row--tight">
+                <label class="admin-form__label">Category</label>
+                <div class="admin-form__input admin-form-page__control book-user__readonly-val">
+                  {{ detail.categoryName.trim() || '—' }}
+                </div>
+              </div>
+              <div class="admin-form__row admin-form__row--tight">
+                <label class="admin-form__label">Purpose</label>
+                <div class="admin-form__input admin-form-page__control book-user__readonly-val">
+                  {{ detail.purposeName.trim() || '—' }}
+                </div>
+              </div>
+            </ng-container>
+            <div class="admin-form__date-pair">
+              <ng-container *ngIf="!formReadOnly">
+                <div class="admin-form__row admin-form__row--tight">
+                  <app-admin-date-field
+                    class="admin-form__date-field-host"
+                    inputId="bk-from"
+                    name="bkFrom"
+                    label="From date"
+                    placeholder="Select date"
+                    [(ngModel)]="fromDate"
+                    [minDate]="fromPickerMin"
+                    (ngModelChange)="onFromDateChange()"
+                  />
+                </div>
+                <div class="admin-form__row admin-form__row--tight">
+                  <app-admin-date-field
+                    class="admin-form__date-field-host"
+                    inputId="bk-to"
+                    name="bkTo"
+                    label="To date"
+                    placeholder="Select date"
+                    [(ngModel)]="toDate"
+                    [minDate]="toPickerMin"
+                    (ngModelChange)="onToDateChange()"
+                  />
+                </div>
+              </ng-container>
+              <ng-container *ngIf="formReadOnly">
+                <div class="admin-form__row admin-form__row--tight">
+                  <label class="admin-form__label">From date</label>
+                  <div class="admin-form__input admin-form-page__control book-user__readonly-val">{{ fromDate }}</div>
+                </div>
+                <div class="admin-form__row admin-form__row--tight">
+                  <label class="admin-form__label">To date</label>
+                  <div class="admin-form__input admin-form-page__control book-user__readonly-val">{{ toDate }}</div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="admin-form__row admin-form__row--tight" *ngIf="detail">
+              <label class="admin-form__label">Total amount</label>
+              <div class="admin-form__input admin-form-page__control book-user__readonly-val">₹ {{ totalAmountDisplay }}</div>
+            </div>
+          </div>
+        </section>
+
+
+        <section class="admin-form-page-panel" aria-labelledby="reg-details-heading">
+          <h2 class="admin-form-page-panel__title" id="reg-details-heading">Registration details</h2>
+          <div class="admin-form-page-panel__stack">
+            <div class="admin-form__row admin-form__row--tight">
+              <label class="admin-form__label" for="bk-name">Full name</label>
+              <div class="input-with-icon">
+                <span class="input-with-icon__glyph" aria-hidden="true">👤</span>
+                <input
+                  id="bk-name"
+                  class="admin-form__input admin-form-page__control"
+                  [(ngModel)]="fullName"
+                  name="bkName"
+                  placeholder="Full name"
+                  [readonly]="formReadOnly"
+                />
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight">
+              <label class="admin-form__label" for="bk-mob">Mobile no</label>
+              <div class="input-with-icon">
+                <span class="input-with-icon__glyph" aria-hidden="true">📞</span>
+                <input
+                  id="bk-mob"
+                  class="admin-form__input admin-form-page__control"
+                  type="tel"
+                  inputmode="tel"
+                  [(ngModel)]="mobile"
+                  name="bkMob"
+                  autocomplete="tel"
+                  placeholder="Mobile number"
+                  [readonly]="formReadOnly"
+                />
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight">
+              <label class="admin-form__label" for="bk-em">Email</label>
+              <div class="input-with-icon">
+                <span class="input-with-icon__glyph" aria-hidden="true">✉</span>
+                <input
+                  id="bk-em"
+                  class="admin-form__input admin-form-page__control"
+                  type="email"
+                  [(ngModel)]="email"
+                  name="bkEm"
+                  placeholder="Email (optional)"
+                  [readonly]="formReadOnly"
+                />
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight">
+              <label class="admin-form__label" for="bk-ad">Address</label>
+              <div class="input-with-icon">
+                <span class="input-with-icon__glyph input-with-icon__glyph--textarea" aria-hidden="true">📍</span>
+                <textarea
+                  id="bk-ad"
+                  class="admin-form__textarea admin-form__textarea--compact admin-form-page__control book-user__address"
+                  [(ngModel)]="address"
+                  name="bkAd"
+                  placeholder="Address"
+                  rows="3"
+                  spellcheck="true"
+                  [readonly]="formReadOnly"
+                ></textarea>
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight">
+              <label class="admin-form__label" for="bk-id">{{ identityFieldLabel }}</label>
+              <div class="input-with-icon">
+                <span class="input-with-icon__glyph" aria-hidden="true">🪪</span>
+                <input
+                  id="bk-id"
+                  class="admin-form__input admin-form-page__control"
+                  [(ngModel)]="idNumber"
+                  name="bkId"
+                  [placeholder]="identityFieldLabel"
+                  [readonly]="formReadOnly"
+                />
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight" *ngIf="detail">
+              <label class="admin-form__label">{{ documentLabel }}</label>
+              <div class="book-user__doc-row">
+                <a *ngIf="documentHref" [href]="documentHref" target="_blank" rel="noopener" class="book-user__doc-link"
+                  >View / download</a
+                >
+                <span *ngIf="!documentHref" class="book-user__readonly-val">—</span>
+                <span class="book-user__doc-name" *ngIf="documentPath">{{ documentPath | slice : 0 : 48 }}</span>
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight" *ngIf="detail">
+              <label class="admin-form__label">Bank name (refund)</label>
+              <div class="admin-form__input admin-form-page__control book-user__readonly-val">{{ bankName }}</div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight" *ngIf="detail">
+              <label class="admin-form__label">Account number</label>
+              <div class="admin-form__input admin-form-page__control book-user__readonly-val">{{ accountNumber }}</div>
+            </div>
+            <div class="admin-form__row admin-form__row--tight" *ngIf="detail">
+              <label class="admin-form__label">IFSC code</label>
+              <div class="admin-form__input admin-form-page__control book-user__readonly-val">{{ ifscCode }}</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="book-user__reject-block" *ngIf="showL1InitialActions">
+        <div class="admin-form__row admin-form__row--tight">
+          <label class="admin-form__label" for="bk-decision">Booking status</label>
+          <select id="bk-decision" class="admin-form__select admin-form-page__control" [(ngModel)]="decisionUi" name="bkDecision">
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="admin-form__row admin-form__row--full" *ngIf="decisionUi === 'rejected'">
+          <label class="admin-form__label" for="bk-reject">Reject reason</label>
+          <textarea
+            id="bk-reject"
+            class="admin-form__textarea admin-form-page__control"
+            [(ngModel)]="rejectReason"
+            name="bkReject"
+            rows="3"
+            placeholder="Required when rejecting."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="book-user__payment-block" *ngIf="showL1ProvisionalActions">
+        <p class="book-user__payment-block-title">Payment</p>
+        <div class="admin-form__grid">
+          <div class="admin-form__row admin-form__row--tight">
+            <label class="admin-form__label" for="bk-pay-mode">Payment mode</label>
+            <select
+              id="bk-pay-mode"
+              class="admin-form__select admin-form-page__control"
+              [(ngModel)]="paymentMode"
+              name="bkPayMode"
+            >
+              <option value="">Select…</option>
+              <option *ngFor="let pm of paymentModeOptions" [value]="pm">{{ pm }}</option>
+            </select>
+          </div>
+          <div class="admin-form__row admin-form__row--tight">
+            <label class="admin-form__label" for="bk-pay-status">Payment status</label>
+            <select
+              id="bk-pay-status"
+              class="admin-form__select admin-form-page__control"
+              [(ngModel)]="paymentStatus"
+              name="bkPayStatus"
+            >
+              <option *ngFor="let ps of paymentStatusOptions" [value]="ps">{{ ps }}</option>
+            </select>
+          </div>
+          <div class="admin-form__row admin-form__row--tight">
+            <label class="admin-form__label" for="bk-pay-ref">{{ transactionRefFieldLabel }}</label>
+            <input
+              id="bk-pay-ref"
+              type="text"
+              class="admin-form__input admin-form-page__control"
+              [(ngModel)]="transactionRefNo"
+              name="bkPayRef"
+              autocomplete="off"
+            />
+          </div>
+          <div class="admin-form__row admin-form__row--tight">
+            <label class="admin-form__label" for="bk-pay-amt">Total amount received</label>
+            <input
+              id="bk-pay-amt"
+              type="text"
+              class="admin-form__input admin-form-page__control"
+              [(ngModel)]="amountReceivedInput"
+              name="bkPayAmt"
+              inputmode="decimal"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="book-user__reject-block" *ngIf="showL2Actions">
+        <div class="admin-form__row admin-form__row--full">
+          <label class="admin-form__label" for="bk-reject-l2">Reject reason</label>
+          <textarea
+            id="bk-reject-l2"
+            class="admin-form__textarea admin-form-page__control"
+            [(ngModel)]="rejectReason"
+            name="bkRejectL2"
+            rows="3"
+            placeholder="Required when rejecting."
+          ></textarea>
+        </div>
+      </div>
+
+      <section
+        *ngIf="reviewMode && detail?.statusHistory?.length"
+        class="admin-form-page-panel book-user__status-log"
+        aria-labelledby="status-log-heading"
+      >
+        <h2 class="admin-form-page-panel__title" id="status-log-heading">Status history</h2>
+        <ol class="book-user__status-list">
+          <li *ngFor="let e of detail?.statusHistory ?? []" class="book-user__status-item">
+            <div class="book-user__status-meta">
+              <span class="book-user__status-new">{{ e.newStatus }}</span>
+              <span class="book-user__status-by" *ngIf="e.changedByType"> · {{ e.changedByType }}</span>
+            </div>
+            <div class="book-user__status-time">{{ e.changedAtIso }}</div>
+            <div *ngIf="e.oldStatus" class="book-user__status-old">Was: {{ e.oldStatus }}</div>
+            <div *ngIf="e.remarks" class="book-user__status-remarks">{{ e.remarks }}</div>
+          </li>
+        </ol>
+      </section>
+
+      <footer class="book-user__footer">
+        <div class="book-user__footer-start">
+          <button type="button" class="book-user__cancel" (click)="cancel()">Cancel</button>
+        </div>
+        <div class="book-user__footer-actions" *ngIf="reviewMode">
+          <ng-container *ngIf="showL1InitialActions">
+            <button type="button" class="admin-btn admin-btn--primary" (click)="onForwardL1()">
+              <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+              Forward
+            </button>
+            <button type="button" class="admin-btn admin-btn--danger" (click)="onRejectL1()">
+              <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Reject
+            </button>
+          </ng-container>
+          <ng-container *ngIf="showL1ProvisionalActions">
+            <button type="button" class="admin-btn admin-btn--primary" (click)="onFinalApproveL1()">
+              <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Approve
+            </button>
+            <button type="button" class="admin-btn admin-btn--danger" (click)="onRejectL1()">
+              <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Reject
+            </button>
+          </ng-container>
+          <ng-container *ngIf="showL2Actions">
+            <button type="button" class="admin-btn admin-btn--primary" (click)="onProvisionallyApproveL2()">
+              <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m4 3a8 8 0 11-16 0 8 8 0 0116 0z" />
+              </svg>
+              Provisionally Approve
+            </button>
+            <button type="button" class="admin-btn admin-btn--danger" (click)="onRejectL2()">
+              <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Reject
+            </button>
+          </ng-container>
+        </div>
+        <button
+          *ngIf="!reviewMode && auth.isSuperAdmin()"
+          type="button"
+          class="admin-btn admin-btn--primary book-user__submit"
+          (click)="submit()"
+        >
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Submit
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>

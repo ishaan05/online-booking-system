@@ -1,0 +1,105 @@
+<section class="cards" aria-labelledby="cards-heading">
+  <div class="cards__inner container">
+    <div class="cards__header" appFadeInView [appFadeInViewDelay]="0" [appFadeInViewSlide]="12">
+      <h2 id="cards-heading" class="cards__title">Explore our halls</h2>
+      <p class="cards__lede">
+        Short details, photos, and map locations — loaded from the booking database when available.
+      </p>
+    </div>
+
+    <ng-container *luDeferredSkeleton="loading">
+      <div class="lu-morph-host" aria-busy="true">
+        <div class="lu-skel-cards-grid cards__grid" aria-hidden="true">
+          <div *ngFor="let _ of skelSlots" class="lu-skel-fcard">
+            <div class="lu-skel lu-skel-fcard__media lu-skel--gradient"></div>
+            <div class="lu-skel-fcard__body">
+              <div class="lu-skel lu-skel-line lu-skel-line--tiny"></div>
+              <div class="lu-skel lu-skel-line" style="width: 78%"></div>
+              <div class="lu-skel lu-skel-line lu-skel-line--short"></div>
+            </div>
+            <div class="lu-skel lu-skel-fcard__map"></div>
+          </div>
+        </div>
+        <p class="cards__status cards__micro">
+          <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="visually-hidden">Loading venues</span>
+        </p>
+      </div>
+    </ng-container>
+
+    <div *ngIf="loadError" class="cards__error-block" role="alert">
+      <p class="cards__status cards__status--error">
+        Could not load venues. Ensure the API is running and CORS is enabled.
+      </p>
+      <button
+        type="button"
+        class="cards__retry lu-retry"
+        [class.lu-retry--pulse]="retryPulse"
+        (click)="retry()"
+      >
+        Try again
+      </button>
+    </div>
+
+    <div *ngIf="!loading && !loadError && !cards.length" class="cards__status">
+      No venues are published yet.
+    </div>
+
+    <div *ngIf="!loading && cards.length" class="cards__grid lu-morph-content" role="list">
+      <div
+        *ngFor="let card of cards; let ci = index"
+        class="cards__item feature-card"
+        appFadeInView
+        [appFadeInViewDelay]="55 * ci"
+        [appFadeInViewSlide]="14"
+        [class.feature-card--sky]="card.tone === 'sky'"
+        [class.feature-card--violet]="card.tone === 'violet'"
+        [class.feature-card--rose]="card.tone === 'rose'"
+        [class.feature-card--slate]="card.tone === 'slate'"
+        role="listitem"
+      >
+        <a
+          [routerLink]="['/community-halls', card.venueId]"
+          class="feature-card__top"
+          [attr.aria-label]="'View details: ' + card.title"
+          [luPrefetchVenue]="card.venueId"
+        >
+          <div class="feature-card__media-wrap">
+            <img
+              class="feature-card__img"
+              luImgReveal
+              [src]="card.imageUrl"
+              [alt]="card.imageAlt"
+              width="640"
+              height="400"
+              loading="lazy"
+              (error)="onCardImageError(card, $event)"
+            />
+            <span class="feature-card__hint" aria-hidden="true">+</span>
+          </div>
+
+          <div class="feature-card__body">
+            <span class="feature-card__label">{{ card.label }}</span>
+            <h3 class="feature-card__headline">{{ card.title }}</h3>
+            <p class="feature-card__capacity">
+              <span class="feature-card__capacity-label">Capacity:</span>
+              <span class="feature-card__capacity-value">{{ card.capacityDisplay }}</span>
+            </p>
+            <p class="feature-card__subtitle">{{ card.subtitle }}</p>
+          </div>
+        </a>
+
+        <div class="feature-card__map">
+          <iframe
+            [title]="'Map: ' + card.title"
+            [src]="card.mapUrl"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            class="feature-card__iframe"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

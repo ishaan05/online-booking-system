@@ -1,0 +1,52 @@
+.flip-digit {
+  --fd-w: clamp(2.35rem, 5.5vw, 3rem);
+  --fd-h: clamp(3rem, 7vw, 3.85rem);
+  width: var(--fd-w);
+  height: var(--fd-h);
+  perspective: 280px;
+  flex-shrink: 0;
+}
+
+.flip-digit__cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.flip-digit__cube--flipped {
+  transform: rotateX(-180deg);
+}
+
+.flip-digit__cube--notrans {
+  transition: none !important;
+}
+
+.flip-digit__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: #1e1e1e;
+  color: #f3f4f6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.flip-digit__face--back {
+  transform: rotateX(180deg);
+}
+
+.flip-digit__face span {
+  line-height: 1;
+  transform: translateZ(0.5px);
+}

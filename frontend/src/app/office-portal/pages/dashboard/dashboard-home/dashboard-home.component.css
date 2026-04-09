@@ -1,0 +1,17 @@
+/* Bar chart: percentage heights need a definite column height */
+.oa-dsh-bar-wrap {
+  min-height: 11rem;
+  justify-content: flex-end;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  min-width: 0;
+  box-sizing: border-box;
+}

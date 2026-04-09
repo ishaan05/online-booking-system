@@ -1,0 +1,70 @@
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--premium-bg, #ffffff);
+}
+
+/* Office admin: lock to viewport — no page scroll; only dashboard main column scrolls */
+.app-shell--office {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell--office .app-main {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.app-shell--office .app-main > app-office-dashboard,
+.app-shell--office .app-main > app-office-login,
+.app-shell--office .app-main > app-office-forgot-password {
+  flex: 1 1 0%;
+  min-height: 0;
+}
+
+.app-main {
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: 0;
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+}
+
+.app-shell--provision {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.app-main--provision {
+  flex: 1 1 0%;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-main--provision > app-system-provision {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: block;
+  overflow: hidden;
+}

@@ -1,0 +1,159 @@
+<section class="policy-page" aria-labelledby="policy-title">
+  <div class="policy-page__inner">
+    <h1 id="policy-title" class="policy-page__title">Booking Policy</h1>
+
+    <div class="policy-page__card">
+      <ol class="policy-page__list policy-page__list--numbered">
+        <li>
+          <p class="policy-page__hi">
+            बुकिंग केवल पते का प्रमाण और वैध फोटो पहचान पत्र (जैसे रेलवे आईडी / फैमिली आईडी) प्रस्तुत करने पर ही
+            स्वीकृत होगी।
+          </p>
+          <p class="policy-page__en">
+            Booking is approved only on submission of address proof and a valid photo identity (e.g. Railway ID for
+            serving employees of Nagpur division, Family Identity Card for retired railway servants).
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">
+            निजी आवेदकों के लिए आधार, पासपोर्ट या ड्राइविंग लाइसेंस जैसा फोटो आईडी आवश्यक है।
+          </p>
+          <p class="policy-page__en">
+            For private parties, booking is confirmed only on submission of address proof or photo ID such as Aadhaar,
+            Passport, or Driving Licence at the time of application.
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">सभी भुगतान (किराया + सुरक्षा जमा) अग्रिम रूप से होने पर ही बुकिंग पुष्ट होगी।</p>
+          <p class="policy-page__en">
+            Booking is confirmed only when all payments are made in advance (rent + security deposit).
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">एक बार पुष्ट होने के बाद रद्दीकरण या संशोधन का अनुरोध स्वीकार नहीं किया जाएगा।</p>
+          <p class="policy-page__en">
+            Once booking is confirmed, the booking party shall not request cancellation or modification under any
+            circumstances.
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">
+            न्यूनतम 1 दिन (सुबह 6:00 से अगले दिन सुबह 6:00)। अतिरिक्त समय का दोगुना किराया। विवाह हेतु अधिकतम 3 दिन,
+            अन्य कार्यक्रमों हेतु 2 दिन।
+          </p>
+          <p class="policy-page__en">
+            Booking is for a minimum of one day (6:00 AM to next day 6:00 AM). Overholding is charged at double the rent
+            per hour. Maximum 3 days for marriage and 2 days for other functions.
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">
+            विवाह: रेलकर्मी 120 दिन, निजी 90 दिन पूर्व; अन्य: रेलकर्मी 60 दिन, निजी 30 दिन पूर्व तक आवेदन।
+          </p>
+          <p class="policy-page__en">
+            Marriage: up to 120 days in advance for railway servants (serving/retired) and 90 days for private persons;
+            other functions: 60 days (railway) and 30 days (private).
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">
+            बिजली, पानी, क्षति आदि की कटौती सुरक्षा जमा से; शेष चेक-आउट के बाद वापस।
+          </p>
+          <p class="policy-page__en">
+            Deductions for electricity, water, damage, etc. will be from the security deposit; the balance refunded after
+            check-out.
+          </p>
+        </li>
+        <li>
+          <p class="policy-page__hi">बिजली शुल्क मीटर रीडिंग के अनुसार वास्तविक उपभोग पर।</p>
+          <p class="policy-page__en">Electricity charges are based on actual consumption per meter reading.</p>
+        </li>
+        <li>
+          <p class="policy-page__hi">लागू होने पर जल शुल्क भी लिया जा सकता है।</p>
+          <p class="policy-page__en">Water charges may also be levied if applicable.</p>
+        </li>
+        <li>
+          <p class="policy-page__hi">बुकिंग निश्चित रूप से अस्थायी है; आरक्षण का अधिकार रेल प्रशासन के पास है।</p>
+          <p class="policy-page__en">
+            Booking is absolutely provisional; the right to reserve rests with the railway authority.
+          </p>
+        </li>
+      </ol>
+    </div>
+
+    <h2 class="policy-page__title policy-page__title--sub">Declaration by Booking Party</h2>
+
+    <div class="policy-page__card policy-page__card--declaration">
+      <ul class="policy-page__decl-list">
+        <li *ngFor="let _ of agree; let i = index; trackBy: trackByIdx" class="policy-page__decl-item">
+          <label class="policy-page__decl-label">
+            <input type="checkbox" class="policy-page__checkbox" [(ngModel)]="agree[i]" [name]="'decl' + i" />
+            <span class="policy-page__decl-text">
+              <ng-container [ngSwitch]="i">
+                <span *ngSwitchCase="0">
+                  I have gone through the booking policy and enquired all details about this venue before booking.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >मैंने बुकिंग नीति पढ़ ली है और बुकिंग से पहले स्थान की सभी जानकारी ले ली है।</span
+                  >
+                </span>
+                <span *ngSwitchCase="1">
+                  I will not sub-let the hall or any part of it in any form.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >मैं हॉल या उसके किसी भाग को किसी भी रूप में उप-पट्टे पर नहीं दूँगा/दूँगी।</span
+                  >
+                </span>
+                <span *ngSwitchCase="2">
+                  I will exclusively use the hall only for the purpose mentioned in the booking.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >मैं हॉल का उपयोग केवल बुकिंग में दर्शित उद्देश्य के लिए करूँगा/करूँगी।</span
+                  >
+                </span>
+                <span *ngSwitchCase="3">
+                  I will not use the hall for any anti-social, anti-national or unlawful activities.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >मैं हॉल का उपयोग किसी भी सामाजिक/राष्ट्रहित विरोधी या गैरकानूनी गतिविधि के लिए नहीं करूँगा/करूँगी।</span
+                  >
+                </span>
+                <span *ngSwitchCase="4">
+                  I will abide by government rules and regulations related to sound and air pollution.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >मैं ध्वनि और वायु प्रदूषण संबंधी सरकारी नियमों का पालन करूँगा/करूँगी।</span
+                  >
+                </span>
+                <span *ngSwitchCase="5">
+                  In case of mass gathering (more than 200 people), I will inform local administration and follow
+                  guidelines.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >200 से अधिक व्यक्तियों की भीड़ की स्थिति में मैं स्थानीय प्रशासन को सूचित करूँगा/करूँगी।</span
+                  >
+                </span>
+                <span *ngSwitchCase="6">
+                  Railway shall not be responsible for accidents such as fire, stampede, or anti-social incidents.<br />
+                  <span class="policy-page__hi policy-page__hi--inline"
+                    >आग, भगदड़ या सामाजिक घटनाओं हेतु रेलवे उत्तरदायी नहीं होगा।</span
+                  >
+                </span>
+                <span *ngSwitchDefault>
+                  I will not ask for CCTV recording footage.<br />
+                  <span class="policy-page__hi policy-page__hi--inline">मैं CCTV फुटेज की माँग नहीं करूँगा/करूँगी।</span>
+                </span>
+              </ng-container>
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="policy-page__footer">
+      <button type="button" class="policy-page__btn policy-page__btn--back" (click)="back()">Back</button>
+      <button
+        type="button"
+        class="policy-page__btn policy-page__btn--agree"
+        [disabled]="!allAgreed"
+        (click)="agreeAndContinue()"
+      >
+        Agree &amp; Continue
+      </button>
+    </div>
+  </div>
+</section>

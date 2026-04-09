@@ -1,0 +1,209 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.site-footer {
+  position: relative;
+  font-family: var(--premium-font, "Inter", system-ui, sans-serif);
+  background: var(--footer-bg, #f5f5f7);
+  color: var(--footer-text, #1d1d1f);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.site-footer__main {
+  padding: clamp(3rem, 7vw, 4.5rem) 0 clamp(3.5rem, 8vw, 5rem);
+  border-top: 1px solid var(--footer-border, rgba(0, 0, 0, 0.08));
+}
+
+.site-footer__container {
+  max-width: 1200px;
+}
+
+.site-footer__title {
+  margin: 0 0 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--premium-accent, #0066cc);
+  line-height: 1.3;
+}
+
+.site-footer__title--with-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.site-footer__title--with-rule::after {
+  content: "";
+  flex: 1 1 120px;
+  max-width: 180px;
+  height: 1px;
+  background: var(--premium-accent, #0066cc);
+  opacity: 0.45;
+}
+
+.site-footer__body {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  color: var(--footer-muted, #6e6e73);
+  max-width: 26rem;
+}
+
+.site-footer__contact {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+.site-footer__contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  color: var(--footer-contact-line, rgba(29, 29, 31, 0.85));
+}
+
+.site-footer__contact li:last-child {
+  margin-bottom: 0;
+}
+
+.site-footer__contact a {
+  color: var(--footer-contact-link, rgba(29, 29, 31, 0.88));
+  text-decoration: none;
+  transition: color 0.2s var(--premium-ease, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+.site-footer__contact a:hover {
+  color: var(--premium-accent, #0066cc);
+}
+
+.site-footer__icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.15rem;
+  color: var(--footer-icon-muted, rgba(29, 29, 31, 0.55));
+}
+
+.site-footer__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.site-footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.site-footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--footer-social-border, rgba(0, 0, 0, 0.12));
+  color: var(--footer-social-fg, rgba(29, 29, 31, 0.75));
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.site-footer__social-link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.site-footer__social-link:hover {
+  background: var(--premium-accent-soft, rgba(0, 102, 204, 0.12));
+  border-color: var(--premium-accent, #0066cc);
+  color: var(--premium-accent, #0066cc);
+  transform: translateY(-0.125rem);
+}
+
+.site-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer__links li {
+  margin-bottom: 0.65rem;
+}
+
+.site-footer__links a {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--premium-accent, #0066cc);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.site-footer__links a:hover {
+  color: var(--premium-accent-hover, #004a9e);
+  transform: translateX(4px);
+}
+
+.site-footer__to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1020;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 0;
+  background: #ffffff;
+  color: var(--premium-text, #1d1d1f);
+  box-shadow: var(--premium-shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.06));
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.site-footer__to-top svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.site-footer__to-top:hover {
+  background: var(--premium-accent, #0066cc);
+  border-color: var(--premium-accent, #0066cc);
+  color: #ffffff;
+  transform: none;
+  box-shadow: none;
+}
+
+.site-footer__to-top:focus-visible {
+  outline: 2px solid var(--premium-accent, #0066cc);
+  outline-offset: 2px;
+}
+
+@media (max-width: 991px) {
+  .site-footer__to-top {
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__social-link:hover,
+  .site-footer__links a:hover {
+    transform: none;
+  }
+}

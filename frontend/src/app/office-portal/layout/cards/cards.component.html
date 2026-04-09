@@ -1,0 +1,69 @@
+<ng-container *ngIf="officeDataReady | async; else kpiSkel">
+  <div class="oa-kpi" role="list">
+    <button
+      *ngFor="let c of cards; let i = index; trackBy: trackByCardId"
+      type="button"
+      class="oa-kpi__card oa-kpi__card--{{ c.accent }}"
+      role="listitem"
+      appFadeInView
+      [appFadeInViewDelay]="50 * i"
+      appRipple
+      [attr.aria-label]="c.title + ': ' + c.value + ' — open list'"
+      (click)="openCard(c)"
+    >
+      <div class="oa-kpi__icon" aria-hidden="true">
+        <ng-container [ngSwitch]="c.id">
+          <!-- Venues: hall / building -->
+          <svg *ngSwitchCase="'venues'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-5v8m4-6v3M3 21h18M5 21V7l7-4 7 4v14" />
+          </svg>
+          <!-- Total: ledger / stacked lists -->
+          <svg *ngSwitchCase="'total'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+          <!-- Pending: queue / hourglass -->
+          <svg *ngSwitchCase="'pending'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <!-- Provisional: clipboard check -->
+          <svg *ngSwitchCase="'provisional'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+          <!-- Forward: arrow right -->
+          <svg *ngSwitchCase="'forward'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+          <!-- Approved: check in circle (confirmed) -->
+          <svg *ngSwitchCase="'approved'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <!-- Rejected: X in circle -->
+          <svg *ngSwitchCase="'rejected'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6m6 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <!-- Cancelled: ban / stop -->
+          <svg *ngSwitchCase="'cancelled'" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636M9.88 9.88l4.24 4.24m-4.24 4.24l4.24-4.24" />
+          </svg>
+        </ng-container>
+      </div>
+      <div class="oa-kpi__body">
+        <div class="oa-kpi__top">
+          <h2 class="oa-kpi__title">{{ c.title }}</h2>
+          <span class="oa-kpi__hint" aria-hidden="true">Open →</span>
+        </div>
+        <p class="oa-kpi__value">
+          <span [appCountUp]="c.value" [appCountUpDuration]="550"></span>
+        </p>
+        <p class="oa-kpi__meta">{{ c.performanceLine }}</p>
+      </div>
+    </button>
+  </div>
+</ng-container>
+<ng-template #kpiSkel>
+  <ng-container *luDeferredSkeleton="true">
+    <div class="oa-kpi lu-admin-skel-kpi" role="presentation" aria-hidden="true">
+      <div *ngFor="let _ of kpiSkelSlots" class="lu-skel lu-admin-skel-kpi__cell lu-skel--gradient"></div>
+    </div>
+  </ng-container>
+</ng-template>

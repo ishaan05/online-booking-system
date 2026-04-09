@@ -1,0 +1,431 @@
+/* About — flat, editorial, no gradients */
+
+:host {
+  display: block;
+}
+
+.about {
+  font-family: var(--premium-font, system-ui, sans-serif);
+  padding: calc(var(--app-header-offset, 4.35rem) + 2rem) 0 4.5rem;
+  color: var(--premium-text, #0a0a0a);
+  -webkit-font-smoothing: antialiased;
+}
+
+.about__container {
+  max-width: 1080px;
+}
+
+/* Masthead */
+.about-masthead {
+  max-width: 42rem;
+  margin-bottom: 3.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--premium-border, #e5e7eb);
+}
+
+.about-masthead__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--premium-accent, #0066cc);
+}
+
+.about-masthead__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--premium-text, #0a0a0a);
+}
+
+.about-masthead__lead {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--premium-text-muted, #525252);
+  max-width: 38rem;
+}
+
+/* Two columns: objectives + features */
+.about-duo {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .about-duo {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.about-panel {
+  padding: 1.5rem 1.5rem 1.65rem;
+  background: var(--premium-bg-elevated, #fff);
+  border: 1px solid var(--premium-border, #e5e7eb);
+}
+
+.about-panel__heading {
+  margin: 0 0 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--premium-text, #0a0a0a);
+}
+
+.about-panel__list {
+  margin: 0;
+  padding: 0 0 0 1.15rem;
+  list-style: decimal;
+}
+
+.about-panel__li {
+  margin: 0 0 0.65rem;
+  padding-left: 0.35rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--premium-text-muted, #404040);
+}
+
+.about-panel__li:last-child {
+  margin-bottom: 0;
+}
+
+/* Section blocks */
+.about-block {
+  margin-bottom: 3.5rem;
+}
+
+.about-block__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--premium-text, #0a0a0a);
+}
+
+.about-block__intro {
+  margin: 0 0 1.5rem;
+  max-width: 40rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--premium-text-muted, #525252);
+}
+
+.about-block__intro--tight {
+  margin-bottom: 1.25rem;
+}
+
+.about-block__sub {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--premium-text, #0a0a0a);
+}
+
+/* Committee table */
+.about-roster {
+  border: 1px solid var(--premium-border, #e5e7eb);
+  background: var(--premium-bg-elevated, #fff);
+}
+
+.about-roster__scroll {
+  margin: 0;
+}
+
+.about-roster-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.about-roster-table thead th {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #0a1628;
+  border: none;
+}
+
+.about-roster-table thead th:first-child {
+  width: 3rem;
+  text-align: center;
+}
+
+.about-roster-table tbody td {
+  padding: 0.85rem 1rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--premium-border, #e5e7eb);
+  color: var(--premium-text, #1a1a1a);
+}
+
+.about-roster-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.about-roster-table tbody tr:nth-child(even) {
+  background: var(--premium-bg-subtle, #fafafa);
+}
+
+.about-roster-table__sr {
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--premium-accent, #0066cc);
+  width: 3rem;
+}
+
+.about-roster-table__strong {
+  font-weight: 600;
+}
+
+.about-roster-table__a {
+  color: var(--premium-accent, #0066cc);
+  text-decoration: none;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.about-roster-table__a:hover {
+  color: #c2410c;
+  text-decoration: underline;
+}
+
+.about-roster-table__dash {
+  color: #ccc;
+}
+
+/* Bank venues */
+.about-venues-skel {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
+.about-venues-skel__card {
+  min-height: 12rem;
+  border: 1px solid var(--premium-border, #e5e7eb);
+  background: var(--premium-bg-subtle, #f5f5f5);
+  animation: about-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes about-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+
+.about-fallback {
+  margin: 0;
+  padding: 1rem 0;
+  font-size: 0.9375rem;
+  color: var(--premium-text-muted, #525252);
+}
+
+.about-venues {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+
+.about-venue {
+  border: 1px solid var(--premium-border, #e5e7eb);
+  background: var(--premium-bg-elevated, #fff);
+}
+
+.about-venue__head {
+  padding: 1rem 1.15rem;
+  background: #0a1628;
+  color: #fff;
+}
+
+.about-venue__label {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 0.35rem;
+}
+
+.about-venue__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.about-venue__dl {
+  margin: 0;
+}
+
+.about-venue__pair {
+  display: grid;
+  grid-template-columns: minmax(0, 38%) 1fr;
+  gap: 0.5rem 1rem;
+  padding: 0.7rem 1.15rem;
+  border-bottom: 1px solid var(--premium-border, #e5e7eb);
+  align-items: baseline;
+}
+
+.about-venue__pair:last-child {
+  border-bottom: none;
+}
+
+.about-venue__dt {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--premium-text-muted, #737373);
+}
+
+.about-venue__dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--premium-text, #0a0a0a);
+  word-break: break-word;
+}
+
+.about-venue__a {
+  color: var(--premium-accent, #0066cc);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.about-venue__a:hover {
+  color: #c2410c;
+  text-decoration: underline;
+}
+
+/* Contact */
+.about-connect {
+  display: grid;
+  gap: 0;
+  max-width: 48rem;
+  border: 1px solid var(--premium-border, #e5e7eb);
+  background: var(--premium-bg-elevated, #fff);
+}
+
+@media (min-width: 640px) {
+  .about-connect {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.about-connect__item {
+  padding: 1.35rem 1.5rem;
+  border-bottom: 1px solid var(--premium-border, #e5e7eb);
+}
+
+@media (min-width: 640px) {
+  .about-connect__item:nth-child(odd) {
+    border-right: 1px solid var(--premium-border, #e5e7eb);
+  }
+}
+
+.about-connect__item--wide {
+  grid-column: 1 / -1;
+  border-right: none;
+}
+
+.about-connect__item:last-child {
+  border-bottom: none;
+}
+
+.about-connect__k {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--premium-text-muted, #737373);
+  margin-bottom: 0.35rem;
+}
+
+.about-connect__v {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--premium-text, #0a0a0a);
+}
+
+.about-connect__a {
+  color: var(--premium-accent, #0066cc);
+  text-decoration: none;
+}
+
+.about-connect__a:hover {
+  color: #c2410c;
+  text-decoration: underline;
+}
+
+.about-connect__addr {
+  margin: 0;
+  font-style: normal;
+}
+
+/* Dark theme */
+:host-context(html[data-theme='dark']) .about-masthead {
+  border-bottom-color: rgba(148, 163, 184, 0.2);
+}
+
+:host-context(html[data-theme='dark']) .about-panel,
+:host-context(html[data-theme='dark']) .about-roster,
+:host-context(html[data-theme='dark']) .about-venue,
+:host-context(html[data-theme='dark']) .about-connect {
+  border-color: rgba(148, 163, 184, 0.2);
+  background: var(--premium-bg-elevated, #1a222d);
+}
+
+:host-context(html[data-theme='dark']) .about-roster-table tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+:host-context(html[data-theme='dark']) .about-roster-table tbody td {
+  border-bottom-color: rgba(148, 163, 184, 0.12);
+  color: var(--premium-text, #e5e5e5);
+}
+
+:host-context(html[data-theme='dark']) .about-roster-table__dash {
+  color: rgba(148, 163, 184, 0.35);
+}
+
+:host-context(html[data-theme='dark']) .about-venues-skel__card {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(148, 163, 184, 0.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-venues-skel__card {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-venue__pair {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}

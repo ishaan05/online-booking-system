@@ -1,0 +1,138 @@
+<div class="oa-sign">
+  <div class="oa-sign__aurora" aria-hidden="true"></div>
+  <div class="oa-sign__grid" aria-hidden="true"></div>
+  <div class="oa-sign__orb" aria-hidden="true"></div>
+
+  <div class="oa-sign__panel">
+    <div class="oa-sign__toolbar">
+      <button
+        type="button"
+        class="oa-sign__theme"
+        appRipple
+        (click)="theme.toggle()"
+        [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'"
+        [attr.aria-pressed]="isDarkTheme"
+      >
+        <span class="oa-sign__theme-cube" [class.oa-sign__theme-cube--dark]="isDarkTheme">
+          <span class="oa-sign__theme-face">
+            <svg class="oa-sign__theme-graphic" viewBox="0 0 32 32" aria-hidden="true">
+              <defs>
+                <linearGradient id="oaLgSun" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#fef9c3" />
+                  <stop offset="40%" stop-color="#fbbf24" />
+                  <stop offset="100%" stop-color="#ea580c" />
+                </linearGradient>
+                <linearGradient id="oaLgRay" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fffbeb" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.5" />
+                </linearGradient>
+              </defs>
+              <g class="oa-sign__theme-sunrays" fill="url(#oaLgRay)">
+                <rect x="15" y="3" width="2" height="5" rx="1" />
+                <g transform="rotate(45 16 16)"><rect x="15" y="3" width="2" height="5" rx="1" /></g>
+                <g transform="rotate(90 16 16)"><rect x="15" y="3" width="2" height="5" rx="1" /></g>
+                <g transform="rotate(135 16 16)"><rect x="15" y="3" width="2" height="5" rx="1" /></g>
+              </g>
+              <circle cx="16" cy="16" r="6.25" fill="url(#oaLgSun)" />
+            </svg>
+          </span>
+          <span class="oa-sign__theme-face oa-sign__theme-face--moon">
+            <svg class="oa-sign__theme-graphic" viewBox="0 0 32 32" aria-hidden="true">
+              <defs>
+                <linearGradient id="oaLgMoon" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f1f5f9" />
+                  <stop offset="55%" stop-color="#a5b4fc" />
+                  <stop offset="100%" stop-color="#6366f1" />
+                </linearGradient>
+              </defs>
+              <circle cx="8.5" cy="9" r="0.9" fill="#c7d2fe" opacity="0.85" />
+              <circle cx="24" cy="11" r="0.55" fill="#e0e7ff" opacity="0.65" />
+              <circle cx="21" cy="22" r="0.45" fill="#a5b4fc" opacity="0.5" />
+              <mask id="oaLgMoonCut">
+                <rect width="32" height="32" fill="white" />
+                <circle cx="21.5" cy="14" r="6.2" fill="black" />
+              </mask>
+              <circle cx="14" cy="16" r="7.4" fill="url(#oaLgMoon)" mask="url(#oaLgMoonCut)" />
+            </svg>
+          </span>
+        </span>
+      </button>
+    </div>
+
+    <div
+      class="oa-sign__card"
+      appFadeInView
+      [appFadeInViewDelay]="40"
+      [class.lu-action--success]="actionSuccess"
+    >
+      <div *ngIf="submitting" class="lu-glass-block" aria-live="polite" aria-busy="true">
+        <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+      </div>
+      <div class="oa-sign__mark" aria-hidden="true">S</div>
+      <p class="oa-sign__kicker">Super Admin</p>
+      <h1 id="login-heading" class="oa-sign__title">Sign in to Admin Portal</h1>
+      <p class="oa-sign__lead">
+        Office credentials only. You will reach the Book Here Admin Portal after authentication.
+      </p>
+
+      <form (ngSubmit)="submit()" novalidate>
+        <div class="oa-sign__field">
+          <label class="oa-sign__label" for="login-username">Username</label>
+          <input
+            id="login-username"
+            name="username"
+            type="text"
+            class="oa-sign__input"
+            [(ngModel)]="username"
+            autocomplete="username"
+            [disabled]="submitting"
+          />
+        </div>
+        <div class="oa-sign__field">
+          <label class="oa-sign__label" for="login-password">Password</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            class="oa-sign__input"
+            [(ngModel)]="password"
+            autocomplete="current-password"
+            [disabled]="submitting"
+          />
+        </div>
+        <div class="oa-sign__actions">
+          <button
+            type="submit"
+            class="oa-sign__btn lu-action lu-btn-inline"
+            appRipple
+            [class.lu-action--loading]="submitting"
+            [class.lu-btn-inline--success]="actionSuccess"
+            [disabled]="submitting"
+            [attr.aria-busy]="submitting"
+          >
+            <span *ngIf="!submitting && !actionSuccess" class="lu-btn-inline__label">Enter Admin Portal</span>
+            <span *ngIf="submitting && !actionSuccess" class="oa-sign__btn__spinner" aria-hidden="true"></span>
+            <svg class="lu-btn-inline__check" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <p *ngIf="loginError" class="oa-sign__alert oa-sign__alert--error" role="alert">{{ loginError }}</p>
+
+      <label class="oa-sign__remember">
+        <input type="checkbox" name="remember" />
+        Trust this device
+      </label>
+
+      <div class="oa-sign__footer">
+        <a routerLink="/admin/forgot-password" class="oa-sign__link">Forgot password?</a>
+      </div>
+      <p class="oa-sign__note">
+        Run <strong>OnlineBookingSystem.Api</strong> (<code>localhost:5211</code>). <code>ng serve</code> proxies
+        <code>/api</code>.
+      </p>
+    </div>
+  </div>
+</div>

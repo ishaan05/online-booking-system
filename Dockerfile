@@ -1,10 +1,13 @@
+# Repository root must be the Docker build context (includes shared/ and backend/).
+# Example: docker build -f Dockerfile .
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY . .
 
-RUN dotnet restore online-booking-system/server/OnlineBookingSystem.Api/OnlineBookingSystem.Api.csproj
-RUN dotnet publish online-booking-system/server/OnlineBookingSystem.Api/OnlineBookingSystem.Api.csproj -c Release -o /app/publish --no-restore
+RUN dotnet restore backend/OnlineBookingSystem.Api/OnlineBookingSystem.Api.csproj
+RUN dotnet publish backend/OnlineBookingSystem.Api/OnlineBookingSystem.Api.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app

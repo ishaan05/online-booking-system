@@ -1,0 +1,361 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  color-scheme: light;
+  /* Public text + image ad marquees (shorter = faster scroll) */
+  --public-marquee-duration: 20s;
+  /* White-first shell (reference: modern SaaS / LlamaIndex-style) */
+  --premium-bg: #ffffff;
+  --premium-bg-subtle: #fafafa;
+  --premium-bg-elevated: #ffffff;
+  --premium-text: #0a0a0a;
+  --premium-text-muted: #525252;
+  /* Electric blue — professional, energetic, flat system */
+  --premium-accent: #0066cc;
+  --premium-accent-soft: rgba(0, 102, 204, 0.09);
+  --premium-accent-hover: #004a9e;
+  --premium-accent-glow: rgba(0, 102, 204, 0.28);
+  --premium-border: #e5e7eb;
+  /* Primary CTA: high-contrast black */
+  --premium-cta: #0a0a0a;
+  --premium-cta-hover: #262626;
+  /* Carousel band — solid, no gradient */
+  --premium-slider-band: #eef2f6;
+  /* Space below fixed full-width header (overridden on public shell) */
+  --app-header-offset: 4.35rem;
+  --premium-font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", sans-serif;
+  --premium-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --premium-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --premium-shadow-md: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --footer-bg: #fafafa;
+  --footer-text: #0a0a0a;
+  --footer-muted: #525252;
+  --footer-border: rgba(0, 0, 0, 0.08);
+  --footer-contact-line: rgba(29, 29, 31, 0.88);
+  --footer-contact-link: rgba(29, 29, 31, 0.9);
+  --footer-icon-muted: rgba(29, 29, 31, 0.55);
+  --footer-social-border: rgba(0, 0, 0, 0.12);
+  --footer-social-fg: rgba(29, 29, 31, 0.78);
+  --bd-summary-bg: #e8f1fa;
+  --bd-summary-fg: var(--premium-text, #0f172a);
+  --bd-readonly-bg: #f3f4f6;
+  --bd-readonly-fg: #374151;
+  --bd-hint-fg: #6b7280;
+  --ch-card-name-hover: #0a0a0a;
+  /* High-contrast CTAs (booking flow) — readable in light UI */
+  --bd-cta-bg: #0066cc;
+  --bd-cta-bg-hover: #004a9e;
+  --bd-cta-fg: #ffffff;
+  --bd-cta-border: rgba(255, 255, 255, 0.35);
+  /* Hero “Book hall” — high-contrast pill on dark photos + system dark mode */
+  --chd-book-bg: #ffffff;
+  --chd-book-fg: #0066cc;
+  --chd-book-border: rgba(0, 102, 204, 0.45);
+  --chd-book-bg-hover: #e8f1fa;
+  --chd-book-fg-hover: #004a9e;
+  --chd-book-ring: 0 0 0 2px rgba(255, 255, 255, 0.95), 0 4px 22px rgba(0, 0, 0, 0.55);
+  /* Header shell — toggled by html[data-theme]; avoids Angular encapsulation fighting dark styles */
+  --site-header-inner-bg: #ffffff;
+  --site-header-inner-border: rgba(0, 0, 0, 0.08);
+  --site-header-inner-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 10px 40px rgba(0, 0, 0, 0.06);
+  --site-header-scrolled-bar-bg: #ffffff;
+  --site-header-scrolled-bar-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  --site-header-scrolled-inner-bg: #ffffff;
+  --site-header-brand: #0a0a0a;
+  --site-header-link: #404040;
+  --site-header-link-hover-fg: #0a0a0a;
+  --site-header-link-hover-bg: rgba(0, 0, 0, 0.04);
+  --site-header-link-active-fg: #0a0a0a;
+  --site-header-link-active-bg: rgba(0, 0, 0, 0.05);
+  --site-header-link-underline: #0a0a0a;
+  --site-header-menu-line: #1d1d1f;
+  --site-header-menu-btn-hover: rgba(0, 0, 0, 0.05);
+  --site-header-login-fg: #ffffff;
+  --site-header-login-bg: var(--premium-cta, #0a0a0a);
+  --site-header-login-bg-hover: var(--premium-cta-hover, #262626);
+  --site-header-login-active-ring: rgba(255, 255, 255, 0.35);
+  --site-header-nav-open-border: transparent;
+  --site-header-inner-backdrop: none;
+}
+
+/* Dark theme: toggled from the navbar (stored in localStorage). Default is light. */
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --premium-bg: #0f1419;
+  --premium-bg-subtle: #151b24;
+  --premium-bg-elevated: #1a222d;
+  --premium-text: #f1f5f9;
+  --premium-text-muted: #94a3b8;
+  --premium-accent: #38bdf8;
+  --premium-accent-soft: rgba(56, 189, 248, 0.14);
+  --premium-accent-hover: #7dd3fc;
+  --premium-border: rgba(148, 163, 184, 0.22);
+  --premium-cta: #e2e8f0;
+  --premium-cta-hover: #f8fafc;
+  --premium-slider-band: #0f1419;
+  --footer-bg: #0c1016;
+  --footer-text: #e2e8f0;
+  --footer-muted: #94a3b8;
+  --footer-border: rgba(148, 163, 184, 0.12);
+  --footer-contact-line: rgba(248, 250, 252, 0.96);
+  --footer-contact-link: #ffffff;
+  --footer-icon-muted: rgba(226, 232, 240, 0.88);
+  --footer-social-border: rgba(148, 163, 184, 0.35);
+  --footer-social-fg: rgba(248, 250, 252, 0.95);
+  --bd-summary-bg: rgba(15, 23, 42, 0.85);
+  --bd-summary-fg: #f1f5f9;
+  --bd-readonly-bg: rgba(15, 23, 42, 0.72);
+  --bd-readonly-fg: #e2e8f0;
+  --bd-hint-fg: #94a3b8;
+  --ch-card-name-hover: #ffffff;
+  --bd-cta-bg: #0284c7;
+  --bd-cta-bg-hover: #0ea5e9;
+  --bd-cta-fg: #f8fafc;
+  --bd-cta-border: rgba(15, 23, 42, 0.35);
+  --chd-book-bg: #0ea5e9;
+  --chd-book-fg: #0f172a;
+  --chd-book-border: rgba(255, 255, 255, 0.55);
+  --chd-book-bg-hover: #38bdf8;
+  --chd-book-fg-hover: #0f172a;
+  --chd-book-ring: 0 0 0 2px rgba(15, 23, 42, 0.85), 0 4px 24px rgba(0, 0, 0, 0.65);
+  --premium-shadow-md: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --site-header-inner-bg: rgba(15, 23, 42, 0.97);
+  --site-header-inner-border: rgba(148, 163, 184, 0.2);
+  --site-header-inner-shadow: 0 1px 0 rgba(255, 255, 255, 0.05), 0 20px 50px rgba(0, 0, 0, 0.5);
+  --site-header-scrolled-bar-bg: rgba(15, 23, 42, 0.88);
+  --site-header-scrolled-bar-shadow: 0 1px 0 rgba(255, 255, 255, 0.07);
+  --site-header-scrolled-inner-bg: rgba(15, 23, 42, 0.98);
+  --site-header-brand: #f8fafc;
+  --site-header-link: #e2e8f0;
+  --site-header-link-hover-fg: #ffffff;
+  --site-header-link-hover-bg: rgba(255, 255, 255, 0.08);
+  --site-header-link-active-fg: #ffffff;
+  --site-header-link-active-bg: rgba(56, 189, 248, 0.12);
+  --site-header-link-underline: #38bdf8;
+  --site-header-menu-line: #f1f5f9;
+  --site-header-menu-btn-hover: rgba(255, 255, 255, 0.08);
+  --site-header-login-fg: #0f172a;
+  --site-header-login-bg: var(--premium-accent, #38bdf8);
+  --site-header-login-bg-hover: var(--premium-accent-hover, #7dd3fc);
+  --site-header-login-active-ring: rgba(15, 23, 42, 0.35);
+  --site-header-nav-open-border: rgba(148, 163, 184, 0.14);
+  --site-header-inner-backdrop: blur(18px);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/* Full-viewport provision route: no page-level scrollbar */
+html:has(.app-shell--provision),
+body:has(.app-shell--provision) {
+  overflow: hidden;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.premium-app {
+  margin: 0;
+  font-family: var(--premium-font);
+  font-size: 17px;
+  line-height: 1.47059;
+  letter-spacing: -0.022em;
+  color: var(--premium-text);
+  background-color: var(--premium-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body.premium-app.mat-typography {
+  font-family: var(--premium-font);
+}
+
+/* Scroll reveal: fade + slide-up; stagger via --fade-in-delay / --fade-in-slide on host */
+[appFadeInView] {
+  opacity: 0;
+  transform: translate3d(0, var(--fade-in-slide, 14px), 0);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--fade-in-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+[appFadeInView].fade-in-view--visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [appFadeInView] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
+
+.premium-app .offcanvas.offcanvas-end {
+  background-color: var(--premium-bg-elevated);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--premium-shadow-md);
+}
+
+.premium-app .offcanvas-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 1.25rem 1.5rem;
+}
+
+.premium-app .offcanvas-title {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--premium-text);
+  font-size: 1.125rem;
+}
+
+.premium-app .offcanvas-body .nav-link {
+  color: var(--premium-text-muted) !important;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.65rem 0 !important;
+  border-radius: 8px;
+  transition: color 0.25s var(--premium-ease), background 0.25s var(--premium-ease);
+}
+
+.premium-app .offcanvas-body .nav-link:hover,
+.premium-app .offcanvas-body .nav-link.active {
+  color: var(--premium-text) !important;
+  background: var(--premium-accent-soft);
+}
+
+html[data-theme='dark'] .premium-app .offcanvas.offcanvas-end {
+  border-left: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+html[data-theme='dark'] .premium-app .offcanvas-header {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+html[data-theme='dark'] body.premium-app {
+  background-image: none;
+}
+
+html[data-theme='dark'] .site-footer__to-top {
+  background: var(--premium-bg-elevated);
+  border-color: rgba(148, 163, 184, 0.28);
+  color: var(--premium-text);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+}
+
+/* Home feature cards — dark: elevated surface + accent rail (matches public booking shell) */
+html[data-theme='dark'] .feature-card--sky,
+html[data-theme='dark'] .feature-card--violet,
+html[data-theme='dark'] .feature-card--rose,
+html[data-theme='dark'] .feature-card--slate {
+  background: var(--premium-bg-elevated, rgba(22, 22, 34, 0.88));
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html[data-theme='dark'] .feature-card__label {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+html[data-theme='dark'] .feature-card__headline {
+  color: var(--premium-text);
+}
+
+html[data-theme='dark'] .feature-card__subtitle {
+  color: rgba(226, 232, 240, 0.88);
+}
+
+html[data-theme='dark'] .feature-card__capacity-label {
+  color: #94a3b8;
+}
+
+html[data-theme='dark'] .feature-card__hint {
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+html[data-theme='dark'] .feature-card__iframe {
+  background: rgba(15, 23, 42, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.15);
+}
+
+/* Community halls grid */
+html[data-theme='dark'] .ch-card {
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+html[data-theme='dark'] .ch-card__name {
+  color: var(--premium-text);
+}
+
+html[data-theme='dark'] .ch-card-link:hover .ch-card__name {
+  color: #ffffff;
+}
+
+html[data-theme='dark'] .ch-card__capacity-label {
+  color: #94a3b8;
+}
+
+html[data-theme='dark'] .booking-details-page__amount {
+  color: var(--premium-accent, #38bdf8);
+}
+
+html[data-theme='dark'] .booking-details-page__tax {
+  color: var(--premium-text);
+}
+
+/* Registration details */
+html[data-theme='dark'] .reg-page__inner {
+  background: var(--premium-bg-elevated);
+  border-color: rgba(148, 163, 184, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme='dark'] .reg-page__title,
+html[data-theme='dark'] .reg-page__subtitle,
+html[data-theme='dark'] .reg-disclaimer {
+  color: var(--premium-text);
+}
+
+html[data-theme='dark'] .reg-field__label,
+html[data-theme='dark'] .reg-inline__label {
+  color: #cbd5e1;
+}
+
+html[data-theme='dark'] .reg-inline__value {
+  background: rgba(15, 23, 42, 0.65);
+  color: var(--premium-text);
+}
+
+html[data-theme='dark'] .reg-input {
+  background: rgba(15, 23, 42, 0.45);
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+html[data-theme='dark'] .reg-input__control {
+  color: var(--premium-text);
+}
+
+html[data-theme='dark'] .reg-upload__box {
+  background: rgba(15, 23, 42, 0.4);
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+html[data-theme='dark'] .reg-btn--cancel {
+  background: rgba(51, 65, 85, 0.8);
+  color: #e2e8f0;
+}

@@ -1,0 +1,54 @@
+<div class="admin-page admin-page--wide cancel-booking">
+  <div class="admin-card admin-card--flush admin-card--fill">
+    <div class="admin-card__header admin-card__header--intro">
+      <h1 class="admin-card__header-heading">Cancel booking</h1>
+      <p class="admin-card__header-sub">Search by booking number, name, hall, or mobile. Super admin can cancel any status.</p>
+    </div>
+    <div class="cancel-booking__toolbar">
+      <input
+        type="search"
+        class="admin-form__input cancel-booking__search"
+        [(ngModel)]="query"
+        (ngModelChange)="applyFilter()"
+        placeholder="Booking number, name, hall…"
+        aria-label="Filter bookings"
+      />
+      <label class="cancel-booking__remarks-label">
+        <span>Optional remarks</span>
+        <input type="text" class="admin-form__input" [(ngModel)]="remarks" placeholder="Reason (stored in status log)" />
+      </label>
+    </div>
+    <div class="admin-table-wrap admin-table-wrap--in-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Booking no</th>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Hall</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of filtered">
+            <td>{{ r.bookingNo }}</td>
+            <td>{{ r.fullName }}</td>
+            <td>{{ r.mobile }}</td>
+            <td>{{ r.hall }}</td>
+            <td>{{ r.status }}</td>
+            <td>
+              <button type="button" class="admin-btn admin-btn--danger" [disabled]="cancellingId === r.id" (click)="cancel(r)">
+                <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636" />
+                </svg>
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="!filtered.length" class="admin-data-list__empty">No bookings match.</p>
+    </div>
+  </div>
+</div>

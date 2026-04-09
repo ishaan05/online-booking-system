@@ -1,0 +1,80 @@
+<section class="chd" [attr.aria-busy]="loading">
+  <div class="chd__inner container">
+    <button type="button" class="chd__back" (click)="backToList()">← All community halls</button>
+
+    <ng-container *luDeferredSkeleton="loading">
+      <div class="lu-morph-host" aria-busy="true">
+        <div class="lu-skel lu-skel-chd-hero lu-skel--gradient" aria-hidden="true"></div>
+        <div class="lu-skel-chd-panel" aria-hidden="true">
+          <div class="lu-skel lu-skel-line" style="width: 42%"></div>
+          <div class="lu-skel-chd-rows">
+            <div *ngFor="let _ of skelRows" class="lu-skel lu-skel-line"></div>
+          </div>
+        </div>
+        <p class="chd__status chd__micro">
+          <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="visually-hidden">Loading hall details</span>
+        </p>
+      </div>
+    </ng-container>
+
+    <div *ngIf="!loading && notFound" class="chd__empty" role="alert">
+      <p>This hall could not be found or is not available.</p>
+      <div class="chd__empty-actions">
+        <button
+          type="button"
+          class="chd__btn chd__btn--secondary lu-retry"
+          [class.lu-retry--pulse]="retryPulse"
+          (click)="retry()"
+        >
+          Try again
+        </button>
+        <button type="button" class="chd__btn chd__btn--secondary" (click)="backToList()">
+          Back to list
+        </button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!loading && hall && !notFound">
+      <header class="chd__hero lu-morph-content">
+        <div class="chd__hero-media">
+          <img luImgReveal [src]="heroUrl" [alt]="hall.venueName" width="1200" height="640" loading="eager" />
+        </div>
+        <div class="chd__hero-overlay">
+          <h1 class="chd__title">{{ hall.venueName }}</h1>
+          <a
+            class="chd__btn chd__btn--primary"
+            routerLink="/booking-policy"
+            [queryParams]="{ venueId: hall.venueID }"
+            >Book hall</a
+          >
+        </div>
+      </header>
+
+      <div class="chd__panel lu-morph-content">
+        <h2 class="chd__panel-title">Details for online booking</h2>
+        <ul class="chd__spec-list" role="list">
+          <li *ngFor="let row of specRows; let i = index" class="chd__spec-item">
+            <span class="chd__spec-index" aria-hidden="true">{{ i + 1 }}</span>
+            <div class="chd__spec-body">
+              <span class="chd__spec-label">{{ row.label }}</span>
+              <p class="chd__spec-value">{{ row.value }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chd__panel chd__map-panel lu-morph-content" *ngIf="mapUrl">
+        <h2 class="chd__map-title">Location</h2>
+        <div class="chd__map-frame">
+          <iframe
+            title="Hall location map"
+            [src]="mapUrl"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+.hall-form-card__body {
+  max-height: calc(100dvh - 8.5rem);
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  scrollbar-gutter: stable;
+}
+
+.hall-form-card .admin-form__textarea {
+  min-height: 4.75rem;
+  max-height: 9rem;
+}
+
+.hall-triple {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 1.35rem;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .hall-triple {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-cell-clip {
+  max-width: 12rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

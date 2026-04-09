@@ -1,0 +1,133 @@
+<div class="about" appFadeInView>
+  <div class="about__container container">
+    <header class="about-masthead">
+      <p class="about-masthead__eyebrow">South East Central Railway · Nagpur Division</p>
+      <h1 class="about-masthead__title">Community Hall Portal</h1>
+      <p class="about-masthead__lead">
+        An online platform to book and manage community halls and institutes across Nagpur, Nainpur,
+        Dongargarh and Gondia — transparent, efficient, and citizen-focused.
+      </p>
+    </header>
+
+    <div class="about-duo">
+      <section class="about-panel" aria-labelledby="about-obj">
+        <h2 id="about-obj" class="about-panel__heading">Objectives</h2>
+        <ol class="about-panel__list">
+          <li *ngFor="let item of objectives" class="about-panel__li">{{ item }}</li>
+        </ol>
+      </section>
+      <section class="about-panel" aria-labelledby="about-feat">
+        <h2 id="about-feat" class="about-panel__heading">Key features</h2>
+        <ol class="about-panel__list">
+          <li *ngFor="let item of keyFeatures" class="about-panel__li">{{ item }}</li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="about-block" aria-labelledby="about-team">
+      <h2 id="about-team" class="about-block__title">Our team</h2>
+      <p class="about-block__intro">
+        Managed by dedicated officials committed to high-quality service for citizens.
+      </p>
+      <h3 class="about-block__sub">Committee members</h3>
+
+      <div class="about-roster">
+        <div class="table-responsive about-roster__scroll">
+          <table class="about-roster-table">
+            <thead>
+              <tr>
+                <th scope="col">Sr.</th>
+                <th scope="col">Post</th>
+                <th scope="col">Name</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of committeeMembers">
+                <td class="about-roster-table__sr">{{ row.sr }}</td>
+                <td>{{ row.post }}</td>
+                <td class="about-roster-table__strong">{{ row.name }}</td>
+                <td>{{ row.designation }}</td>
+                <td>
+                  <a *ngIf="row.email" [href]="'mailto:' + row.email" class="about-roster-table__a">{{
+                    row.email
+                  }}</a>
+                  <span *ngIf="!row.email" class="about-roster-table__dash">—</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-block about-block--venues" aria-labelledby="about-bank">
+      <h2 id="about-bank" class="about-block__title">Bank details</h2>
+      <p class="about-block__intro about-block__intro--tight">
+        Use the account that matches the venue you book. Payments and refunds must reference the correct details.
+      </p>
+
+      <div *ngIf="bankLoading" class="about-venues-skel" aria-busy="true">
+        <div class="about-venues-skel__card" *ngFor="let _ of [1, 2, 3]"></div>
+      </div>
+
+      <p *ngIf="!bankLoading && bankError" class="about-fallback" role="status">
+        Bank details are temporarily unavailable. Please try again later or contact the office.
+      </p>
+
+      <p *ngIf="!bankLoading && !bankError && !bankCards.length" class="about-fallback" role="status">
+        No bank account records are published yet.
+      </p>
+
+      <div class="about-venues" *ngIf="!bankLoading && !bankError && bankCards.length">
+        <article *ngFor="let card of bankCards" class="about-venue">
+          <header class="about-venue__head">
+            <span class="about-venue__label">Venue</span>
+            <h3 class="about-venue__name">{{ card.hallName }}</h3>
+          </header>
+          <dl class="about-venue__dl">
+            <div *ngFor="let row of card.rows" class="about-venue__pair">
+              <dt class="about-venue__dt">{{ row.label }}</dt>
+              <dd class="about-venue__dd">
+                <ng-container *ngIf="row.label === 'Mobile No' && row.value; else plainBank">
+                  <a [href]="'tel:' + phoneHref(row.value)" class="about-venue__a">{{ row.value }}</a>
+                </ng-container>
+                <ng-template #plainBank>{{ row.value }}</ng-template>
+              </dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-block about-block--connect" aria-labelledby="about-contact">
+      <h2 id="about-contact" class="about-block__title">Contact</h2>
+      <p class="about-block__intro about-block__intro--tight">
+        Queries, suggestions, and feedback are welcome.
+      </p>
+
+      <div class="about-connect">
+        <div class="about-connect__item">
+          <span class="about-connect__k">Email</span>
+          <a href="mailto:admin@bookhere.app" class="about-connect__v about-connect__a"
+            >admin@bookhere.app</a
+          >
+        </div>
+        <div class="about-connect__item">
+          <span class="about-connect__k">Phone</span>
+          <a href="tel:+917122560428" class="about-connect__v about-connect__a">0712 2560428</a>
+        </div>
+        <div class="about-connect__item about-connect__item--wide">
+          <span class="about-connect__k">Address</span>
+          <address class="about-connect__v about-connect__addr">
+            Deptt. of Personnel,<br />
+            DRM office Complex,<br />
+            Nagpur Division,<br />
+            Kingsway Nagpur 440001
+          </address>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

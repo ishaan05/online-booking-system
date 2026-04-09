@@ -1,0 +1,141 @@
+.dashboard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 0%;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+  gap: 0.35rem;
+  /* Slightly tighter top/bottom so rail footer (Sign out) stays inside the viewport */
+  padding: 0.35rem 0.65rem 0.45rem 0.45rem;
+  box-sizing: border-box;
+}
+
+.dashboard__navbar {
+  flex-shrink: 0;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  z-index: 40;
+}
+
+.dashboard__body {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.65rem;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dashboard__toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: min(28rem, calc(100vw - 2rem));
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  font-family: var(--oa-font, inherit);
+  animation: toast-in 0.35s var(--oa-ease, ease);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.dashboard__toast-text {
+  flex: 1;
+}
+
+.dashboard__toast-close {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: var(--oa-radius-sm, 8px);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dashboard__main {
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: stretch;
+  height: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard__content {
+  flex: 1 1 0%;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0 clamp(0.15rem, 1vw, 0.35rem) 0.45rem 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
+@media (min-width: 960px) {
+  .dashboard__content {
+    padding: 0 clamp(0.2rem, 1vw, 0.35rem) 0.65rem 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .dashboard {
+    gap: 0.35rem;
+    padding: 0.3rem max(0.4rem, env(safe-area-inset-right, 0px)) 0.4rem max(0.35rem, env(safe-area-inset-left, 0px));
+  }
+
+  .dashboard__body {
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+  }
+
+  .dashboard__main {
+    flex: 1 1 0%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .dashboard__content {
+    flex: 1 1 0%;
+    min-height: 0;
+    padding-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,438 @@
+<section
+  class="pub-auth"
+  [class.pub-auth--register]="mode === 'register'"
+  aria-labelledby="pub-auth-heading"
+  (mousemove)="onAuthMouseMove($event)"
+  (mouseleave)="onAuthMouseLeave()"
+  [style.--pa-tx.px]="parallaxTx"
+  [style.--pa-ty.px]="parallaxTy"
+>
+  <div class="pub-auth__bg" aria-hidden="true"></div>
+  <div class="pub-auth__aurora" aria-hidden="true"></div>
+  <div class="pub-auth__mesh" aria-hidden="true"></div>
+
+  <div class="pub-auth__parallax" aria-hidden="true">
+    <div class="pub-auth__orb pub-auth__orb--1"></div>
+    <div class="pub-auth__orb pub-auth__orb--2"></div>
+    <div class="pub-auth__orb pub-auth__orb--3"></div>
+  </div>
+
+  <div class="pub-auth__shine" aria-hidden="true"></div>
+
+  <div class="pub-auth__particles" aria-hidden="true">
+    <span *ngFor="let i of particleSlots" class="pub-auth__particle" [attr.data-i]="i"></span>
+  </div>
+
+  <div class="pub-auth__stage">
+    <header class="pub-auth__intro">
+      <div class="pub-auth__brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8.5 5.5H5.5v3M15.5 5.5H18.5v3M18.5 18.5v-3h3M8.5 18.5H5.5v-3" />
+          <rect x="9.85" y="9.85" width="4.3" height="4.3" rx="1.05" fill="currentColor" stroke="none" />
+        </svg>
+      </div>
+      <p class="pub-auth__kicker">Book Here</p>
+      <h1 id="pub-auth-heading" class="pub-auth__title">
+        {{ mode === 'login' ? 'Welcome back' : 'Create your account' }}
+      </h1>
+      <p class="pub-auth__subtitle">
+        {{
+          mode === 'login'
+            ? 'Sign in to continue booking community halls.'
+            : 'A flagship entry — crafted to match the rest of your journey.'
+        }}
+      </p>
+    </header>
+
+    <div class="pub-auth__glass" [class.pub-auth__glass--shake]="glassShake">
+      <div class="pub-auth__glass-glow" aria-hidden="true"></div>
+
+      <div class="pub-auth__tabs" role="tablist" aria-label="Sign in or register">
+        <button
+          type="button"
+          role="tab"
+          class="pub-auth__tab"
+          [class.pub-auth__tab--active]="mode === 'login'"
+          [attr.aria-selected]="mode === 'login'"
+          (click)="goLogin()"
+        >
+          Sign in
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="pub-auth__tab"
+          [class.pub-auth__tab--active]="mode === 'register'"
+          [attr.aria-selected]="mode === 'register'"
+          (click)="goRegister()"
+        >
+          Create account
+        </button>
+        <span class="pub-auth__tab-pill" [class.pub-auth__tab-pill--right]="mode === 'register'"></span>
+      </div>
+
+      <div class="pub-auth__panels-outer">
+        <div class="pub-auth__panels-track" [class.pub-auth__panels-track--register]="mode === 'register'">
+          <div
+            class="pub-auth__panel"
+            [class.pub-auth__panel--inactive]="mode === 'register'"
+            role="tabpanel"
+            [attr.aria-hidden]="mode !== 'login'"
+            id="pub-auth-panel-login"
+          >
+            <div class="pub-auth__panel-inner pub-auth__panel-inner--login">
+              <div class="pub-auth__field" [class.pub-auth__field--filled]="!!email.trim()">
+                <div class="pub-auth__input-shell">
+                  <input
+                    id="pub-login-email"
+                    class="pub-auth__input"
+                    type="text"
+                    name="email"
+                    [(ngModel)]="email"
+                    (ngModelChange)="onEmailChanged()"
+                    autocomplete="username"
+                    inputmode="email"
+                    placeholder=" "
+                    (keydown.enter)="$event.preventDefault(); loginPw.focus()"
+                  />
+                  <label class="pub-auth__label" for="pub-login-email">Email or mobile</label>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+              </div>
+
+              <div class="pub-auth__field" [class.pub-auth__field--filled]="!!password.trim()">
+                <div class="pub-auth__input-shell">
+                  <input
+                    #loginPw
+                    id="pub-login-password"
+                    class="pub-auth__input pub-auth__input--has-toggle"
+                    [type]="loginPwReveal ? 'text' : 'password'"
+                    name="password"
+                    [(ngModel)]="password"
+                    autocomplete="current-password"
+                    maxlength="16"
+                    placeholder=" "
+                    (keydown.enter)="submitPassword()"
+                  />
+                  <label class="pub-auth__label" for="pub-login-password">Password</label>
+                  <button
+                    type="button"
+                    class="pub-auth__reveal"
+                    (click)="loginPwReveal = !loginPwReveal"
+                    [attr.aria-pressed]="loginPwReveal"
+                    [attr.aria-label]="loginPwReveal ? 'Hide password' : 'Show password'"
+                  >
+                    <span class="pub-auth__reveal-icons" aria-hidden="true">
+                      <svg
+                        class="pub-auth__reveal-svg"
+                        [class.pub-auth__reveal-svg--off]="loginPwReveal"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                      <svg
+                        class="pub-auth__reveal-svg pub-auth__reveal-svg--slash"
+                        [class.pub-auth__reveal-svg--off]="!loginPwReveal"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" stroke-linecap="round" stroke-linejoin="round" />
+                        <line x1="1" y1="1" x2="23" y2="23" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+              </div>
+
+              <button
+                type="button"
+                class="pub-auth__btn pub-auth__btn--primary lu-btn-inline"
+                appRipple
+                (click)="submitPassword()"
+                [class.lu-btn-inline--success]="signInSuccess"
+                [disabled]="!email.trim() || !password.trim() || signingIn"
+                [attr.aria-busy]="signingIn"
+              >
+                <span *ngIf="signingIn && !signInSuccess" class="lu-btn-inline__spin" aria-hidden="true"></span>
+                <span *ngIf="!signingIn && !signInSuccess" class="lu-btn-inline__label">Sign in</span>
+                <svg class="lu-btn-inline__check" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                  <path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                </svg>
+              </button>
+
+              <p *ngIf="loginError" class="pub-auth__alert pub-auth__alert--error" role="alert">{{ loginError }}</p>
+
+              <label class="pub-auth__remember">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="rememberMe"
+                  (ngModelChange)="onRememberChange()"
+                  name="remember"
+                />
+                <span class="pub-auth__check-ui" aria-hidden="true"></span>
+                <span>Remember me</span>
+              </label>
+
+              <p class="pub-auth__hint">{{ passwordHint }}</p>
+
+              <button type="button" class="pub-auth__text-btn" (click)="openForgot()">Forgot password?</button>
+            </div>
+          </div>
+
+          <div
+            class="pub-auth__panel"
+            [class.pub-auth__panel--inactive]="mode === 'login'"
+            role="tabpanel"
+            [attr.aria-hidden]="mode !== 'register'"
+            id="pub-auth-panel-register"
+          >
+            <form class="pub-auth__panel-inner pub-auth__form" (ngSubmit)="submitRegister()" novalidate>
+              <div class="pub-auth__field" [class.pub-auth__field--filled]="!!regFullName.trim()">
+                <div class="pub-auth__input-shell">
+                  <input
+                    id="pub-reg-name"
+                    class="pub-auth__input"
+                    type="text"
+                    name="regFullName"
+                    [(ngModel)]="regFullName"
+                    autocomplete="name"
+                    maxlength="50"
+                    placeholder=" "
+                    required
+                  />
+                  <label class="pub-auth__label" for="pub-reg-name">Full name</label>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+              </div>
+
+              <div
+                class="pub-auth__field"
+                [class.pub-auth__field--filled]="!!regMobile.trim()"
+                [class.pub-auth__field--valid]="regMobileOk()"
+              >
+                <div class="pub-auth__input-shell">
+                  <input
+                    id="pub-reg-mobile"
+                    class="pub-auth__input"
+                    type="tel"
+                    name="regMobile"
+                    [(ngModel)]="regMobile"
+                    autocomplete="tel"
+                    maxlength="15"
+                    placeholder=" "
+                    required
+                  />
+                  <label class="pub-auth__label" for="pub-reg-mobile">Mobile</label>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+                <span class="pub-auth__live-hint" *ngIf="regMobile.trim() && regMobileOk()" aria-live="polite">
+                  <span class="pub-auth__live-dot pub-auth__live-dot--ok"></span> 10-digit number ready
+                </span>
+              </div>
+
+              <div
+                class="pub-auth__field"
+                [class.pub-auth__field--filled]="!!regEmail.trim()"
+                [class.pub-auth__field--valid]="regEmailOk()"
+              >
+                <div class="pub-auth__input-shell">
+                  <input
+                    id="pub-reg-email"
+                    class="pub-auth__input"
+                    type="email"
+                    name="regEmail"
+                    [(ngModel)]="regEmail"
+                    autocomplete="email"
+                    maxlength="30"
+                    placeholder=" "
+                    required
+                  />
+                  <label class="pub-auth__label" for="pub-reg-email">Email</label>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+                <span class="pub-auth__live-hint" *ngIf="regEmail.trim() && regEmailOk()" aria-live="polite">
+                  <span class="pub-auth__live-dot pub-auth__live-dot--ok"></span> Email format OK
+                </span>
+              </div>
+
+              <div class="pub-auth__field" [class.pub-auth__field--filled]="!!regPassword.trim()">
+                <div class="pub-auth__input-shell">
+                  <input
+                    id="pub-reg-password"
+                    class="pub-auth__input pub-auth__input--has-toggle"
+                    [type]="regPwReveal ? 'text' : 'password'"
+                    name="regPassword"
+                    [(ngModel)]="regPassword"
+                    autocomplete="new-password"
+                    maxlength="16"
+                    placeholder=" "
+                    required
+                  />
+                  <label class="pub-auth__label" for="pub-reg-password">Password</label>
+                  <button
+                    type="button"
+                    class="pub-auth__reveal"
+                    (click)="regPwReveal = !regPwReveal"
+                    [attr.aria-pressed]="regPwReveal"
+                    [attr.aria-label]="regPwReveal ? 'Hide password' : 'Show password'"
+                  >
+                    <span class="pub-auth__reveal-icons" aria-hidden="true">
+                      <svg
+                        class="pub-auth__reveal-svg"
+                        [class.pub-auth__reveal-svg--off]="regPwReveal"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                      <svg
+                        class="pub-auth__reveal-svg pub-auth__reveal-svg--slash"
+                        [class.pub-auth__reveal-svg--off]="!regPwReveal"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" stroke-linecap="round" stroke-linejoin="round" />
+                        <line x1="1" y1="1" x2="23" y2="23" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+              </div>
+
+              <div class="pub-auth__strength" *ngIf="regPassword.length" aria-live="polite">
+                <div class="pub-auth__strength-track">
+                  <div
+                    class="pub-auth__strength-fill"
+                    [class.pub-auth__strength-fill--start]="regPasswordStrength.level === 'start'"
+                    [class.pub-auth__strength-fill--fair]="regPasswordStrength.level === 'fair'"
+                    [class.pub-auth__strength-fill--good]="regPasswordStrength.level === 'good'"
+                    [class.pub-auth__strength-fill--strong]="regPasswordStrength.level === 'strong'"
+                    [style.width.%]="regPasswordStrength.pct"
+                  ></div>
+                </div>
+                <span class="pub-auth__strength-label">{{ regPasswordStrength.label }}</span>
+              </div>
+
+              <p class="pub-auth__hint pub-auth__hint--tight">{{ passwordHint }}</p>
+
+              <div
+                class="pub-auth__field"
+                [class.pub-auth__field--filled]="!!regConfirm.trim()"
+                [class.pub-auth__field--valid]="regConfirm.length > 0 && regConfirmOk()"
+                [class.pub-auth__field--warn]="regConfirm.length > 0 && !regConfirmOk()"
+              >
+                <div class="pub-auth__input-shell">
+                  <input
+                    id="pub-reg-confirm"
+                    class="pub-auth__input pub-auth__input--has-toggle"
+                    [type]="regConfirmReveal ? 'text' : 'password'"
+                    name="regConfirm"
+                    [(ngModel)]="regConfirm"
+                    autocomplete="new-password"
+                    maxlength="16"
+                    placeholder=" "
+                    required
+                  />
+                  <label class="pub-auth__label" for="pub-reg-confirm">Confirm password</label>
+                  <button
+                    type="button"
+                    class="pub-auth__reveal"
+                    (click)="regConfirmReveal = !regConfirmReveal"
+                    [attr.aria-pressed]="regConfirmReveal"
+                    [attr.aria-label]="regConfirmReveal ? 'Hide confirm password' : 'Show confirm password'"
+                  >
+                    <span class="pub-auth__reveal-icons" aria-hidden="true">
+                      <svg
+                        class="pub-auth__reveal-svg"
+                        [class.pub-auth__reveal-svg--off]="regConfirmReveal"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                      <svg
+                        class="pub-auth__reveal-svg pub-auth__reveal-svg--slash"
+                        [class.pub-auth__reveal-svg--off]="!regConfirmReveal"
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" stroke-linecap="round" stroke-linejoin="round" />
+                        <line x1="1" y1="1" x2="23" y2="23" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  <span class="pub-auth__focus-ring" aria-hidden="true"></span>
+                </div>
+                <div class="pub-auth__underline" aria-hidden="true"></div>
+                <span class="pub-auth__live-hint" *ngIf="regConfirm.length && regConfirmOk()" aria-live="polite">
+                  <span class="pub-auth__live-dot pub-auth__live-dot--ok"></span> Matches password
+                </span>
+              </div>
+
+              <p *ngIf="errorMessage" class="pub-auth__alert pub-auth__alert--error" role="alert">{{ errorMessage }}</p>
+              <p *ngIf="successMessage" class="pub-auth__alert pub-auth__alert--success" role="status">
+                {{ successMessage }}
+              </p>
+
+              <button
+                type="submit"
+                class="pub-auth__btn pub-auth__btn--primary lu-btn-inline"
+                appRipple
+                [class.lu-btn-inline--success]="registerSuccess"
+                [disabled]="submitting || registerSuccess"
+                [attr.aria-busy]="submitting"
+              >
+                <span *ngIf="submitting && !registerSuccess" class="lu-btn-inline__spin" aria-hidden="true"></span>
+                <span class="lu-btn-inline__label" *ngIf="!registerSuccess">Create account</span>
+                <svg class="lu-btn-inline__check" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                  <path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="pub-auth__foot-note">
+      Secure access ·
+      <a routerLink="/" class="pub-auth__inline-link">Book Here</a>
+    </p>
+  </div>
+</section>

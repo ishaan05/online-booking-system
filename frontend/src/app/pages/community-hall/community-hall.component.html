@@ -1,0 +1,79 @@
+<section class="community-hall" appFadeInView aria-labelledby="community-hall-heading">
+  <div class="community-hall__inner container">
+    <header class="community-hall__header">
+      <h1 id="community-hall-heading" class="community-hall__title">Community halls</h1>
+      <p class="community-hall__lede">
+        Select a hall to see full details and book. Capacity is shown from the community hall directory.
+      </p>
+    </header>
+
+    <ng-container *luDeferredSkeleton="loading">
+      <div class="lu-morph-host" aria-busy="true">
+        <div class="lu-skel-ch-grid community-hall__grid" aria-hidden="true">
+          <div *ngFor="let _ of skelSlots" class="lu-skel-ch-card">
+            <div class="lu-skel lu-skel-ch-card__media lu-skel--gradient"></div>
+            <div class="lu-skel-ch-card__body">
+              <div class="lu-skel lu-skel-line" style="width: 72%"></div>
+              <div class="lu-skel lu-skel-line lu-skel-line--tiny"></div>
+            </div>
+          </div>
+        </div>
+        <p class="community-hall__status community-hall__micro">
+          <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="visually-hidden">Loading halls</span>
+        </p>
+      </div>
+    </ng-container>
+
+    <div *ngIf="loadError" class="community-hall__error-block" role="alert">
+      <p class="community-hall__status community-hall__status--error">
+        Could not load halls. Ensure the API is running.
+      </p>
+      <button
+        type="button"
+        class="community-hall__retry lu-retry"
+        [class.lu-retry--pulse]="retryPulse"
+        (click)="retry()"
+      >
+        Try again
+      </button>
+    </div>
+
+    <p *ngIf="!loading && !loadError && !halls.length" class="community-hall__status">No halls published.</p>
+
+    <div *ngIf="!loading && halls.length" class="community-hall__grid lu-morph-content" role="list">
+      <a
+        *ngFor="let hall of halls; let hi = index"
+        class="ch-card-link"
+        appFadeInView
+        [appFadeInViewDelay]="50 * hi"
+        [appFadeInViewSlide]="12"
+        [routerLink]="['/community-halls', hall.venueId]"
+        [luPrefetchVenue]="hall.venueId"
+        role="listitem"
+      >
+        <article class="ch-card">
+          <div class="ch-card__media">
+            <img
+              class="ch-card__img"
+              luImgReveal
+              [src]="hall.imageUrl"
+              [alt]="hall.imageAlt"
+              width="800"
+              height="500"
+              loading="lazy"
+              (error)="onHallImageError(hall, $event)"
+            />
+          </div>
+          <div class="ch-card__body">
+            <h3 class="ch-card__name">{{ hall.name }}</h3>
+            <p class="ch-card__capacity">
+              <span class="ch-card__capacity-label">Capacity:</span>
+              <span class="ch-card__capacity-value">{{ hall.capacity > 0 ? hall.capacity : '—' }}</span>
+            </p>
+          </div>
+        </article>
+      </a>
+    </div>
+  </div>
+</section>

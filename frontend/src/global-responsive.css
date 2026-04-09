@@ -1,0 +1,21 @@
+/* Baseline responsive behavior for public + admin shells */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Avoid rare horizontal page bleed on the public site (admin tables keep overflow-x: auto where needed) */
+body.premium-app .app-shell:not(.app-shell--office) {
+  overflow-x: clip;
+}
+
+/* Respect notched devices without shifting fixed header chrome (padding on scrollable main) */
+body.premium-app .app-shell:not(.app-shell--office) .app-main {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+body.premium-app .app-shell--office .dashboard__content {
+  padding-left: max(0.15rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.15rem, env(safe-area-inset-right, 0px));
+}

@@ -1,0 +1,16 @@
+<section class="flip-counter-card" aria-labelledby="flip-counter-title">
+  <div class="flip-counter-card__inner">
+    <h2 id="flip-counter-title" class="flip-counter-card__title">Total Visitors</h2>
+    <div class="flip-counter-card__row" *ngIf="!loadError; else errBlock">
+      <div class="flip-counter-card__digits" role="img" [attr.aria-label]="'Visitor count ' + digitChars.join('')">
+        <app-flip-digit
+          *ngFor="let c of digitChars; let i = index; trackBy: trackByIndex"
+          [digit]="c"
+        ></app-flip-digit>
+      </div>
+    </div>
+    <ng-template #errBlock>
+      <p class="flip-counter-card__err">Visitor count unavailable.</p>
+    </ng-template>
+  </div>
+</section>

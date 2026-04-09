@@ -1,0 +1,15 @@
+<div class="flip-digit" role="presentation">
+  <div
+    class="flip-digit__cube"
+    [class.flip-digit__cube--flipped]="isFlipped"
+    [class.flip-digit__cube--notrans]="noTransition"
+    (transitionend)="onTransitionEnd($event)"
+  >
+    <div class="flip-digit__face flip-digit__face--front">
+      <span>{{ from }}</span>
+    </div>
+    <div class="flip-digit__face flip-digit__face--back">
+      <span>{{ to }}</span>
+    </div>
+  </div>
+</div>

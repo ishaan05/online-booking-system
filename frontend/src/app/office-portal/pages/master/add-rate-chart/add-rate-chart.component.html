@@ -1,0 +1,124 @@
+<div class="admin-page admin-page--wide admin-page--premium-form">
+  <div *ngIf="!listMode" class="admin-card admin-form-page-card">
+    <div class="admin-card__header admin-form-page-card__head">
+      <div class="admin-form-page-card__head-inner">
+        <h1 class="admin-form-page-card__title">Add/Modify Rates &amp; Capacity</h1>
+        <p class="admin-form-page-card__subtitle">Set capacity bands, rates, and effective dates per hall.</p>
+      </div>
+    </div>
+    <div class="admin-card__body admin-form-page-card__body">
+      <section class="admin-form-page-panel admin-form-page-panel--wide">
+        <div class="admin-form-page-panel__stack">
+          <div class="admin-form__grid">
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="rc-hall">Name of community hall</label>
+              <select id="rc-hall" class="admin-form__select admin-form-page__control" [(ngModel)]="hallName">
+                <option value="">Select community hall…</option>
+                <option *ngFor="let h of hallOptions" [value]="h">{{ h }}</option>
+              </select>
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="rc-cat">Booking category</label>
+              <input
+                id="rc-cat"
+                class="admin-form__input admin-form-page__control"
+                [(ngModel)]="bookingCategory"
+                placeholder="Enter booking category"
+              />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="rc-from">Capacity from</label>
+              <input
+                id="rc-from"
+                class="admin-form__input admin-form-page__control"
+                [(ngModel)]="capacityFrom"
+                placeholder="From"
+              />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="rc-to">Capacity to</label>
+              <input id="rc-to" class="admin-form__input admin-form-page__control" [(ngModel)]="capacityTo" placeholder="To" />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="rc-rate">Rate (₹)</label>
+              <input id="rc-rate" class="admin-form__input admin-form-page__control" [(ngModel)]="rate" placeholder="Enter rate" />
+            </div>
+            <div class="admin-form__date-pair">
+              <div class="admin-form__row">
+                <app-admin-date-field
+                  class="admin-form__date-field-host"
+                  inputId="rc-ef"
+                  name="rcEf"
+                  label="Effective from"
+                  placeholder="Select date"
+                  [(ngModel)]="effectiveFrom"
+                />
+              </div>
+              <div class="admin-form__row">
+                <app-admin-date-field
+                  class="admin-form__date-field-host"
+                  inputId="rc-et"
+                  name="rcEt"
+                  label="Effective to"
+                  placeholder="Select date"
+                  [(ngModel)]="effectiveTo"
+                  [minDate]="effectiveFrom || undefined"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="admin-form__actions admin-form-page-card__actions">
+        <button type="button" class="admin-btn admin-btn--primary" (click)="submit()">
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ editingId ? 'Update' : 'Add' }}
+        </button>
+        <button type="button" class="admin-btn admin-btn--secondary" (click)="showView()">
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="listMode" class="admin-card admin-card--flush admin-card--fill">
+    <header class="admin-card__header admin-card__header--split">
+      <h1 class="admin-card__header-title">Rate chart</h1>
+      <button type="button" class="admin-page__back" (click)="backToForm()">&lt; Back</button>
+    </header>
+    <div class="admin-data-list-scroll">
+      <article *ngFor="let r of rows; let i = index" class="admin-data-card">
+        <div class="admin-data-card__head">
+          <div>
+            <p class="admin-data-card__kicker">#{{ i + 1 }} · Rate rule</p>
+            <h2 class="admin-data-card__title">{{ r.hallName }} · {{ r.bookingCategory }}</h2>
+          </div>
+          <div class="admin-data-card__actions">
+            <button type="button" class="admin-icon-btn admin-icon-btn--edit" (click)="editRow(r)" aria-label="Edit row">✎</button>
+            <button type="button" class="admin-icon-btn admin-icon-btn--delete" (click)="deleteRow(r)" aria-label="Delete row">🗑</button>
+          </div>
+        </div>
+        <dl class="admin-data-card__grid admin-data-card__grid--3">
+          <div class="admin-data-card__field">
+            <dt>Capacity</dt>
+            <dd>{{ r.capacityFrom }} – {{ r.capacityTo }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Rate</dt>
+            <dd>{{ r.rate }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Effective</dt>
+            <dd>{{ r.effectiveFrom }} → {{ r.effectiveTo }}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</div>

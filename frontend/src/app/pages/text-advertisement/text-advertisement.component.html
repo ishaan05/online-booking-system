@@ -1,0 +1,33 @@
+<section class="text-ad-wrap" aria-label="Text advertisements">
+  <ng-container *luDeferredSkeleton="loading">
+    <div class="lu-morph-host text-ad-skel" aria-busy="true">
+      <div class="lu-skel lu-skel-marquee lu-skel--gradient" aria-hidden="true"></div>
+      <p class="text-ad-micro">
+        <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="visually-hidden">Loading announcements</span>
+      </p>
+    </div>
+  </ng-container>
+
+  <section *ngIf="!loading" class="text-ad lu-morph-content" aria-label="Text advertisements">
+    <div *ngIf="texts.length" class="text-ad__inner">
+      <span class="text-ad__kicker">Notice</span>
+      <div class="text-ad__viewport">
+        <div class="text-ad__track">
+          <span class="text-ad__spacer" aria-hidden="true"></span>
+          <ng-container *ngFor="let t of texts">
+            <span class="text-ad__snippet">{{ t }}</span>
+          </ng-container>
+          <span class="text-ad__spacer" aria-hidden="true"></span>
+          <ng-container *ngFor="let t of texts">
+            <span class="text-ad__snippet">{{ t }}</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="!texts.length" class="text-ad__empty">
+      No announcements for <strong>today</strong>. Admins can add copy under
+      <strong>Master → Add text advertise</strong> with dates that include today.
+    </p>
+  </section>
+</section>

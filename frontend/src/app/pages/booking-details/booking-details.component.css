@@ -1,0 +1,458 @@
+.booking-details-page {
+  font-family: var(--premium-font, "Inter", system-ui, sans-serif);
+  background: var(--premium-bg-subtle, #fafafa);
+  padding: calc(var(--app-header-offset, 4.35rem) + 1.5rem) clamp(0.75rem, 4vw, 1.25rem) 3rem;
+  color: var(--premium-text, #0a0a0a);
+}
+
+.booking-details-page__card {
+  max-width: 56rem;
+  margin: 0 auto;
+  background: var(--premium-bg-elevated, #ffffff);
+  border-radius: 16px;
+  border: 1px solid var(--footer-border, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.booking-details-page__venue {
+  margin: 0;
+  padding: 1rem 1.5rem 0;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--premium-accent, #0066cc);
+  letter-spacing: -0.02em;
+}
+
+.booking-details-page__title {
+  margin: 0;
+  padding: 0.5rem 1.5rem 1rem;
+  text-align: center;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--premium-text, #0a0a0a);
+  border-bottom: 1px solid var(--footer-border, #eef0f4);
+}
+
+.booking-details-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .booking-details-page__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bd-cal {
+  border: 1px solid var(--footer-border, #e8e8ed);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: var(--premium-bg-subtle, #fafafa);
+}
+
+.bd-cal--syncing {
+  transition: opacity 0.38s ease, filter 0.38s ease;
+  opacity: 0.9;
+  filter: saturate(0.9) blur(0.5px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bd-cal--syncing {
+    transition: none;
+    filter: none;
+  }
+}
+
+.bd-cal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.bd-cal__nav {
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid var(--premium-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--premium-bg-elevated, #fff);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--premium-text, #111827);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.bd-cal__nav:hover {
+  background: var(--premium-bg-subtle, #f3f4f6);
+  border-color: #d1d5db;
+}
+
+.bd-cal__label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--premium-text, #1d1d1f);
+}
+
+.bd-cal__dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--premium-text-muted, #6e6e73);
+  text-align: center;
+}
+
+.bd-cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.bd-cal__placeholder {
+  aspect-ratio: 1;
+  max-height: 2.5rem;
+}
+
+.bd-cal__cell {
+  aspect-ratio: 1;
+  max-height: 2.5rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--premium-bg-elevated, #ffffff);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--premium-text, #1d1d1f);
+}
+
+.bd-cal__cell:hover:not(:disabled) {
+  background: var(--premium-accent-soft, rgba(0, 102, 204, 0.15));
+}
+
+.bd-cal__cell:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.bd-cal__cell--empty {
+  background: transparent;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.bd-cal__cell--muted:not(:disabled) {
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+
+/* VenueBlockedDate — grey */
+.bd-cal__cell--blocked,
+.bd-cal__cell--blocked.bd-cal__cell--range-start,
+.bd-cal__cell--blocked.bd-cal__cell--range-end,
+.bd-cal__cell--blocked.bd-cal__cell--in-range,
+.bd-cal__cell--blocked.bd-cal__cell--range-single {
+  background: #6b7280 !important;
+  color: #f9fafb !important;
+  opacity: 1 !important;
+  text-decoration: none !important;
+}
+
+.bd-cal__cell--blocked:disabled {
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+/* Admin-blocked dates — grey */
+.bd-cal__cell--blocked,
+.bd-cal__cell--blocked.bd-cal__cell--range-start,
+.bd-cal__cell--blocked.bd-cal__cell--range-end,
+.bd-cal__cell--blocked.bd-cal__cell--in-range,
+.bd-cal__cell--blocked.bd-cal__cell--range-single {
+  background: #6b7280 !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  text-decoration: none !important;
+}
+
+/* Existing bookings — red; wins over range styling */
+.bd-cal__cell--booked,
+.bd-cal__cell--booked.bd-cal__cell--range-start,
+.bd-cal__cell--booked.bd-cal__cell--range-end,
+.bd-cal__cell--booked.bd-cal__cell--in-range,
+.bd-cal__cell--booked.bd-cal__cell--range-single {
+  background: #b91c1c !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  text-decoration: none !important;
+}
+
+.bd-cal__cell--booked:disabled {
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.bd-cal__cell--in-range:not(.bd-cal__cell--booked):not(.bd-cal__cell--blocked) {
+  background: rgba(22, 163, 74, 0.14);
+}
+
+.bd-cal__cell--in-range.bd-cal__cell--blocked,
+.bd-cal__cell--range-start.bd-cal__cell--blocked,
+.bd-cal__cell--range-end.bd-cal__cell--blocked {
+  background: #6b7280 !important;
+}
+
+/* User’s selection: start = green, end = yellow */
+.bd-cal__cell--range-start:not(:disabled) {
+  background: #15803d;
+  color: #fff;
+}
+
+.bd-cal__cell--range-end:not(:disabled) {
+  background: #eab308;
+  color: #1c1917;
+}
+
+.bd-cal__cell--range-single:not(:disabled) {
+  background: #15803d;
+  color: #fff;
+  opacity: 1 !important;
+}
+
+.bd-cal__cell--range-start:not(:disabled):hover,
+.bd-cal__cell--range-end:not(:disabled):hover,
+.bd-cal__cell--range-single:not(:disabled):hover {
+  filter: brightness(1.06);
+}
+
+.bd-cal__hint {
+  margin: 0.65rem 0 0;
+  font-size: 0.75rem;
+  color: var(--premium-text-muted, #6e6e73);
+  line-height: 1.4;
+}
+
+.bd-cal__calendar-error {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: #b91c1c;
+  line-height: 1.45;
+}
+
+.bd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.bd-field__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--premium-text-muted, #6e6e73);
+}
+
+.bd-field__control {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--footer-border, #d2d2d7);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: var(--premium-bg-elevated, #fff);
+  color: var(--premium-text, #1d1d1f);
+}
+
+.bd-field__control:focus {
+  outline: none;
+  border-color: var(--premium-accent, #0066cc);
+  box-shadow: 0 0 0 3px var(--premium-accent-soft, rgba(0, 102, 204, 0.18));
+}
+
+.bd-field__control--ddmm {
+  background: var(--bd-readonly-bg, #f3f4f6);
+  color: var(--bd-readonly-fg, #374151);
+}
+
+.bd-field__hint {
+  margin: -0.35rem 0 0.5rem;
+  font-size: 0.75rem;
+  color: var(--bd-hint-fg, #6b7280);
+}
+
+.bd-field__error {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: #b91c1c;
+}
+
+.bd-field__success {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: #15803d;
+}
+
+.booking-details-page__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.bd-btn {
+  flex: 1;
+  padding: 0.55rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.bd-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.bd-btn--clear {
+  background-color: var(--premium-bg-elevated, #fff);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.bd-btn--clear:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.bd-btn--book {
+  background-color: var(--bd-cta-bg, #0066cc);
+  border-color: var(--bd-cta-border, transparent);
+  color: var(--bd-cta-fg, #fff);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.bd-btn--book:hover:not(:disabled) {
+  background-color: var(--bd-cta-bg-hover, #004a9e);
+  border-color: var(--bd-cta-border, transparent);
+  filter: brightness(1.03);
+}
+
+.booking-details-page__summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0.85rem 1.5rem;
+  background: var(
+    --bd-summary-bg,
+    linear-gradient(180deg, var(--premium-accent-soft, #eef2ff) 0%, rgba(234, 88, 12, 0.06) 100%)
+  );
+  border-top: 1px solid var(--footer-border, #bae6fd);
+  font-size: 0.8125rem;
+  color: var(--bd-summary-fg, var(--premium-text, #0f172a));
+}
+
+.booking-details-page__amount {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.booking-details-page__summary-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.booking-details-page__quote-dots {
+  color: var(--premium-accent, #0066cc);
+}
+
+.booking-details-page__tax {
+  font-weight: 700;
+  margin-left: auto;
+  color: var(--bd-summary-fg, var(--premium-text, #0f172a));
+}
+
+@media (max-width: 600px) {
+  .booking-details-page__summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .booking-details-page__tax {
+    margin-left: 0;
+  }
+}
+
+/* Purpose max-days warning (calendar / purpose change) */
+.bd-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.45);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.bd-modal {
+  width: 100%;
+  max-width: 22rem;
+  padding: 1.35rem 1.5rem 1.25rem;
+  border-radius: 14px;
+  background: var(--premium-bg-elevated, #fff);
+  border: 1px solid var(--footer-border, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+}
+
+.bd-modal__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--premium-text, #0f172a);
+}
+
+.bd-modal__body {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--premium-text-muted, #334155);
+}
+
+.bd-modal__ok {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--bd-cta-bg, #0066cc);
+  color: var(--bd-cta-fg, #fff);
+}
+
+.bd-modal__ok:hover {
+  background: var(--bd-cta-bg-hover, #004a9e);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bd-modal-backdrop {
+    backdrop-filter: none;
+  }
+}

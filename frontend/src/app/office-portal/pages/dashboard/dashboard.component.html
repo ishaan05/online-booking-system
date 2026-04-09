@@ -1,0 +1,22 @@
+<div class="dashboard oa-workspace">
+  <div
+    *ngIf="toast"
+    class="dashboard__toast"
+    [class.dashboard__toast--success]="toast.kind === 'success'"
+    [class.dashboard__toast--error]="toast.kind === 'error'"
+    [class.dashboard__toast--info]="toast.kind === 'info'"
+    role="alert"
+  >
+    <span class="dashboard__toast-text">{{ toast.message }}</span>
+    <button type="button" class="dashboard__toast-close" (click)="dismissToast()" aria-label="Dismiss">×</button>
+  </div>
+  <app-office-navbar class="dashboard__navbar"></app-office-navbar>
+  <div class="dashboard__body">
+    <app-office-sidenav class="dashboard__sidenav"></app-office-sidenav>
+    <div class="dashboard__main">
+      <div class="dashboard__content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

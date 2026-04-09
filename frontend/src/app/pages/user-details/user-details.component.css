@@ -1,0 +1,260 @@
+.user-details-page {
+  font-family: var(--premium-font, "Inter", system-ui, sans-serif);
+  background: var(--premium-bg-subtle, #fafafa);
+  padding: calc(var(--app-header-offset, 4.35rem) + 1.5rem) clamp(0.75rem, 4vw, 1.25rem) 3rem;
+  position: relative;
+}
+
+.user-details-page__inner {
+  max-width: 26rem;
+  margin: 0 auto;
+}
+
+.user-details-page__title {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #1d1d1f;
+}
+
+.user-details-page__card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 1.35rem 1.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+.user-details-page__avatar-block {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.user-details-page__avatar-wrap {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+}
+
+.user-details-page__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--premium-accent, #0066cc);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
+}
+
+.user-details-page__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-details-page__cam {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #1d1d1f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-details-page__cam:hover {
+  background: #000;
+}
+
+.user-details-page__photo-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 12rem;
+  padding: 0.35rem 0;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  z-index: 5;
+}
+
+.user-details-page__photo-item {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1d1d1f;
+  cursor: pointer;
+}
+
+.user-details-page__photo-item:hover {
+  background: rgba(13, 148, 136, 0.08);
+}
+
+.user-details-page__file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.user-details-page__msg {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.user-details-page__msg--error {
+  color: #b91c1c;
+}
+
+.ud-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.ud-field__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6e6e73;
+}
+
+.ud-field__control {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+}
+
+.ud-field__control:focus {
+  outline: none;
+  border-color: var(--premium-accent, #0066cc);
+  box-shadow: 0 0 0 3px var(--premium-accent-soft, rgba(0, 102, 204, 0.18));
+}
+
+.user-details-page__save {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #fff;
+  background: #111827;
+  cursor: pointer;
+}
+
+.user-details-page__save:hover {
+  background: #030712;
+}
+
+.user-details-page__cam-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.user-details-page__cam-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.user-details-page__cam-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+}
+
+.user-details-page__cam-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: #0f172a;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.user-details-page__cam-x {
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.user-details-page__cam-body {
+  padding: 0.75rem;
+  background: #000;
+}
+
+.user-details-page__video {
+  display: block;
+  width: 100%;
+  max-height: 50vh;
+  border-radius: 8px;
+  background: #111;
+}
+
+.user-details-page__canvas {
+  display: none;
+}
+
+.user-details-page__cam-actions {
+  padding: 0.75rem 1rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.user-details-page__cam-capture {
+  padding: 0.55rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #fff;
+  background: var(--bd-cta-bg, #0066cc);
+  cursor: pointer;
+}
+
+.user-details-page__cam-capture:hover {
+  background: var(--bd-cta-bg-hover, #1d4ed8);
+}

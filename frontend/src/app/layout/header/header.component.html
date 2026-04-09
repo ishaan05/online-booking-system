@@ -1,0 +1,349 @@
+<header class="site-header site-header--portal site-header--dock" role="banner">
+  <div
+    class="site-header__backdrop"
+    *ngIf="menuOpen"
+    (click)="closeMenu()"
+    aria-hidden="true"
+  ></div>
+  <div class="site-header__bar">
+    <div class="site-header__inner site-header__inner--dock">
+      <div class="site-header__dock-start">
+        <a routerLink="/" class="site-header__brand" (click)="closeMenu()" aria-label="Book Here — Home">
+          <span class="site-header__brand-mark site-header__brand-mark--beacon" aria-hidden="true">
+            <span class="site-header__brand-beacon-pulse" aria-hidden="true"></span>
+            <svg class="site-header__brand-logo site-header__brand-logo--beacon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g class="beacon-corners" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8.5 5.5H5.5v3" />
+                <path d="M15.5 5.5H18.5v3" />
+                <path d="M18.5 18.5v-3h3" />
+                <path d="M8.5 18.5H5.5v-3" />
+              </g>
+              <rect class="beacon-core" x="9.85" y="9.85" width="4.3" height="4.3" rx="1.05" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="site-header__brand-text">
+            <span
+              class="site-header__brand-title"
+              [class.site-header__brand-title--dashboard]="isDashboardHome"
+              >Book Here</span
+            >
+            <span class="site-header__brand-sub">Reserve your community hall</span>
+          </span>
+        </a>
+      </div>
+
+      <span class="site-header__dock-rule" aria-hidden="true"></span>
+
+      <nav
+        id="site-nav"
+        class="site-header__nav site-header__nav--dock"
+        [class.site-header__nav--open]="menuOpen"
+        aria-label="Primary"
+      >
+        <a
+          routerLink="/"
+          routerLinkActive="site-header__link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="site-header__link"
+          (click)="closeMenu()"
+          >Home</a
+        >
+        <a
+          routerLink="/about"
+          routerLinkActive="site-header__link--active"
+          class="site-header__link"
+          (click)="closeMenu()"
+          >About</a
+        >
+        <a
+          routerLink="/community-halls"
+          routerLinkActive="site-header__link--active"
+          class="site-header__link"
+          luPrefetchVenues
+          (click)="closeMenu()"
+          >Community Halls</a
+        >
+        <a href="#" class="site-header__link" (click)="closeMenu()">Institutes</a>
+        <button
+          type="button"
+          class="site-header__link site-header__link--bare"
+          (click)="openBookingModal()"
+        >
+          Booking Status
+        </button>
+      </nav>
+
+      <span class="site-header__dock-rule site-header__dock-rule--end" aria-hidden="true"></span>
+
+      <div class="site-header__cta site-header__cta--dock">
+        <button
+          type="button"
+          class="site-header__theme"
+          (click)="theme.toggle()"
+          [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'"
+          [attr.aria-pressed]="isDarkTheme"
+        >
+          <span class="site-header__theme-cube" [class.site-header__theme-cube--dark]="isDarkTheme">
+            <span class="site-header__theme-face site-header__theme-face--sun">
+              <svg
+                class="site-header__theme-graphic site-header__theme-graphic--sun"
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="obsSunDisk" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef9c3" />
+                    <stop offset="40%" stop-color="#fbbf24" />
+                    <stop offset="100%" stop-color="#ea580c" />
+                  </linearGradient>
+                  <linearGradient id="obsSunRay" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#fffbeb" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.5" />
+                  </linearGradient>
+                </defs>
+                <g class="site-header__theme-sunrays" fill="url(#obsSunRay)">
+                  <rect x="15" y="3" width="2" height="5" rx="1" />
+                  <g transform="rotate(45 16 16)">
+                    <rect x="15" y="3" width="2" height="5" rx="1" />
+                  </g>
+                  <g transform="rotate(90 16 16)">
+                    <rect x="15" y="3" width="2" height="5" rx="1" />
+                  </g>
+                  <g transform="rotate(135 16 16)">
+                    <rect x="15" y="3" width="2" height="5" rx="1" />
+                  </g>
+                </g>
+                <circle cx="16" cy="16" r="6.25" fill="url(#obsSunDisk)" />
+              </svg>
+            </span>
+            <span class="site-header__theme-face site-header__theme-face--moon">
+              <svg
+                class="site-header__theme-graphic site-header__theme-graphic--moon"
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="obsMoonBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f1f5f9" />
+                    <stop offset="55%" stop-color="#a5b4fc" />
+                    <stop offset="100%" stop-color="#6366f1" />
+                  </linearGradient>
+                </defs>
+                <circle cx="8.5" cy="9" r="0.9" fill="#c7d2fe" opacity="0.85" />
+                <circle cx="24" cy="11" r="0.55" fill="#e0e7ff" opacity="0.65" />
+                <circle cx="21" cy="22" r="0.45" fill="#a5b4fc" opacity="0.5" />
+                <mask id="obsMoonCut">
+                  <rect width="32" height="32" fill="white" />
+                  <circle cx="21.5" cy="14" r="6.2" fill="black" />
+                </mask>
+                <circle cx="14" cy="16" r="7.4" fill="url(#obsMoonBody)" mask="url(#obsMoonCut)" />
+              </svg>
+            </span>
+          </span>
+        </button>
+        <ng-container *ngIf="profileVm$ | async as vm">
+          <div *ngIf="vm.user" class="site-header__profile">
+            <button
+              type="button"
+              class="site-header__avatar"
+              (click)="toggleProfile(); $event.stopPropagation()"
+              [attr.aria-expanded]="profileOpen"
+              aria-haspopup="dialog"
+              aria-label="Account menu"
+            >
+              <img *ngIf="vm.photoUrl" class="site-header__avatar-img" [src]="vm.photoUrl" alt="" />
+              <span *ngIf="!vm.photoUrl" class="site-header__avatar-initials">{{ vm.initials }}</span>
+            </button>
+
+            <div *ngIf="profileOpen" class="site-header__profile-backdrop" (click)="closeProfile()"></div>
+            <div *ngIf="profileOpen" class="site-header__profile-panel" role="dialog" aria-label="Account">
+              <div class="site-header__profile-panel-head">
+                <div class="site-header__profile-head-text">
+                  <span class="site-header__profile-email-label">Signed in as</span>
+                  <span class="site-header__profile-email">{{ vm.user.email }}</span>
+                </div>
+                <button type="button" class="site-header__profile-close" (click)="closeProfile()" aria-label="Close">
+                  ×
+                </button>
+              </div>
+              <div class="site-header__profile-body">
+                <div class="site-header__profile-avatar-lg">
+                  <img *ngIf="vm.photoUrl" [src]="vm.photoUrl" alt="" />
+                  <span *ngIf="!vm.photoUrl">{{ vm.initials }}</span>
+                </div>
+                <p class="site-header__profile-greet">Hi, {{ vm.user.fullName.split(' ')[0] || 'there' }}!</p>
+                <button type="button" class="site-header__profile-primary" (click)="goUserDetails()">
+                  User details
+                </button>
+                <button type="button" class="site-header__profile-secondary" (click)="goMyBookings()">
+                  My bookings
+                </button>
+                <div class="site-header__profile-actions">
+                  <button type="button" class="site-header__profile-signout" (click)="signOut()">
+                    <span class="site-header__profile-signout-icon" aria-hidden="true">⎋</span>
+                    Sign out
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a
+            *ngIf="!vm.user"
+            routerLink="/login"
+            routerLinkActive="site-header__login--active"
+            class="site-header__login"
+            (click)="closeMenu()"
+          >
+            Login
+          </a>
+        </ng-container>
+        <a
+          href="/admin/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="site-header__office-admin"
+          (click)="closeMenu()"
+          aria-label="Admin Portal (opens in new tab)"
+        >
+          <svg class="site-header__office-admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+          <span>Admin Portal</span>
+          <svg class="site-header__office-admin-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-linecap="round" stroke-linejoin="round" />
+            <polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round" />
+            <line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <button
+          type="button"
+          class="site-header__menu-btn"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="menuOpen"
+          aria-controls="site-nav"
+          aria-label="Toggle menu"
+        >
+          <span class="site-header__menu-line" [class.site-header__menu-line--open]="menuOpen"></span>
+          <span class="site-header__menu-line" [class.site-header__menu-line--open]="menuOpen"></span>
+          <span class="site-header__menu-line" [class.site-header__menu-line--open]="menuOpen"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="bookingModalOpen"
+    class="booking-modal"
+    role="presentation"
+    aria-hidden="false"
+  >
+    <div
+      class="booking-modal__backdrop"
+      (click)="closeBookingModal()"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="booking-modal__dialog"
+      [class.booking-modal__dialog--has-result]="!!statusResult && !!(auth.user$ | async)"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="booking-modal-title"
+    >
+      <div class="booking-modal__header">
+        <div class="booking-modal__head-text">
+          <p class="booking-modal__eyebrow">Book Here</p>
+          <h2 id="booking-modal-title" class="booking-modal__title">Check booking status</h2>
+        </div>
+        <button
+          type="button"
+          class="booking-modal__close"
+          (click)="closeBookingModal()"
+          aria-label="Close dialog"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="booking-modal__body">
+        <ng-container *ngIf="auth.user$ | async; else bookingNeedLogin">
+          <div class="booking-modal__group">
+            <label class="booking-modal__label" for="booking-id-input">Booking ID</label>
+            <input
+              id="booking-id-input"
+              type="text"
+              class="booking-modal__input"
+              [(ngModel)]="bookingId"
+              placeholder="Enter your booking reference"
+              autocomplete="off"
+              (keydown.enter)="submitBookingStatus()"
+            />
+          </div>
+          <button
+            type="button"
+            class="booking-modal__cta"
+            appRipple
+            (click)="submitBookingStatus()"
+            [disabled]="statusLoading"
+          >
+            {{ statusLoading ? 'Checking…' : 'Check status' }}
+          </button>
+          <p *ngIf="statusError" class="booking-modal__msg booking-modal__msg--error" role="alert">{{ statusError }}</p>
+
+          <div *ngIf="statusResult as r" class="booking-modal__result" role="status" aria-live="polite">
+            <div class="booking-modal__result-top">
+              <span class="booking-modal__badge" [ngClass]="'booking-modal__badge--' + statusBadgeTone(r.status)">
+                {{ formatStatusLabel(r.status) }}
+              </span>
+              <span class="booking-modal__result-id" title="Booking registration number">{{ r.bookingRegNo }}</span>
+            </div>
+
+            <div class="booking-modal__result-sheet">
+              <div class="booking-modal__sheet-glow" aria-hidden="true"></div>
+              <dl class="booking-modal__spec">
+                <div class="booking-modal__spec-row">
+                  <dt class="booking-modal__spec-k">Venue</dt>
+                  <dd class="booking-modal__spec-v">{{ r.venueName }}</dd>
+                </div>
+                <div class="booking-modal__spec-row">
+                  <dt class="booking-modal__spec-k">Stay</dt>
+                  <dd class="booking-modal__spec-v">
+                    {{ formatBookingDate(r.bookingFromDate) }}
+                    <span class="booking-modal__spec-sep" aria-hidden="true"></span>
+                    {{ formatBookingDate(r.bookingToDate) }}
+                  </dd>
+                </div>
+                <div class="booking-modal__spec-row">
+                  <dt class="booking-modal__spec-k">Duration</dt>
+                  <dd class="booking-modal__spec-v">{{ r.totalDays }} day<span *ngIf="r.totalDays !== 1">s</span></dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="booking-modal__result-total">
+              <span class="booking-modal__result-total-label">Total payable</span>
+              <span class="booking-modal__result-total-amt">{{ r.totalAmount | currency : 'INR' : 'symbol' : '1.0-2' : 'en-IN' }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #bookingNeedLogin>
+          <p class="booking-modal__gate">
+            Sign in to check booking status. Your details stay private and are only shown to signed-in users.
+          </p>
+          <a
+            routerLink="/login"
+            [queryParams]="{ returnUrl: loginReturnUrl }"
+            class="booking-modal__cta booking-modal__cta--signin"
+            (click)="closeBookingModal()"
+          >
+            Sign in to continue
+          </a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</header>

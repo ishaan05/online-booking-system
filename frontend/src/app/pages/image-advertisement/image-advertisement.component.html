@@ -1,0 +1,59 @@
+<section class="img-ad-wrap" aria-label="Image advertisements">
+  <ng-container *luDeferredSkeleton="loading">
+    <div class="lu-morph-host img-ad-skel" aria-busy="true">
+      <div class="lu-skel-img-strip" aria-hidden="true">
+        <div class="lu-skel lu-skel-img-chip lu-skel--gradient"></div>
+        <div class="lu-skel lu-skel-img-chip"></div>
+        <div class="lu-skel lu-skel-img-chip lu-skel--gradient"></div>
+        <div class="lu-skel lu-skel-img-chip"></div>
+      </div>
+      <p class="img-ad-micro">
+        <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="visually-hidden">Loading image ads</span>
+      </p>
+    </div>
+  </ng-container>
+
+  <section *ngIf="!loading" class="img-ad lu-morph-content" aria-label="Image advertisements">
+    <div *ngIf="items.length" class="img-ad__inner">
+      <span class="img-ad__kicker">Spotlight</span>
+      <div class="img-ad__viewport">
+        <div class="img-ad__track">
+          <span class="img-ad__spacer" aria-hidden="true"></span>
+          <ng-container *ngFor="let it of items">
+            <a
+              *ngIf="it.url"
+              class="img-ad__link"
+              [href]="it.url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="img-ad__img" luImgReveal [src]="it.src" [alt]="it.alt" loading="eager" width="960" height="360" />
+            </a>
+            <span *ngIf="!it.url" class="img-ad__link img-ad__link--static">
+              <img class="img-ad__img" luImgReveal [src]="it.src" [alt]="it.alt" loading="eager" width="960" height="360" />
+            </span>
+          </ng-container>
+          <span class="img-ad__spacer" aria-hidden="true"></span>
+          <ng-container *ngFor="let it of items">
+            <a
+              *ngIf="it.url"
+              class="img-ad__link"
+              [href]="it.url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="img-ad__img" luImgReveal [src]="it.src" [alt]="it.alt" loading="eager" width="960" height="360" />
+            </a>
+            <span *ngIf="!it.url" class="img-ad__link img-ad__link--static">
+              <img class="img-ad__img" luImgReveal [src]="it.src" [alt]="it.alt" loading="eager" width="960" height="360" />
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="!items.length" class="img-ad__empty">
+      Image announcements will appear here when published in the admin portal.
+    </p>
+  </section>
+</section>

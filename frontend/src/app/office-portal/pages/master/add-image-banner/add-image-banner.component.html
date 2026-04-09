@@ -1,0 +1,120 @@
+<div class="admin-page admin-page--wide admin-page--premium-form">
+  <div *ngIf="!listMode" class="admin-card admin-form-page-card">
+    <div class="admin-card__header admin-form-page-card__head">
+      <div class="admin-form-page-card__head-inner">
+        <h1 class="admin-form-page-card__title">Add Dashboard Banner</h1>
+        <p class="admin-form-page-card__subtitle">
+          Upload a hero image or paste an external URL, with start and end dates for the Book Here slider.
+        </p>
+      </div>
+    </div>
+    <div class="admin-card__body admin-form-page-card__body">
+      <section class="admin-form-page-panel admin-form-page-panel--wide">
+        <div class="admin-form-page-panel__stack">
+          <div class="admin-form__grid">
+            <div class="admin-form__date-pair">
+              <div class="admin-form__row">
+                <app-admin-date-field
+                  class="admin-form__date-field-host"
+                  inputId="ib-s"
+                  name="ibStart"
+                  label="Start date"
+                  placeholder="Select date"
+                  [(ngModel)]="startDate"
+                />
+              </div>
+              <div class="admin-form__row">
+                <app-admin-date-field
+                  class="admin-form__date-field-host"
+                  inputId="ib-e"
+                  name="ibEnd"
+                  label="End date"
+                  placeholder="Select date"
+                  [(ngModel)]="endDate"
+                  [minDate]="startDate || undefined"
+                />
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <span class="admin-form__label" id="ib-f-lbl">Banner image</span>
+              <div class="admin-file-drop" role="group" aria-labelledby="ib-f-lbl">
+                <input
+                  id="ib-f"
+                  class="admin-file-drop__native"
+                  type="file"
+                  accept="image/*"
+                  (change)="onFile($event)"
+                />
+                <label
+                  for="ib-f"
+                  class="admin-file-drop__surface"
+                  (dragover)="onBannerDragOver($event)"
+                  (drop)="onBannerDrop($event)"
+                >
+                  <span class="admin-file-drop__icon" aria-hidden="true">🖼</span>
+                  <span class="admin-file-drop__title">Choose image or drop it here</span>
+                  <span class="admin-file-drop__hint">PNG or JPG · optional if you use an image URL below</span>
+                  <span class="admin-file-drop__filename" *ngIf="imagePickLabel">{{ imagePickLabel }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="ib-url">Image URL (optional)</label>
+              <input
+                id="ib-url"
+                class="admin-form__input admin-form-page__control"
+                type="url"
+                [(ngModel)]="imgURL"
+                name="ibUrl"
+                placeholder="https://… (external image, or link when using uploaded file)"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="admin-form__actions admin-form-page-card__actions">
+        <button type="button" class="admin-btn admin-btn--primary" (click)="submit()">
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ editingId ? 'Update' : 'Add' }}
+        </button>
+        <button type="button" class="admin-btn admin-btn--secondary" (click)="showView()">
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="listMode" class="admin-card admin-card--flush admin-card--fill">
+    <header class="admin-card__header admin-card__header--split">
+      <h1 class="admin-card__header-title">Image banners</h1>
+      <button type="button" class="admin-page__back" (click)="backToForm()">&lt; Back</button>
+    </header>
+    <div class="admin-data-list-scroll">
+      <article *ngFor="let r of rows; let i = index" class="admin-data-card">
+        <div class="admin-data-card__head">
+          <div>
+            <p class="admin-data-card__kicker">#{{ i + 1 }} · Home slider</p>
+            <h2 class="admin-data-card__title">{{ r.startDate }} → {{ r.endDate }}</h2>
+            <p class="admin-data-card__meta" *ngIf="r.imgURL">
+              <a [href]="r.imgURL" target="_blank" rel="noopener noreferrer">{{ r.imgURL }}</a>
+            </p>
+          </div>
+          <div class="admin-data-card__actions">
+            <button type="button" class="admin-icon-btn admin-icon-btn--edit" (click)="editRow(r)" aria-label="Edit row">✎</button>
+            <button type="button" class="admin-icon-btn admin-icon-btn--delete" (click)="deleteRow(r)" aria-label="Delete row">🗑</button>
+          </div>
+        </div>
+        <div *ngIf="r.imageDataUrl" class="admin-data-card__media">
+          <img [src]="r.imageDataUrl" alt="" class="admin-data-card__img" />
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

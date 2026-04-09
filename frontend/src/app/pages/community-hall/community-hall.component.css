@@ -1,0 +1,194 @@
+:host {
+  display: block;
+}
+
+.community-hall {
+  font-family: var(--premium-font, "Inter", system-ui, sans-serif);
+  padding: calc(var(--app-header-offset, 4.35rem) + 1.25rem) 0 clamp(2.5rem, 6vw, 4rem);
+  -webkit-font-smoothing: antialiased;
+}
+
+.community-hall__inner {
+  max-width: 1200px;
+}
+
+.community-hall__header {
+  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  max-width: 40rem;
+}
+
+.community-hall__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--premium-text, #1d1d1f);
+}
+
+.community-hall__lede {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: var(--premium-text-muted, #6e6e73);
+}
+
+.community-hall__error-block {
+  margin: 0.5rem 0 1rem;
+}
+
+.community-hall__micro {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  color: var(--premium-text-muted, #6e6e73);
+  font-size: 0.875rem;
+}
+
+.community-hall__retry {
+  margin-top: 0.65rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--premium-border, #e5e7eb);
+  background: var(--premium-bg-elevated, #fff);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: var(--premium-text, #0f172a);
+}
+
+.community-hall__retry:hover {
+  border-color: var(--premium-accent, #0066cc);
+  color: var(--premium-accent, #0066cc);
+}
+
+.community-hall__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.ch-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  min-height: 0;
+  border-radius: 12px;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1199px) {
+  .community-hall__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 899px) {
+  .community-hall__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575px) {
+  .community-hall__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ch-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--premium-bg-elevated, #ffffff);
+  border: 1px solid var(--premium-border, #e5e7eb);
+  box-shadow: var(--premium-shadow-sm, 0 1px 2px rgba(15, 23, 42, 0.05));
+  transition: transform 0.35s var(--premium-ease, cubic-bezier(0.25, 0.1, 0.25, 1)),
+    box-shadow 0.35s var(--premium-ease, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+.ch-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--premium-shadow-md, 0 12px 40px rgba(0, 0, 0, 0.08));
+}
+
+.ch-card__media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.ch-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ch-card__body {
+  padding: 1.15rem 1.2rem 1.4rem;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.ch-card__name {
+  margin: 0;
+  font-size: clamp(1rem, 2.1vw, 1.125rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+  color: var(--premium-text, #0f172a);
+  min-height: 2.7em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ch-card-link:hover .ch-card__name {
+  color: var(--ch-card-name-hover, #0a0a0a);
+}
+
+.ch-card__capacity {
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.ch-card__capacity-label {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #64748b;
+}
+
+.ch-card__capacity-value {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ca8a04;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-card:hover {
+    transform: none;
+  }
+}

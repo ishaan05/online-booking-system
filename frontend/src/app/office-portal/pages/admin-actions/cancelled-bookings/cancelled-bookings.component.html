@@ -1,0 +1,78 @@
+<div class="admin-page admin-page--wide">
+  <div class="admin-card admin-card--flush admin-card--fill">
+    <h1 class="admin-card__header">Cancelled bookings</h1>
+    <ng-container *ngIf="officeDataReady | async; else cancelledSkel">
+      <div class="admin-data-list-scroll">
+        <article *ngFor="let r of rows" class="admin-data-card">
+          <div class="admin-data-card__head">
+            <div>
+              <p class="admin-data-card__kicker">Booking</p>
+              <h2 class="admin-data-card__title">{{ r.bookingNo }}</h2>
+            </div>
+            <div class="admin-data-card__actions">
+              <button
+                type="button"
+                class="admin-icon-btn admin-icon-btn--edit"
+                (click)="edit(r)"
+                title="View"
+                [attr.aria-label]="'View booking ' + r.bookingNo"
+              >
+                ✎
+              </button>
+            </div>
+          </div>
+          <dl class="admin-data-card__grid admin-data-card__grid--3">
+            <div class="admin-data-card__field">
+              <dt>Full name</dt>
+              <dd>{{ r.fullName }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>Mobile</dt>
+              <dd>{{ r.mobile }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>Email</dt>
+              <dd>{{ r.email }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>Hall</dt>
+              <dd>{{ r.hall }}</dd>
+            </div>
+            <div class="admin-data-card__field admin-data-card__field--wide">
+              <dt>Address</dt>
+              <dd>{{ r.address }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>Total amount</dt>
+              <dd>{{ r.totalAmount }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>Category</dt>
+              <dd>{{ r.category }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>Purpose</dt>
+              <dd>{{ r.purpose }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>From</dt>
+              <dd>{{ r.fromDate }}</dd>
+            </div>
+            <div class="admin-data-card__field">
+              <dt>To</dt>
+              <dd>{{ r.toDate }}</dd>
+            </div>
+          </dl>
+        </article>
+        <p *ngIf="!rows.length" class="admin-data-list__empty">No cancelled bookings.</p>
+      </div>
+    </ng-container>
+    <ng-template #cancelledSkel>
+      <ng-container *luDeferredSkeleton="true">
+        <div class="lu-admin-skel-list admin-data-list-scroll lu-morph-host" aria-busy="true" aria-hidden="true">
+          <div *ngFor="let _ of adminSkelRows" class="lu-skel lu-admin-skel-card lu-skel--gradient"></div>
+        </div>
+      </ng-container>
+    </ng-template>
+  </div>
+</div>

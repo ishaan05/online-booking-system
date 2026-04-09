@@ -1,0 +1,181 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.text-ad-wrap {
+  display: block;
+  width: 100%;
+}
+
+.text-ad-skel {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 0.5rem 0;
+  box-sizing: border-box;
+}
+
+.text-ad-micro {
+  margin: 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--premium-text-muted, #6b7280);
+}
+
+/* Full-bleed band aligned with public shell (indigo accent) */
+.text-ad {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 0;
+  box-sizing: border-box;
+  background: var(--premium-bg-subtle, #f8fafc);
+  border-top: 3px solid var(--premium-accent, #0066cc);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.text-ad__inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  padding: clamp(0.65rem, 1.8vw, 0.9rem) clamp(1rem, 4vw, 2rem);
+  max-width: min(120rem, 100%);
+  margin: 0 auto;
+}
+
+.text-ad__kicker {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 6px;
+  font-family: var(--premium-font, system-ui, sans-serif);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--premium-accent-hover, #004a9e);
+  background: var(--premium-accent-soft, rgba(0, 102, 204, 0.1));
+  border: 1px solid rgba(13, 148, 136, 0.28);
+}
+
+.text-ad__empty {
+  margin: 0;
+  padding: 0.75rem clamp(1rem, 4vw, 2rem);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--premium-text-muted, #525252);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.text-ad__empty strong {
+  color: var(--premium-text, #0a0a0a);
+  font-weight: 600;
+}
+
+.text-ad__viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 1.2%, #000 98.8%, transparent 100%);
+}
+
+.text-ad__spacer {
+  flex: 0 0 100vw;
+  width: 100vw;
+  min-width: 100vw;
+  align-self: stretch;
+  pointer-events: none;
+}
+
+.text-ad__track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  width: max-content;
+  animation: text-ad-marquee var(--public-marquee-duration, 10s) linear infinite;
+  will-change: transform;
+}
+
+@keyframes text-ad-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-ad__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .text-ad__spacer {
+    display: none;
+  }
+
+}
+
+/* Professional copy: readable weight, no gradient / italic / uppercase shout */
+.text-ad__snippet {
+  flex: 0 0 auto;
+  font-family: var(--premium-font, system-ui, sans-serif);
+  font-size: clamp(0.9375rem, 1.55vw, 1.0625rem);
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  white-space: nowrap;
+  color: var(--premium-text, #0f172a);
+}
+
+.text-ad__track > .text-ad__snippet ~ .text-ad__snippet {
+  padding-left: clamp(1.5rem, 3.5vw, 2.75rem);
+  margin-left: 0;
+  border-left: 1px solid rgba(13, 148, 136, 0.35);
+}
+
+html[data-theme='dark'] .text-ad {
+  background: #0f172a;
+  border-top-color: var(--premium-accent, #14b8a6);
+  border-bottom-color: rgba(148, 163, 184, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+html[data-theme='dark'] .text-ad__kicker {
+  color: #c7d2fe;
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(94, 234, 212, 0.28);
+}
+
+html[data-theme='dark'] .text-ad__snippet {
+  color: #e2e8f0;
+}
+
+html[data-theme='dark'] .text-ad__track > .text-ad__snippet ~ .text-ad__snippet {
+  border-left-color: rgba(45, 212, 191, 0.4);
+}
+
+html[data-theme='dark'] .text-ad__empty {
+  color: #94a3b8;
+}
+
+html[data-theme='dark'] .text-ad__empty strong {
+  color: #f1f5f9;
+}

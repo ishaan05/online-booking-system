@@ -1,0 +1,100 @@
+/* =============================================================================
+   Public site motion — scoped to online booking shell only.
+   Fast, minimal transitions (≈300–600ms). Respects prefers-reduced-motion.
+   ============================================================================= */
+
+@media (prefers-reduced-motion: no-preference) {
+  body.premium-app .app-shell:not(.app-shell--office) .app-main > :not(router-outlet) {
+    animation: pub-route-enter 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes pub-route-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Ripple host (use with appRipple directive) */
+.pub-ripple-host::after {
+  content: "";
+  position: absolute;
+  left: var(--pub-ripple-x, 50%);
+  top: var(--pub-ripple-y, 50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.2);
+  background: rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pub-ripple-host.pub-ripple--anim::after {
+  animation: pub-ripple-pulse 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pub-ripple-pulse {
+  0% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.35);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(14);
+  }
+}
+
+html[data-theme='dark'] .pub-ripple-host::after {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Primary buttons in main: lift, shadow, press scale */
+@media (prefers-reduced-motion: no-preference) {
+  body.premium-app .app-shell:not(.app-shell--office) .app-main button:not([disabled]):not(.image-slider__btn),
+  body.premium-app .app-shell:not(.app-shell--office) .app-main [type='submit']:not([disabled]),
+  body.premium-app .app-shell:not(.app-shell--office) .app-main .btn:not([disabled]) {
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, filter 0.22s ease;
+  }
+
+  body.premium-app .app-shell:not(.app-shell--office) .app-main button:not([disabled]):not(.image-slider__btn):hover,
+  body.premium-app .app-shell:not(.app-shell--office) .app-main [type='submit']:not([disabled]):hover,
+  body.premium-app .app-shell:not(.app-shell--office) .app-main .btn:not([disabled]):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+  }
+
+  body.premium-app .app-shell:not(.app-shell--office) .app-main button:not([disabled]):not(.image-slider__btn):active,
+  body.premium-app .app-shell:not(.app-shell--office) .app-main [type='submit']:not([disabled]):active,
+  body.premium-app .app-shell:not(.app-shell--office) .app-main .btn:not([disabled]):active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.premium-app .app-shell:not(.app-shell--office) .ch-card-link {
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease;
+  }
+
+  body.premium-app .app-shell:not(.app-shell--office) .ch-card-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.premium-app .app-shell:not(.app-shell--office) .app-main > :not(router-outlet) {
+    animation: none;
+  }
+
+  .pub-ripple-host::after {
+    display: none;
+  }
+}

@@ -1,0 +1,14 @@
+/* Admin rail: all visuals live in src/office-portal-shell.css */
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}

@@ -1,0 +1,188 @@
+<section class="booking-details-page" aria-labelledby="bd-title">
+  <div class="booking-details-page__card">
+    <p *ngIf="selectedVenueName" class="booking-details-page__venue">{{ selectedVenueName }}</p>
+    <h1 id="bd-title" class="booking-details-page__title">Booking Details</h1>
+
+    <p *ngIf="flowStatus" class="lu-flow-strip" role="status" aria-live="polite">
+      <span class="lu-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+      {{ flowStatus }}
+    </p>
+
+    <div class="booking-details-page__grid">
+      <div class="booking-details-page__calendar-wrap">
+        <div class="bd-cal" [class.bd-cal--syncing]="calendarInFlight > 0">
+          <div class="bd-cal__head">
+            <button type="button" class="bd-cal__nav" (click)="prevMonth()" aria-label="Previous month">‹</button>
+            <span class="bd-cal__label">{{ monthLabel }}</span>
+            <button type="button" class="bd-cal__nav" (click)="nextMonth()" aria-label="Next month">›</button>
+          </div>
+          <div class="bd-cal__dow">
+            <span *ngFor="let w of weekDays">{{ w }}</span>
+          </div>
+          <div class="bd-cal__grid">
+            <ng-container *ngFor="let week of calendarWeeks">
+              <ng-container *ngFor="let d of week">
+                <span *ngIf="d === null" class="bd-cal__placeholder" aria-hidden="true"></span>
+                <button
+                  *ngIf="d !== null"
+                  type="button"
+                  class="bd-cal__cell"
+                  [class.bd-cal__cell--blocked]="isBlockedDay(d)"
+                  [class.bd-cal__cell--booked]="isBookedDay(d) && !isBlockedDay(d)"
+                  [class.bd-cal__cell--muted]="isPastDay(d) || isBookedDay(d)"
+                  [class.bd-cal__cell--in-range]="
+                    !isBookedDay(d) && isInRange(d) && !isRangeStart(d) && !isRangeEnd(d)
+                  "
+                  [class.bd-cal__cell--range-start]="
+                    !isBookedDay(d) && isRangeStart(d) && !isRangeSingleDay(d)
+                  "
+                  [class.bd-cal__cell--range-end]="!isBookedDay(d) && isRangeEnd(d) && !isRangeSingleDay(d)"
+                  [class.bd-cal__cell--range-single]="!isBookedDay(d) && isRangeSingleDay(d)"
+                  [disabled]="isPastDay(d) || isBookedDay(d)"
+                  [attr.title]="
+                    isBlockedDay(d)
+                      ? 'Blocked date — not available'
+                      : isBookedDay(d)
+                        ? 'Already booked for this hall'
+                        : isPastDay(d)
+                          ? 'Past date'
+                          : null
+                  "
+                  (click)="pickDay(d)"
+                >
+                  {{ d }}
+                </button>
+              </ng-container>
+            </ng-container>
+          </div>
+          <p class="bd-cal__hint">
+            Blocked dates (maintenance / admin) are grey; booked dates from reservations are red — both cannot be
+            selected. Your start date is green, end date yellow, days in between lightly highlighted.
+          </p>
+          <p *ngIf="calendarLoadError" class="bd-cal__calendar-error" role="alert">{{ calendarLoadError }}</p>
+        </div>
+      </div>
+
+      <div class="booking-details-page__form-col">
+        <label class="bd-field" *ngIf="venues.length">
+          <span class="bd-field__label">Select Hall</span>
+          <select
+            class="bd-field__control"
+            name="venue"
+            [(ngModel)]="venueId"
+            (ngModelChange)="onVenueChange()"
+          >
+            <option [ngValue]="null">-- Select Hall --</option>
+            <option *ngFor="let v of venues" [ngValue]="v.venueID">{{ v.venueName }}</option>
+          </select>
+        </label>
+        <p *ngIf="!venues.length" class="bd-field__error">No halls are available right now.</p>
+
+        <label class="bd-field">
+          <span class="bd-field__label">Category</span>
+          <select
+            class="bd-field__control"
+            name="category"
+            [(ngModel)]="categoryId"
+            (ngModelChange)="onFiltersChange()"
+          >
+            <option [ngValue]="null">-- Select Category --</option>
+            <option *ngFor="let c of categories" [ngValue]="c.categoryID">{{ c.categoryName }}</option>
+          </select>
+        </label>
+
+        <label class="bd-field">
+          <span class="bd-field__label">Purpose</span>
+          <select
+            class="bd-field__control"
+            name="purpose"
+            [(ngModel)]="purposeId"
+            (ngModelChange)="onFiltersChange()"
+          >
+            <option [ngValue]="null">-- Select Purpose --</option>
+            <option *ngFor="let p of purposes" [ngValue]="p.purposeID">{{ p.purposeName }}</option>
+          </select>
+        </label>
+
+        <label class="bd-field">
+          <span class="bd-field__label">From date</span>
+          <input
+            class="bd-field__control bd-field__control--ddmm"
+            type="text"
+            readonly
+            tabindex="-1"
+            [value]="formatDdMmYyyy(fromDate)"
+            placeholder="dd-MM-yyyy"
+          />
+        </label>
+        <label class="bd-field">
+          <span class="bd-field__label">To date</span>
+          <input
+            class="bd-field__control bd-field__control--ddmm"
+            type="text"
+            readonly
+            tabindex="-1"
+            [value]="formatDdMmYyyy(toDate)"
+            placeholder="dd-MM-yyyy"
+          />
+        </label>
+        <p class="bd-field__hint">Select start and end dates on the calendar.</p>
+
+        <p *ngIf="formError" class="bd-field__error" role="alert">{{ formError }}</p>
+        <p *ngIf="bookError" class="bd-field__error" role="alert">{{ bookError }}</p>
+
+        <div class="booking-details-page__actions">
+          <button type="button" class="bd-btn bd-btn--clear" (click)="clearForm()" [disabled]="proceeding">
+            Clear
+          </button>
+          <button
+            type="button"
+            class="bd-btn bd-btn--book lu-btn-inline lu-btn-inline--dark"
+            [class.lu-btn-inline--success]="proceedSuccess"
+            (click)="proceedToRegistration()"
+            [disabled]="proceeding"
+          >
+            <span *ngIf="proceeding && !proceedSuccess" class="lu-btn-inline__spin" aria-hidden="true"></span>
+            <span class="lu-btn-inline__label">{{ proceedLabel }}</span>
+            <svg class="lu-btn-inline__check" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-details-page__summary" aria-label="Charges summary">
+      <span class="booking-details-page__summary-row">
+        Rental Charges (Per Day) :
+        <strong class="booking-details-page__amount">{{ rentalFooter }}</strong>
+        <span *ngIf="quoteLoading" class="lu-dots booking-details-page__quote-dots" aria-hidden="true"
+          ><span></span><span></span><span></span
+        ></span>
+      </span>
+      <span
+        >Security Deposit : <strong class="booking-details-page__amount">{{ depositFooter }}</strong></span
+      >
+      <span class="booking-details-page__tax">{{ serviceTaxLabel }}</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="dateLimitModalOpen"
+    class="bd-modal-backdrop"
+    role="presentation"
+    (click)="closeDateLimitModal()"
+  >
+    <div
+      class="bd-modal"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="bd-date-limit-title"
+      (click)="$event.stopPropagation()"
+    >
+      <h2 id="bd-date-limit-title" class="bd-modal__title">Booking length limit</h2>
+      <p class="bd-modal__body">{{ dateLimitModalMessage }}</p>
+      <button type="button" class="bd-modal__ok" (click)="closeDateLimitModal()">OK</button>
+    </div>
+  </div>
+</section>

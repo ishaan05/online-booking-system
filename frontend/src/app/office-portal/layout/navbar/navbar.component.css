@@ -1,0 +1,7 @@
+/* Panel positioning is anchored to the search wrap (see office-portal-shell.css for base cmdbar). */
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}

@@ -1,0 +1,66 @@
+<section class="image-slider" *ngIf="slides.length">
+  <div class="image-slider__viewport">
+    <div class="image-slider__mesh" aria-hidden="true"></div>
+    <div
+      class="image-slider__track"
+      [style.width.%]="slides.length * 100"
+      [style.transform]="
+        'translateX(calc(-100% * ' + index + ' / ' + slides.length + '))'
+      "
+    >
+      <div
+        class="image-slider__slide"
+        *ngFor="let s of slides; let si = index"
+        [class.image-slider__slide--active]="si === index"
+        [style.flex]="'0 0 ' + 100 / slides.length + '%'"
+      >
+        <a
+          *ngIf="s.href"
+          class="image-slider__link"
+          [href]="s.href"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img class="image-slider__img" [src]="s.src" [alt]="s.title" />
+        </a>
+        <img *ngIf="!s.href" class="image-slider__img" [src]="s.src" [alt]="s.title" />
+      </div>
+    </div>
+    <div class="image-slider__overlay"></div>
+    <div
+      class="image-slider__text"
+      [@.disabled]="reduceMotion"
+      [@heroCopy]="index"
+    >
+      <h2 class="image-slider__title">{{ slides[index].title }}</h2>
+      <p class="image-slider__caption">{{ slides[index].caption }}</p>
+    </div>
+    <button
+      type="button"
+      class="image-slider__btn image-slider__btn--prev"
+      (click)="prev()"
+      aria-label="Previous slide"
+    >
+      <span class="image-slider__btn-icon" aria-hidden="true">‹</span>
+    </button>
+    <button
+      type="button"
+      class="image-slider__btn image-slider__btn--next"
+      (click)="next()"
+      aria-label="Next slide"
+    >
+      <span class="image-slider__btn-icon" aria-hidden="true">›</span>
+    </button>
+    <div class="image-slider__dots" *ngIf="slides.length > 1" aria-label="Slide indicators">
+      <button
+        type="button"
+        *ngFor="let s of slides; let dotIndex = index"
+        class="image-slider__dot"
+        [class.image-slider__dot--active]="dotIndex === index"
+        (click)="goTo(dotIndex)"
+        [attr.aria-label]="'Go to slide ' + (dotIndex + 1)"
+        [attr.aria-current]="dotIndex === index ? 'true' : null"
+      ></button>
+    </div>
+  </div>
+</section>

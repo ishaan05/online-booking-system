@@ -1,0 +1,22 @@
+# .NET (backend + shared class library)
+backend/**/bin/
+backend/**/obj/
+shared/**/bin/
+shared/**/obj/
+*.user
+*.suo
+**/.vs/
+
+# Angular (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/npm-debug.log
+
+# Secrets / local config
+**/appsettings.Development.json
+.env
+
+# OS
+.DS_Store
+Thumbs.db

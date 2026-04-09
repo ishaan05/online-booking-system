@@ -1,0 +1,177 @@
+<div class="admin-page admin-page--wide admin-page--premium-form">
+  <div *ngIf="!listMode" class="admin-card admin-form-page-card hall-form-card">
+    <div class="admin-card__header admin-form-page-card__head">
+      <div class="admin-form-page-card__head-inner">
+        <h1 class="admin-form-page-card__title">Add/Modify Hall Description</h1>
+        <p class="admin-form-page-card__subtitle">Details, facilities, photo, and status for each community hall.</p>
+      </div>
+    </div>
+    <div class="admin-card__body admin-form-page-card__body hall-form-card__body">
+      <section class="admin-form-page-panel admin-form-page-panel--wide">
+        <div class="admin-form-page-panel__stack">
+          <div class="admin-form__grid">
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="h-short">Short code</label>
+              <input id="h-short" class="admin-form__input admin-form-page__control" [(ngModel)]="shortCode" placeholder="Enter short code" />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="h-name">Name of community hall</label>
+              <input id="h-name" class="admin-form__input admin-form-page__control" [(ngModel)]="name" placeholder="Enter name" />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="h-gps">GPS location</label>
+              <input id="h-gps" class="admin-form__input admin-form-page__control" [(ngModel)]="gpsLocation" placeholder="Maps link or coordinates" />
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="h-cap">Capacity</label>
+              <input id="h-cap" class="admin-form__input admin-form-page__control" [(ngModel)]="capacity" placeholder="Enter capacity" />
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="h-addr">Address</label>
+              <input id="h-addr" class="admin-form__input admin-form-page__control" [(ngModel)]="address" placeholder="Enter address" />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="h-area">Area in sqmt</label>
+              <input id="h-area" class="admin-form__input admin-form-page__control" [(ngModel)]="areaSqmt" placeholder="Enter area" />
+            </div>
+            <div class="admin-form__row">
+              <label class="admin-form__label" for="h-rooms">No of rooms available</label>
+              <input id="h-rooms" class="admin-form__input admin-form-page__control" [(ngModel)]="rooms" placeholder="Enter rooms" />
+            </div>
+            <div class="hall-triple">
+              <div class="admin-form__row">
+                <label class="admin-form__label" for="h-kit">No of kitchen</label>
+                <input id="h-kit" class="admin-form__input admin-form-page__control" [(ngModel)]="kitchen" placeholder="Enter" />
+              </div>
+              <div class="admin-form__row">
+                <label class="admin-form__label" for="h-toi">No of toilet</label>
+                <input id="h-toi" class="admin-form__input admin-form-page__control" [(ngModel)]="toilet" placeholder="Enter" />
+              </div>
+              <div class="admin-form__row">
+                <label class="admin-form__label" for="h-bath">No of bathroom</label>
+                <input id="h-bath" class="admin-form__input admin-form-page__control" [(ngModel)]="bathroom" placeholder="Enter" />
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="h-fac">Additional facilities</label>
+              <textarea
+                id="h-fac"
+                class="admin-form__textarea admin-form-page__control"
+                [(ngModel)]="facilities"
+                placeholder="Enter facilities"
+              ></textarea>
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <span class="admin-form__label" id="h-photo-lbl">Hall photo</span>
+              <div class="admin-file-drop" role="group" aria-labelledby="h-photo-lbl">
+                <input
+                  id="h-photo"
+                  class="admin-file-drop__native"
+                  type="file"
+                  accept="image/*"
+                  (change)="onPhotoChange($event)"
+                />
+                <label
+                  for="h-photo"
+                  class="admin-file-drop__surface"
+                  (dragover)="onPhotoDragOver($event)"
+                  (drop)="onPhotoDrop($event)"
+                >
+                  <span class="admin-file-drop__icon" aria-hidden="true">📷</span>
+                  <span class="admin-file-drop__title">Upload hall photo</span>
+                  <span class="admin-file-drop__hint">PNG or JPG · optional; shown on listings</span>
+                  <span class="admin-file-drop__filename" *ngIf="photoPickLabel">{{ photoPickLabel }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="admin-form__row admin-form__row--full">
+              <label class="admin-form__label" for="h-st">Status</label>
+              <select id="h-st" class="admin-form__select admin-form-page__control" [(ngModel)]="status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="admin-form__actions admin-form-page-card__actions">
+        <button type="button" class="admin-btn admin-btn--primary" (click)="submit()">
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ editingId ? 'Update' : 'Add' }}
+        </button>
+        <button type="button" class="admin-btn admin-btn--secondary" (click)="showView()">
+          <svg class="admin-btn__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="listMode" class="admin-card admin-card--flush admin-card--fill">
+    <header class="admin-card__header admin-card__header--split">
+      <h1 class="admin-card__header-title">Hall descriptions</h1>
+      <button type="button" class="admin-page__back" (click)="backToForm()">&lt; Back</button>
+    </header>
+    <div class="admin-data-list-scroll">
+      <article *ngFor="let r of rows; let i = index" class="admin-data-card">
+        <div class="admin-data-card__head">
+          <div>
+            <p class="admin-data-card__kicker">#{{ i + 1 }} · {{ r.shortCode }}</p>
+            <h2 class="admin-data-card__title">{{ r.name }}</h2>
+          </div>
+          <div class="admin-data-card__actions">
+            <span class="admin-pill" [class.admin-pill--inactive]="r.status === 'Inactive'">{{ r.status }}</span>
+            <button type="button" class="admin-icon-btn admin-icon-btn--edit" (click)="editRow(r)" aria-label="Edit row">✎</button>
+            <button type="button" class="admin-icon-btn admin-icon-btn--delete" (click)="deleteRow(r)" aria-label="Delete row">🗑</button>
+          </div>
+        </div>
+        <div *ngIf="r.photoDataUrl" class="admin-data-card__media">
+          <img [src]="r.photoDataUrl" alt="" class="admin-data-card__img" />
+        </div>
+        <dl class="admin-data-card__grid admin-data-card__grid--3">
+          <div class="admin-data-card__field admin-data-card__field--wide">
+            <dt>Address</dt>
+            <dd>{{ r.address }}</dd>
+          </div>
+          <div class="admin-data-card__field admin-data-card__field--wide">
+            <dt>Map / GPS</dt>
+            <dd class="admin-data-card__clip">{{ r.gpsLocation }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Capacity</dt>
+            <dd>{{ r.capacity }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Area</dt>
+            <dd>{{ r.areaSqmt }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Rooms</dt>
+            <dd>{{ r.rooms }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Kitchen</dt>
+            <dd>{{ r.kitchen }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Toilet</dt>
+            <dd>{{ r.toilet }}</dd>
+          </div>
+          <div class="admin-data-card__field">
+            <dt>Bathroom</dt>
+            <dd>{{ r.bathroom }}</dd>
+          </div>
+          <div class="admin-data-card__field admin-data-card__field--wide">
+            <dt>Facilities / notes</dt>
+            <dd class="admin-data-card__clip">{{ r.facilities }}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</div>

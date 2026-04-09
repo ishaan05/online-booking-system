@@ -1,0 +1,73 @@
+<div class="admin-date-field">
+  <label class="admin-form__label" [attr.for]="inputId">{{ label }}</label>
+  <div class="admin-date-field__row" #triggerWrap>
+    <input
+      type="text"
+      readonly
+      [id]="inputId"
+      [attr.name]="name || null"
+      class="admin-date-field__input"
+      [value]="displayText"
+      [attr.placeholder]="placeholder"
+      [disabled]="disabled"
+      (click)="toggleCalendar()"
+      autocomplete="off"
+      [attr.aria-expanded]="panelOpen"
+      aria-haspopup="dialog"
+    />
+    <button
+      type="button"
+      class="admin-date-field__open"
+      [disabled]="disabled"
+      (click)="toggleCalendar(); $event.stopPropagation()"
+      [attr.aria-expanded]="panelOpen"
+      [attr.aria-label]="'Open calendar for ' + label"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<ng-template #calendarPanel>
+  <div class="admin-date-panel" role="dialog" [attr.aria-label]="label + ' calendar'">
+    <div class="admin-date-panel__header">
+      <button type="button" class="admin-date-panel__nav-btn" (click)="prevMonth()" aria-label="Previous month">
+        ‹
+      </button>
+      <span class="admin-date-panel__title">{{ monthTitle }}</span>
+      <button type="button" class="admin-date-panel__nav-btn" (click)="nextMonth()" aria-label="Next month">
+        ›
+      </button>
+    </div>
+    <div class="admin-date-panel__weekdays" aria-hidden="true">
+      <span *ngFor="let w of weekdayLabels" class="admin-date-panel__weekday">{{ w }}</span>
+    </div>
+    <div class="admin-date-panel__grid">
+      <button
+        *ngFor="let c of cells"
+        type="button"
+        class="admin-date-panel__cell"
+        [class.admin-date-panel__cell--outside]="!c.inMonth"
+        [class.admin-date-panel__cell--selected]="c.selected"
+        [class.admin-date-panel__cell--today]="c.today"
+        [disabled]="c.disabled"
+        (click)="pick(c)"
+        [attr.aria-pressed]="c.selected"
+        [attr.aria-label]="c.date | date : 'fullDate'"
+      >
+        {{ c.day }}
+      </button>
+    </div>
+    <div class="admin-date-panel__footer">
+      <button type="button" class="admin-date-panel__text-btn" (click)="selectToday()" [disabled]="todayDisabled">
+        Today
+      </button>
+      <button type="button" class="admin-date-panel__text-btn" (click)="clearAndClose()">Clear</button>
+    </div>
+  </div>
+</ng-template>

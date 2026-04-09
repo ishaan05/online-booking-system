@@ -1,0 +1,189 @@
+/* =============================================================================
+   Public online booking shell — flat surfaces, electric blue accent (no purple).
+   Scoped to non-admin routes only (.app-shell:not(.app-shell--office)).
+   ============================================================================= */
+
+body.premium-app .app-shell:not(.app-shell--office) {
+  --pub-cmd-bg: #ffffff;
+  --pub-cmd-border: #e5e7eb;
+  --pub-cmd-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+
+  --app-header-offset: 4.35rem;
+
+  --premium-font: "Montserrat", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --premium-bg: #f4f5f7;
+  --premium-bg-subtle: #eceef2;
+  --premium-bg-elevated: #ffffff;
+  --premium-text: #111827;
+  --premium-text-muted: #6b7280;
+  --premium-border: #e5e7eb;
+  --premium-accent: #0066cc;
+  --premium-accent-soft: rgba(0, 102, 204, 0.09);
+  --premium-accent-hover: #004a9e;
+  --premium-accent-glow: rgba(0, 102, 204, 0.28);
+  --premium-cta: #111827;
+  --premium-cta-hover: #030712;
+  --premium-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --premium-shadow-md: 0 4px 24px rgba(15, 23, 42, 0.07);
+
+  --premium-slider-band: #e8edf3;
+
+  --footer-bg: #e8eaef;
+  --footer-text: #111827;
+  --footer-muted: #6b7280;
+  --footer-border: #e5e7eb;
+
+  --bd-summary-bg: #e8f1fa;
+  --bd-summary-fg: var(--premium-text);
+  --bd-cta-bg: #0066cc;
+  --bd-cta-bg-hover: #004a9e;
+  --bd-cta-fg: #ffffff;
+  --bd-cta-border: rgba(255, 255, 255, 0.35);
+
+  --chd-book-bg: #ffffff;
+  --chd-book-fg: #0066cc;
+  --chd-book-border: rgba(0, 102, 204, 0.4);
+  --chd-book-bg-hover: #e8f1fa;
+  --chd-book-fg-hover: #004a9e;
+  --chd-book-ring: 0 0 0 2px rgba(0, 102, 204, 0.45), 0 4px 22px rgba(0, 0, 0, 0.45);
+
+  --pub-nav-dock-rule: rgba(15, 23, 42, 0.12);
+  --pub-brand-mark-bg: #0a1628;
+  --pub-brand-mark-fg: #f8fafc;
+
+  --site-header-inner-bg: rgba(255, 255, 255, 0.82);
+  --site-header-inner-border: transparent;
+  --site-header-inner-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+  --site-header-inner-backdrop: blur(22px) saturate(1.2);
+  --site-header-scrolled-bar-bg: rgba(255, 255, 255, 0.72);
+  --site-header-scrolled-bar-shadow: none;
+  --site-header-scrolled-inner-bg: rgba(255, 255, 255, 0.82);
+  --site-header-bar-border: transparent;
+  --site-header-brand: #111827;
+  --site-header-link: #4b5563;
+  --site-header-link-hover-fg: #111827;
+  --site-header-link-hover-bg: rgba(0, 102, 204, 0.06);
+  --site-header-link-active-fg: #004a9e;
+  --site-header-link-active-bg: rgba(0, 102, 204, 0.1);
+  --site-header-link-underline: #0066cc;
+  --site-header-menu-line: #111827;
+  --site-header-menu-btn-hover: rgba(0, 102, 204, 0.08);
+  --site-header-login-fg: #ffffff;
+  --site-header-login-bg: #111827;
+  --site-header-login-bg-hover: #030712;
+  --site-header-login-active-ring: rgba(255, 255, 255, 0.35);
+  --site-header-nav-open-border: #e5e7eb;
+
+  background-color: var(--premium-bg);
+  font-family: var(--premium-font);
+}
+
+html[data-theme='dark'] body.premium-app .app-shell:not(.app-shell--office) {
+  --pub-cmd-bg: rgba(22, 22, 34, 0.92);
+  --pub-cmd-border: rgba(148, 163, 184, 0.14);
+  --pub-cmd-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  --app-header-offset: 4.35rem;
+
+  --premium-bg: #0a0e14;
+  --premium-bg-subtle: #111827;
+  --premium-bg-elevated: rgba(17, 24, 39, 0.92);
+  --premium-text: #f1f5f9;
+  --premium-text-muted: #94a3b8;
+  --premium-border: rgba(148, 163, 184, 0.16);
+  --premium-accent: #38bdf8;
+  --premium-accent-soft: rgba(56, 189, 248, 0.12);
+  --premium-accent-hover: #7dd3fc;
+  --premium-accent-glow: rgba(56, 189, 248, 0.3);
+  --premium-cta: #f9fafb;
+  --premium-cta-hover: #e5e7eb;
+  --premium-shadow-md: 0 16px 48px rgba(0, 0, 0, 0.55);
+
+  --premium-slider-band: #0a0e14;
+
+  --footer-bg: #0c1016;
+  --footer-text: #e2e8f0;
+  --footer-muted: #94a3b8;
+  --footer-border: rgba(148, 163, 184, 0.12);
+
+  --bd-summary-bg: rgba(15, 23, 42, 0.85);
+  --bd-summary-fg: #f1f5f9;
+  --bd-cta-bg: #0284c7;
+  --bd-cta-bg-hover: #0ea5e9;
+  --bd-cta-fg: #f8fafc;
+  --bd-cta-border: rgba(15, 23, 42, 0.35);
+
+  --chd-book-bg: #0ea5e9;
+  --chd-book-fg: #0f172a;
+  --chd-book-border: rgba(255, 255, 255, 0.45);
+  --chd-book-bg-hover: #38bdf8;
+  --chd-book-fg-hover: #0f172a;
+  --chd-book-ring: 0 0 0 2px rgba(15, 23, 42, 0.85), 0 4px 24px rgba(0, 0, 0, 0.65);
+
+  --pub-nav-dock-rule: rgba(148, 163, 184, 0.22);
+  --pub-brand-mark-bg: #f1f5f9;
+  --pub-brand-mark-fg: #0a1628;
+
+  --site-header-inner-bg: rgba(15, 23, 42, 0.72);
+  --site-header-inner-border: transparent;
+  --site-header-inner-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --site-header-scrolled-bar-bg: rgba(10, 12, 18, 0.88);
+  --site-header-scrolled-bar-shadow: none;
+  --site-header-scrolled-inner-bg: rgba(15, 23, 42, 0.72);
+  --site-header-bar-border: transparent;
+  --site-header-brand: #f8fafc;
+  --site-header-link: #e2e8f0;
+  --site-header-link-hover-fg: #ffffff;
+  --site-header-link-hover-bg: rgba(56, 189, 248, 0.1);
+  --site-header-link-active-fg: #ffffff;
+  --site-header-link-active-bg: rgba(56, 189, 248, 0.14);
+  --site-header-link-underline: #38bdf8;
+  --site-header-menu-line: #f1f5f9;
+  --site-header-menu-btn-hover: rgba(255, 255, 255, 0.08);
+  --site-header-login-fg: #0f172a;
+  --site-header-login-bg: #38bdf8;
+  --site-header-login-bg-hover: #7dd3fc;
+  --site-header-login-active-ring: rgba(15, 23, 42, 0.35);
+  --site-header-nav-open-border: rgba(148, 163, 184, 0.14);
+  --site-header-inner-backdrop: blur(18px);
+
+  background-color: var(--premium-bg);
+  background-image: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.premium-app .app-shell:not(.app-shell--office) .app-main {
+    scroll-behavior: smooth;
+  }
+
+  body.premium-app .app-shell:not(.app-shell--office) .feature-card {
+    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.38s ease;
+  }
+
+  body.premium-app .app-shell:not(.app-shell--office) .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  body.premium-app .app-shell:not(.app-shell--office) .cards__title,
+  body.premium-app .app-shell:not(.app-shell--office) .cards__lede {
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@media (max-width: 991px) {
+  body.premium-app .app-shell:not(.app-shell--office) {
+    --app-header-offset: clamp(5.25rem, 20vw, 6.75rem);
+  }
+}
+
+@media (max-width: 520px) {
+  body.premium-app .app-shell:not(.app-shell--office) {
+    --app-header-offset: clamp(5.5rem, 26vw, 7.25rem);
+  }
+}
+
+@media (max-width: 767px) {
+  body.premium-app .app-shell:not(.app-shell--office) .cards__item:hover {
+    transform: none;
+  }
+}

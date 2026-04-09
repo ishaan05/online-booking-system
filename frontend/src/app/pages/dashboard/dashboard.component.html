@@ -1,0 +1,36 @@
+<div class="dashboard-layout">
+  <div class="dashboard-hero">
+    <div class="dashboard-hero__slider-shell">
+      <carousel class="dashboard-carousel"></carousel>
+    </div>
+    <!-- Marquee strips directly under the hero slider (text then images) -->
+    <div class="dashboard-marquees">
+      <div appFadeInView [appFadeInViewDelay]="0" [appFadeInViewSlide]="16">
+        <app-text-advertisement></app-text-advertisement>
+      </div>
+      <div appFadeInView [appFadeInViewDelay]="85" [appFadeInViewSlide]="16">
+        <app-image-advertisement></app-image-advertisement>
+      </div>
+    </div>
+  </div>
+
+  <main class="dashboard-main" appFadeInView [appFadeInViewDelay]="100" [appFadeInViewSlide]="16">
+    <app-cards></app-cards>
+
+    <app-flip-counter></app-flip-counter>
+
+    <!-- Optional placeholder for extra sections (restore when needed)
+    <div class="container">
+      <div
+        class="dashboard-main__future"
+        aria-label="Space reserved for future main content"
+      >
+        <p class="dashboard-main__future-label">Main content area</p>
+        <p class="dashboard-main__future-hint">
+          Additional sections can be added here later.
+        </p>
+      </div>
+    </div>
+    -->
+  </main>
+</div>

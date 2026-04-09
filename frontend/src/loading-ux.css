@@ -1,0 +1,563 @@
+/* =============================================================================
+   Loading UX — skeletons, morph reveal, micro loaders, glass overlay, retry,
+   action states. Subtle, fast (≈240–520ms). Respects prefers-reduced-motion.
+   ============================================================================= */
+
+@keyframes lu-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes lu-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes lu-retry-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes lu-act-success {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes lu-dot-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* --- Top progress bar (fake / long requests) --- */
+.lu-progress-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10050;
+  pointer-events: none;
+}
+
+.lu-progress-track {
+  height: 2px;
+  background: rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+html[data-theme='dark'] .lu-progress-track {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lu-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #0066cc;
+  border-radius: 0 2px 2px 0;
+  transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-progress-bar {
+    transition: none;
+  }
+}
+
+/* --- Skeleton base --- */
+.lu-skel {
+  position: relative;
+  overflow: hidden;
+  background: var(--premium-skeleton-bg, rgba(15, 23, 42, 0.07));
+  border-radius: 10px;
+}
+
+html[data-theme='dark'] .lu-skel {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lu-skel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  animation: lu-shimmer 1.35s ease-in-out infinite;
+}
+
+html[data-theme='dark'] .lu-skel::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-skel::after {
+    animation: none;
+  }
+}
+
+@keyframes lu-blur-in {
+  from {
+    opacity: 0.88;
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes lu-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes lu-check-draw {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lu-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Morph: blur-clear + fade/slide when content replaces skeleton --- */
+.lu-morph-content {
+  animation:
+    lu-fade-up 0.48s cubic-bezier(0.22, 1, 0.36, 1) both,
+    lu-blur-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-morph-content {
+    animation: none;
+  }
+}
+
+/* Optional soft gradient pulse skeleton (use with .lu-skel; hides shimmer bar) */
+.lu-skel.lu-skel--gradient::after {
+  display: none;
+}
+
+.lu-skel.lu-skel--gradient {
+  background: linear-gradient(
+    105deg,
+    rgba(15, 23, 42, 0.07) 0%,
+    rgba(99, 102, 241, 0.09) 45%,
+    rgba(15, 23, 42, 0.08) 100%
+  );
+  background-size: 200% 200%;
+  animation: lu-gradient-shift 2.2s ease-in-out infinite;
+}
+
+html[data-theme='dark'] .lu-skel.lu-skel--gradient {
+  background: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(129, 140, 248, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 200% 200%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-skel.lu-skel--gradient {
+    animation: none;
+  }
+}
+
+/* --- Community hall grid skeleton --- */
+.lu-skel-ch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.lu-skel-ch-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--premium-border, rgba(15, 23, 42, 0.08));
+  background: var(--premium-bg-elevated, #fff);
+}
+
+.lu-skel-ch-card__media {
+  height: 180px;
+  border-radius: 0;
+}
+
+.lu-skel-ch-card__body {
+  padding: 1rem 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.lu-skel-line {
+  height: 14px;
+  border-radius: 6px;
+}
+
+.lu-skel-line--short {
+  width: 55%;
+}
+
+.lu-skel-line--tiny {
+  width: 35%;
+  height: 11px;
+}
+
+/* --- Feature cards (dashboard) skeleton --- */
+.lu-skel-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.35rem;
+}
+
+.lu-skel-fcard {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--premium-border, rgba(15, 23, 42, 0.08));
+  background: var(--premium-bg-elevated, #fff);
+}
+
+.lu-skel-fcard__media {
+  height: 200px;
+}
+
+.lu-skel-fcard__body {
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lu-skel-fcard__map {
+  height: 140px;
+  border-radius: 0;
+}
+
+/* --- Hall detail skeleton --- */
+.lu-skel-chd-hero {
+  height: min(42vh, 380px);
+  border-radius: 16px;
+  margin-bottom: 1.25rem;
+}
+
+.lu-skel-chd-panel {
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--premium-border, rgba(15, 23, 42, 0.08));
+  background: var(--premium-bg-elevated, #fff);
+  margin-bottom: 1rem;
+}
+
+.lu-skel-chd-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+/* --- Text / image marquee skeletons --- */
+.lu-skel-marquee {
+  height: 48px;
+  border-radius: 12px;
+}
+
+.lu-skel-img-strip {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.lu-skel-img-chip {
+  flex: 1;
+  min-width: min(200px, 28vw);
+  height: clamp(88px, min(22vw, 28vh), 160px);
+  border-radius: 12px;
+}
+
+/* --- Micro dot loader --- */
+.lu-dots {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.lu-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+  animation: lu-dot-bounce 0.7s ease-in-out infinite;
+}
+
+.lu-dots span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.lu-dots span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-dots span {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* --- Glass blocking overlay --- */
+.lu-glass-block {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--premium-text, #111827);
+}
+
+html[data-theme='dark'] .lu-glass-block {
+  background: rgba(15, 23, 42, 0.45);
+  color: #e5e7eb;
+}
+
+.lu-glass-block--panel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  border-radius: 0;
+}
+
+/* --- Retry --- */
+.lu-retry {
+  margin-top: 0.75rem;
+}
+
+.lu-retry--pulse {
+  animation: lu-retry-pulse 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Action button: idle → loading → success --- */
+.lu-action {
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.lu-action--loading {
+  pointer-events: none;
+  opacity: 0.88;
+}
+
+.lu-action--success {
+  animation: lu-act-success 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-action--success {
+    animation: none;
+  }
+}
+
+/* --- Office admin list skeleton --- */
+.lu-admin-skel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.25rem 0 1rem;
+}
+
+.lu-admin-skel-card {
+  height: 118px;
+  border-radius: 12px;
+}
+
+.lu-admin-skel-kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.85rem;
+}
+
+.lu-admin-skel-kpi__cell {
+  height: 88px;
+  border-radius: 12px;
+}
+
+.lu-admin-skel-dash {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 960px) {
+  .lu-admin-skel-dash {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.lu-admin-skel-dash__card {
+  min-height: 220px;
+  border-radius: 14px;
+}
+
+/* --- Lazy / progressive image reveal (use with luImgReveal) --- */
+img.lu-img-revealable {
+  opacity: 0;
+  transform: scale(1.035);
+  transition:
+    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+img.lu-img-revealable.lu-img--revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  img.lu-img-revealable {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --- Inline primary buttons: spinner + check (public + admin) --- */
+.lu-btn-inline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.65rem;
+  transition: transform 0.22s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+.lu-btn-inline:disabled {
+  cursor: not-allowed;
+}
+
+.lu-btn-inline__spin {
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  animation: lu-spin 0.65s linear infinite;
+}
+
+.lu-btn-inline--dark .lu-btn-inline__spin {
+  border-color: rgba(15, 23, 42, 0.2);
+  border-top-color: rgba(15, 23, 42, 0.75);
+}
+
+.lu-btn-inline__check {
+  display: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: currentColor;
+}
+
+.lu-btn-inline--success .lu-btn-inline__label,
+.lu-btn-inline--success .lu-btn-inline__spin,
+.lu-btn-inline--success .login-card__arrow-icon,
+.lu-btn-inline--success .oa-sign__btn__spinner {
+  display: none;
+}
+
+.lu-btn-inline--success .lu-btn-inline__check {
+  display: block;
+  animation: lu-check-draw 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lu-btn-inline__spin {
+    animation: none;
+    border-top-color: transparent;
+  }
+
+  .lu-btn-inline--success .lu-btn-inline__check {
+    animation: none;
+  }
+}
+
+/* --- Booking / flow status strip --- */
+.lu-flow-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--premium-text-muted, #64748b);
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+.lu-flow-strip .lu-dots {
+  color: #0066cc;
+}
+
+html[data-theme='dark'] .lu-flow-strip {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(129, 140, 248, 0.2);
+  color: #cbd5e1;
+}

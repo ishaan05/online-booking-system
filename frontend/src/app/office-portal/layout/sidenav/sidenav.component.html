@@ -1,0 +1,152 @@
+<nav
+  class="oa-rail"
+  [class.oa-rail--collapsed]="sidebarCollapsed"
+  aria-label="Admin navigation"
+>
+  <div class="oa-rail__shell">
+    <header class="oa-rail__head">
+      <button
+        type="button"
+        class="oa-rail__toggle"
+        (click)="toggleSidebar()"
+        [attr.aria-expanded]="!sidebarCollapsed"
+        aria-label="Expand or collapse navigation"
+      >
+        <span class="oa-rail__toggle-line" [class.oa-rail__toggle-line--open]="!sidebarCollapsed"></span>
+        <span class="oa-rail__toggle-line" [class.oa-rail__toggle-line--open]="!sidebarCollapsed"></span>
+        <span class="oa-rail__toggle-line" [class.oa-rail__toggle-line--open]="!sidebarCollapsed"></span>
+      </button>
+      <div class="oa-rail__brand oa-rail__brand--nav-label">
+        <div class="oa-rail__brand-text">
+          <span class="oa-rail__brand-title">Navigation</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="oa-rail__scroll">
+      <p class="oa-rail__caption">Workspace</p>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="oa-rail__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+        class="oa-rail__link"
+        [attr.title]="sidebarCollapsed ? 'Overview' : null"
+      >
+        <span class="oa-rail__glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+        </span>
+        <span class="oa-rail__label">Overview</span>
+      </a>
+
+      <p class="oa-rail__caption">Master data</p>
+      <button
+        type="button"
+        class="oa-rail__master-btn"
+        [class.oa-rail__master-btn--locked]="isMasterRoute"
+        (click)="masterToggleClick()"
+        [attr.aria-expanded]="masterOpen"
+        aria-controls="oa-master-sub"
+        [attr.title]="sidebarCollapsed ? 'Admin Actions' : null"
+      >
+        <span class="oa-rail__glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </span>
+        <span class="oa-rail__label">Admin Actions</span>
+        <span class="oa-rail__chevron" [class.oa-rail__chevron--open]="masterOpen" aria-hidden="true"></span>
+      </button>
+      <ul
+        id="oa-master-sub"
+        class="oa-rail__sub"
+        [class.oa-rail__sub--hide]="!masterOpen || sidebarCollapsed"
+        [attr.aria-hidden]="!masterOpen || sidebarCollapsed"
+      >
+        <li *ngFor="let link of visibleMasterLinks">
+          <a
+            [routerLink]="link.path"
+            routerLinkActive="oa-rail__sublink--active"
+            ariaCurrentWhenActive="page"
+            class="oa-rail__sublink"
+            [attr.title]="sidebarCollapsed ? link.label : null"
+          >
+            <span class="oa-rail__dot" aria-hidden="true"></span>
+            <span>{{ link.label }}</span>
+          </a>
+        </li>
+      </ul>
+
+      <p class="oa-rail__caption">Operations</p>
+      <a
+        *ngFor="let link of visibleAdminLinks"
+        [routerLink]="link.path"
+        routerLinkActive="oa-rail__link--active"
+        ariaCurrentWhenActive="page"
+        class="oa-rail__link"
+        [attr.title]="sidebarCollapsed ? link.label : null"
+      >
+        <span class="oa-rail__icon-slot">
+          <span class="oa-rail__glyph-badge-wrap">
+            <span class="oa-rail__glyph" aria-hidden="true">
+              <ng-container [ngSwitch]="link.icon">
+                <svg *ngSwitchCase="'pending'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <svg *ngSwitchCase="'provisionally'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m4 3a8 8 0 11-16 0 8 8 0 0116 0z" />
+                </svg>
+                <svg *ngSwitchCase="'forward'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+                <svg *ngSwitchCase="'approved'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <svg *ngSwitchCase="'rejected'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l6 6m0-6l-6 6m12 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <svg *ngSwitchCase="'cancelled'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636" />
+                </svg>
+                <svg *ngSwitchCase="'booking'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <svg *ngSwitchCase="'cancel'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
+                </svg>
+              </ng-container>
+            </span>
+            <span
+              *ngIf="link.pendingBadge && pendingCount > 0"
+              class="oa-rail__nav-badge"
+              [attr.aria-label]="pendingCount + ' pending'"
+              >{{ pendingCount > 99 ? '99+' : pendingCount }}</span
+            >
+          </span>
+        </span>
+        <span class="oa-rail__label">{{ link.label }}</span>
+      </a>
+    </div>
+
+    <div class="oa-rail__user" *ngIf="!sidebarCollapsed">
+      <div class="oa-rail__user-avatar" aria-hidden="true">{{ userInitials }}</div>
+      <div>
+        <div class="oa-rail__user-name">{{ userDisplayName }}</div>
+        <a routerLink="/admin/dashboard/admin/change-password" class="oa-rail__user-settings">Settings</a>
+      </div>
+    </div>
+
+    <footer class="oa-rail__foot">
+      <button type="button" class="oa-rail__logout" (click)="logout()" aria-label="Sign out" [attr.title]="sidebarCollapsed ? 'Sign out' : null">
+        <span class="oa-rail__glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+        </span>
+        <span class="oa-rail__logout-text">Sign out</span>
+      </button>
+    </footer>
+  </div>
+</nav>

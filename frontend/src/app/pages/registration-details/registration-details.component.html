@@ -1,0 +1,215 @@
+<div class="reg-page" *ngIf="draft">
+  <div class="reg-page__inner">
+    <h1 class="reg-page__title">Registration Details</h1>
+
+    <div class="reg-grid">
+      <div class="reg-col">
+        <label class="reg-field">
+          <span class="reg-field__label">Full Name</span>
+          <div class="reg-input reg-input--readonly">
+            <span class="reg-input__icon" aria-hidden="true">👤</span>
+            <input type="text" [value]="fullName" readonly class="reg-input__control" />
+          </div>
+        </label>
+        <label class="reg-field">
+          <span class="reg-field__label">Email</span>
+          <div class="reg-input reg-input--readonly">
+            <span class="reg-input__icon" aria-hidden="true">✉</span>
+            <input type="text" [value]="email" readonly class="reg-input__control" />
+          </div>
+        </label>
+        <label class="reg-field">
+          <span class="reg-field__label">Address</span>
+          <div class="reg-input reg-input--textarea">
+            <span class="reg-input__icon reg-input__icon--top" aria-hidden="true">📍</span>
+            <textarea
+              class="reg-input__control reg-input__control--textarea"
+              rows="3"
+              name="address"
+              [(ngModel)]="address"
+              placeholder="Address"
+            ></textarea>
+          </div>
+        </label>
+      </div>
+
+      <div class="reg-col">
+        <label class="reg-field">
+          <span class="reg-field__label">Mobile Number</span>
+          <div class="reg-input reg-input--readonly">
+            <span class="reg-input__icon" aria-hidden="true">📞</span>
+            <input type="text" [value]="mobile" readonly class="reg-input__control" />
+          </div>
+        </label>
+        <label class="reg-field">
+          <span class="reg-field__label">Hall Name</span>
+          <div class="reg-input reg-input--readonly">
+            <span class="reg-input__icon" aria-hidden="true">🏛</span>
+            <input type="text" [value]="draft.venueName" readonly class="reg-input__control" />
+          </div>
+        </label>
+        <label class="reg-field">
+          <span class="reg-field__label">Deposit Amount</span>
+          <div class="reg-input reg-input--readonly">
+            <span class="reg-input__icon" aria-hidden="true">₹</span>
+            <input type="text" [value]="depositDisplay" readonly class="reg-input__control" />
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <p class="reg-disclaimer">
+      In case of cheque dishonoured, the legal action will be initiated against the cheque issuer as per law..
+    </p>
+
+    <div class="reg-row-3">
+      <div class="reg-inline">
+        <span class="reg-inline__label">Category :</span>
+        <span class="reg-inline__value">{{ draft.categoryName }}</span>
+      </div>
+      <div class="reg-inline">
+        <span class="reg-inline__label">Purpose :</span>
+        <span class="reg-inline__value">{{ draft.purposeName }}</span>
+      </div>
+    </div>
+
+    <div class="reg-row-3 reg-row-3--dates">
+      <div class="reg-inline">
+        <span class="reg-inline__label">From Date :</span>
+        <span class="reg-inline__value">{{ formatSlashDate(draft.fromDate) }}</span>
+      </div>
+      <div class="reg-inline">
+        <span class="reg-inline__label">To Date :</span>
+        <span class="reg-inline__value">{{ formatSlashDate(draft.toDate) }}</span>
+      </div>
+      <label class="reg-field reg-field--grow">
+        <span class="reg-field__label">ID Details</span>
+        <div class="reg-input" [class.reg-input--invalid]="idError">
+          <span class="reg-input__icon" aria-hidden="true">🪪</span>
+          <input
+            type="text"
+            class="reg-input__control reg-input__control--id"
+            name="idDetails"
+            [ngModel]="idDetails"
+            (ngModelChange)="onIdInput($event)"
+            (blur)="idTouched = true"
+            maxlength="6"
+            autocomplete="off"
+            placeholder="HRMS ID (6 Alphabets Only)"
+          />
+        </div>
+        <span *ngIf="idError" class="reg-field__err">{{ idError }}</span>
+      </label>
+    </div>
+
+    <div class="reg-upload">
+      <span class="reg-field__label">Railway ID Card :</span>
+      <div class="reg-upload__box">
+        <div class="reg-upload__preview" *ngIf="railwayPreview; else ph">
+          <img [src]="railwayPreview" alt="Selected ID preview" />
+        </div>
+        <ng-template #ph>
+          <div class="reg-upload__placeholder" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#9ca3af" stroke-width="1.5">
+              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+          </div>
+        </ng-template>
+      </div>
+      <input #railFile type="file" class="reg-upload__input" accept="image/*" (change)="onRailwayFile($event)" />
+      <button type="button" class="reg-upload__btn" (click)="railFile.click()">📤 BROWSE</button>
+    </div>
+
+    <h2 class="reg-page__subtitle">Bank Details</h2>
+    <p class="reg-bank-note">For the purpose of refund payment.</p>
+
+    <div class="reg-grid">
+      <div class="reg-col">
+        <label class="reg-field">
+          <span class="reg-field__label">Account Holder Name</span>
+          <div class="reg-input">
+            <span class="reg-input__icon" aria-hidden="true">👤</span>
+            <input
+              type="text"
+              class="reg-input__control"
+              name="accHolder"
+              [(ngModel)]="accountHolderName"
+              autocomplete="name"
+            />
+          </div>
+        </label>
+        <label class="reg-field">
+          <span class="reg-field__label">Account Number</span>
+          <div class="reg-input">
+            <span class="reg-input__icon" aria-hidden="true">💳</span>
+            <input
+              type="text"
+              class="reg-input__control"
+              name="accNo"
+              [(ngModel)]="accountNumber"
+              inputmode="numeric"
+              autocomplete="off"
+            />
+          </div>
+        </label>
+      </div>
+      <div class="reg-col">
+        <label class="reg-field">
+          <span class="reg-field__label">Bank Name</span>
+          <div class="reg-input">
+            <span class="reg-input__icon" aria-hidden="true">🏦</span>
+            <input type="text" class="reg-input__control" name="bank" [(ngModel)]="bankName" />
+          </div>
+        </label>
+        <label class="reg-field">
+          <span class="reg-field__label">IFSC Code</span>
+          <div class="reg-input" [class.reg-input--invalid]="ifscError">
+            <span class="reg-input__icon" aria-hidden="true">&lt;/&gt;</span>
+            <input
+              type="text"
+              class="reg-input__control"
+              name="ifsc"
+              [ngModel]="ifscCode"
+              (ngModelChange)="onIfscInput($event)"
+              (blur)="ifscTouched = true"
+              maxlength="11"
+              autocomplete="off"
+            />
+            <span *ngIf="ifscError" class="reg-input__warn" aria-hidden="true">!</span>
+          </div>
+          <span *ngIf="ifscError" class="reg-field__err">{{ ifscError }}</span>
+        </label>
+      </div>
+    </div>
+
+    <p *ngIf="submitError" class="reg-submit-err" role="alert">{{ submitError }}</p>
+
+    <div class="reg-actions">
+      <button type="button" class="reg-btn reg-btn--cancel" (click)="cancel()">Cancel</button>
+      <button
+        type="button"
+        class="reg-btn reg-btn--submit lu-btn-inline lu-btn-inline--dark"
+        [class.lu-btn-inline--success]="submitSuccess"
+        (click)="submit()"
+        [disabled]="submitting"
+      >
+        <span *ngIf="submitting && !submitSuccess" class="lu-btn-inline__spin" aria-hidden="true"></span>
+        <span class="lu-btn-inline__label">{{ submitting && !submitSuccess ? 'Submitting…' : 'Submit' }}</span>
+        <svg class="lu-btn-inline__check" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="successBookingId" class="reg-success" role="dialog" aria-modal="true" aria-labelledby="reg-success-title">
+  <div class="reg-success__backdrop" (click)="closeSuccess()"></div>
+  <div class="reg-success__panel">
+    <p id="reg-success-title" class="reg-success__text">
+      Your Booking Number is <strong class="reg-success__id">{{ successBookingId }}</strong>
+    </p>
+    <button type="button" class="reg-success__ok" (click)="closeSuccess()">OK</button>
+  </div>
+</div>

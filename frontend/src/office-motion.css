@@ -1,0 +1,155 @@
+/* =============================================================================
+   Admin (office) portal motion — scoped to .app-shell--office.
+   Mirrors public motion: route enter, ripple, hover lift, hero float, reduced motion.
+   ============================================================================= */
+
+@keyframes oa-route-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes oa-hero-float {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.premium-app .app-shell--office .dashboard__content > :not(router-outlet) {
+    animation: oa-route-enter 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  body.premium-app .app-shell--office .app-main > app-office-login,
+  body.premium-app .app-shell--office .app-main > app-office-forgot-password {
+    display: block;
+    animation: oa-route-enter 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  body.premium-app .app-shell--office .oa-hero__inner {
+    animation: oa-hero-float 5.5s ease-in-out infinite alternate;
+  }
+
+  body.premium-app .app-shell--office .oa-sign__btn,
+  body.premium-app .app-shell--office .oa-sign__theme {
+    transition:
+      transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.28s ease,
+      filter 0.22s ease;
+  }
+
+  body.premium-app .app-shell--office .oa-sign__btn:hover:not(:disabled),
+  body.premium-app .app-shell--office .oa-sign__theme:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.14);
+  }
+
+  body.premium-app .app-shell--office .oa-sign__btn:active:not(:disabled),
+  body.premium-app .app-shell--office .oa-sign__theme:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.1);
+  }
+
+  body.premium-app .app-shell--office .oa-kpi__card {
+    transition:
+      transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.32s ease,
+      border-color 0.28s ease;
+  }
+
+  body.premium-app .app-shell--office .oa-kpi__card:hover {
+    transform: translateY(-4px) scale(1.012);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+  }
+
+  body.premium-app .app-shell--office .oa-kpi__card:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+
+  body.premium-app .app-shell--office .oa-dsh-card {
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease;
+  }
+
+  body.premium-app .app-shell--office .oa-dsh-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+  }
+
+  body.premium-app .app-shell--office .oa-dsh-tab:not(.oa-dsh-tab--on) {
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+
+  body.premium-app .app-shell--office .oa-dsh-tab:not(.oa-dsh-tab--on):hover {
+    transform: translateY(-1px);
+  }
+
+  body.premium-app .app-shell--office .dashboard__content .btn:not([disabled]),
+  body.premium-app .app-shell--office .dashboard__content button[type='submit']:not([disabled]),
+  body.premium-app .app-shell--office .admin-forms .btn:not([disabled]),
+  body.premium-app .app-shell--office .admin-forms button[type='submit']:not([disabled]) {
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+  }
+
+  body.premium-app .app-shell--office .dashboard__content .btn:not([disabled]):hover,
+  body.premium-app .app-shell--office .dashboard__content button[type='submit']:not([disabled]):hover,
+  body.premium-app .app-shell--office .admin-forms .btn:not([disabled]):hover,
+  body.premium-app .app-shell--office .admin-forms button[type='submit']:not([disabled]):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+  }
+
+  body.premium-app .app-shell--office .dashboard__content .btn:not([disabled]):active,
+  body.premium-app .app-shell--office .dashboard__content button[type='submit']:not([disabled]):active,
+  body.premium-app .app-shell--office .admin-forms .btn:not([disabled]):active,
+  body.premium-app .app-shell--office .admin-forms button[type='submit']:not([disabled]):active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  }
+}
+
+html[data-theme='dark'] body.premium-app .app-shell--office .pub-ripple-host::after {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.premium-app .app-shell--office .dashboard__content > :not(router-outlet),
+  body.premium-app .app-shell--office .app-main > app-office-login,
+  body.premium-app .app-shell--office .app-main > app-office-forgot-password {
+    animation: none;
+  }
+
+  body.premium-app .app-shell--office .oa-hero__inner {
+    animation: none;
+  }
+
+  body.premium-app .app-shell--office .oa-kpi__card:hover,
+  body.premium-app .app-shell--office .oa-dsh-card:hover {
+    transform: none;
+  }
+
+  body.premium-app .app-shell--office .pub-ripple-host::after {
+    display: none;
+  }
+
+  body.premium-app .app-shell--office .oa-sign__btn:hover,
+  body.premium-app .app-shell--office .oa-sign__theme:hover,
+  body.premium-app .app-shell--office .oa-sign__btn:active,
+  body.premium-app .app-shell--office .oa-sign__theme:active {
+    transform: none;
+  }
+
+  body.premium-app .app-shell--office .dashboard__content .btn:hover,
+  body.premium-app .app-shell--office .dashboard__content button[type='submit']:hover,
+  body.premium-app .app-shell--office .admin-forms .btn:hover,
+  body.premium-app .app-shell--office .admin-forms button[type='submit']:hover {
+    transform: none;
+  }
+}

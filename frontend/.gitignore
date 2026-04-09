@@ -1,0 +1,62 @@
+# =========================
+# Angular
+# =========================
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/node_modules
+.angular/
+
+npm-debug.log
+yarn-error.log
+
+# =========================
+# IDEs & Editors
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+.vs/
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/*
+
+# =========================
+# .NET (if any tooling drops files here)
+# =========================
+bin/
+obj/
+*.user
+*.log
+
+# =========================
+# Config / Secrets
+# =========================
+appsettings.Development.json
+.env
+
+# =========================
+# Database / Misc
+# =========================
+*.db
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# =========================
+# System
+# =========================
+.DS_Store
+Thumbs.db

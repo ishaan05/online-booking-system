@@ -1,0 +1,105 @@
+<section class="my-bookings" aria-labelledby="mb-title">
+  <div class="my-bookings__bg" aria-hidden="true"></div>
+  <div class="my-bookings__inner">
+    <nav class="my-bookings__crumb" aria-label="Breadcrumb">
+      <a routerLink="/" class="my-bookings__crumb-link">Home</a>
+      <span class="my-bookings__crumb-sep" aria-hidden="true">/</span>
+      <span class="my-bookings__crumb-current">My bookings</span>
+    </nav>
+
+    <header class="my-bookings__head">
+      <p class="my-bookings__eyebrow">{{ greetingWord }} {{ firstName }}</p>
+      <h1 id="mb-title" class="my-bookings__title">Your bookings</h1>
+      <p class="my-bookings__sub">Every request you have made, newest first.</p>
+    </header>
+
+    <div *ngIf="loading" class="my-bookings__state my-bookings__state--loading" role="status">
+      <div class="my-bookings__skeleton-grid">
+        <div class="my-bookings__skel my-bookings__skel--row" *ngFor="let _ of [1, 2, 3]"></div>
+      </div>
+    </div>
+
+    <p *ngIf="!loading && error" class="my-bookings__state my-bookings__state--error" role="alert">{{ error }}</p>
+
+    <div *ngIf="!loading && !error && rows.length === 0" class="my-bookings__empty">
+      <div class="my-bookings__empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="8" y="10" width="32" height="30" rx="3" />
+          <path d="M16 18h16M16 26h12M16 34h8" stroke-linecap="round" />
+        </svg>
+      </div>
+      <h2 class="my-bookings__empty-title">No bookings yet</h2>
+      <p class="my-bookings__empty-text">When you reserve a hall, it will show up here with status and details.</p>
+      <a routerLink="/community-halls" class="my-bookings__empty-cta">Browse community halls</a>
+    </div>
+
+    <ul *ngIf="!loading && !error && rows.length > 0" class="my-bookings__list" role="list">
+      <li *ngFor="let row of rows; trackBy: trackById" class="my-bookings__card">
+        <div class="my-bookings__card-top">
+          <div class="my-bookings__card-id-block">
+            <span class="my-bookings__card-label">Reference</span>
+            <span class="my-bookings__card-reg">{{ row.bookingRegNo }}</span>
+          </div>
+          <span class="my-bookings__badge" [ngClass]="'my-bookings__badge--' + statusTone(row.statusLabel)">
+            {{ row.statusLabel }}
+          </span>
+        </div>
+        <h3 class="my-bookings__venue">{{ row.venueName }}</h3>
+        <dl class="my-bookings__meta">
+          <div class="my-bookings__meta-row">
+            <dt>Category</dt>
+            <dd>{{ row.categoryName || '—' }}</dd>
+          </div>
+          <div class="my-bookings__meta-row">
+            <dt>Purpose</dt>
+            <dd>{{ row.purposeName || '—' }}</dd>
+          </div>
+          <div class="my-bookings__meta-row my-bookings__meta-row--span">
+            <dt>Stay</dt>
+            <dd>
+              {{ formatDate(row.bookingFromDate) }}
+              <span class="my-bookings__meta-arrow" aria-hidden="true">→</span>
+              {{ formatDate(row.bookingToDate) }}
+            </dd>
+          </div>
+          <div class="my-bookings__meta-row">
+            <dt>Booked on</dt>
+            <dd>{{ row.createdAt | slice : 0 : 10 }}</dd>
+          </div>
+        </dl>
+        <div class="my-bookings__card-foot">
+          <span class="my-bookings__amount-label">Total</span>
+          <span class="my-bookings__amount">{{ row.totalAmount | currency : 'INR' : 'symbol' : '1.0-2' : 'en-IN' }}</span>
+        </div>
+        <div class="my-bookings__history">
+          <button
+            type="button"
+            class="my-bookings__history-btn"
+            (click)="toggleHistory(row.bookingID)"
+            [attr.aria-expanded]="expandedBookingId === row.bookingID"
+          >
+            {{ expandedBookingId === row.bookingID ? 'Hide status history' : 'Status history' }}
+          </button>
+          <div *ngIf="expandedBookingId === row.bookingID" class="my-bookings__history-panel" role="region">
+            <p *ngIf="isLogLoading(row.bookingID)" class="my-bookings__history-loading">Loading…</p>
+            <ul *ngIf="!isLogLoading(row.bookingID) && logsFor(row.bookingID).length === 0" class="my-bookings__history-empty">
+              No status changes recorded yet.
+            </ul>
+            <ol *ngIf="!isLogLoading(row.bookingID) && logsFor(row.bookingID).length > 0" class="my-bookings__timeline">
+              <li *ngFor="let log of logsFor(row.bookingID)" class="my-bookings__timeline-item">
+                <div class="my-bookings__timeline-when">{{ formatLogWhen(log.changedAt) }}</div>
+                <div class="my-bookings__timeline-body">
+                  <span class="my-bookings__timeline-who">{{ log.changedByType }}</span>
+                  <span class="my-bookings__timeline-status">
+                    {{ log.oldStatus || '—' }} → {{ log.newStatus }}
+                  </span>
+                  <span *ngIf="log.remarks" class="my-bookings__timeline-remarks">{{ log.remarks }}</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
