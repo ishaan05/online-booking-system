@@ -3,5 +3,5 @@
  */
 export const environment = {
   production: true,
-  apiBaseUrl: '',
+  apiBaseUrl: 'https://online-booking-api.onrender.com'
 };
